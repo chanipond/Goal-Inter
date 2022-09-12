@@ -13,12 +13,15 @@ class MyConstant {
 
   // Image
   static String image1 = 'asset/images/Logo.png';
+  static String image2 = 'asset/images/meow.jpg';
+  static String image3 = 'asset/images/eiei.jpg';
 
   // Color
   static Color primary = Color(0xff73A9AD);
   static Color dark = Color(0xff2C3333);
   static Color ligth = Color(0xff395B64);
   static Color button = Color(0xffFEF9A7);
+  static Color white = Color.fromARGB(255, 255, 255, 255);
 
   // Style
   TextStyle h1Style() => TextStyle(

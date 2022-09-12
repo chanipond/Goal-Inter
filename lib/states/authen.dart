@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:goalinter/states/member_service.dart';
+import 'package:goalinter/states/home.dart';
 import 'package:http/http.dart' as http;
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_image.dart';
@@ -23,7 +23,7 @@ class _AuthenState extends State<Authen> {
 
   Future login() async{
     var response = await http.post(
-      Uri.parse("http://192.168.1.36/goalinter_project/login.php"), 
+      Uri.parse("http://192.168.1.34/goalinter_project/login.php"), 
       body: {
       "email" : emailController.text,
       "password" : pwdController.text,

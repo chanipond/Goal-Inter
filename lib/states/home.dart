@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:goalinter/states/contact.dart';
+import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_signout.dart';
 import 'package:goalinter/widgets/show_title.dart';
@@ -13,6 +15,18 @@ class Member_Service extends StatefulWidget {
 
 class _Member_ServiceState extends State<Member_Service> {
   int currentIndex = 0;
+  List<Widget> _widgetOptions = <Widget>[
+    Text('Home'),
+    List_service(),
+    Text('Contact us'),
+  ];
+
+  void _onItemTap(int index){
+    setState(() {
+        currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,22 +38,23 @@ class _Member_ServiceState extends State<Member_Service> {
         child: ShowSignOut(),
       ),
       body: Center(
-        child: Text(
-          "WELCOME",
-          style: MyConstant().h1Style(),
-        ),
+        child: _widgetOptions.elementAt(currentIndex),
+        // Text(
+        //   "WELCOME",
+        //   style: MyConstant().h1Style(),
+        // ),
       ),
       bottomNavigationBar:
           BottomNavigationBar(
             backgroundColor: MyConstant.primary,
-            selectedItemColor: MyConstant.button, 
+            selectedItemColor: MyConstant.dark, 
             iconSize: 25,
             // selectedFontSize: 18,
-            unselectedItemColor: MyConstant.dark,
+            unselectedItemColor: MyConstant.white,
             // unselectedFontSize: 14,
             showUnselectedLabels: false,
-            currentIndex: currentIndex,
-            onTap: (index) => setState(() => currentIndex = index),
+            // currentIndex: currentIndex,
+            // onTap: (index) => setState(() => currentIndex = index),
             items: [
         BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -49,7 +64,14 @@ class _Member_ServiceState extends State<Member_Service> {
             icon: Icon(Icons.assignment_outlined),
             label: 'List',
             ),
-      ]),
+            BottomNavigationBarItem(
+            icon: Icon(Icons.assignment_ind_rounded),
+            label: 'Contact us',
+            ),
+      ],
+      currentIndex: currentIndex,
+      onTap: _onItemTap,
+      ),
     );
   }
 }

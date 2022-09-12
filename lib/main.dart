@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/booking_service.dart';
+import 'package:goalinter/states/contact.dart';
 import 'package:goalinter/states/create_account.dart';
-import 'package:goalinter/states/member_service.dart';
+import 'package:goalinter/states/home.dart';
+import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 
 final Map<String, WidgetBuilder> map = {
@@ -10,6 +12,9 @@ final Map<String, WidgetBuilder> map = {
   '/create_account':(BuildContext context) => CreateAccount(),
   '/booking_service':(BuildContext context) => Booking_service(),
   '/member_service':(BuildContext context) => Member_Service(),
+  '/list':(BuildContext context) => List_service(),
+  '/contact':(BuildContext context) => Contact_service(),
+
   
 };
 
