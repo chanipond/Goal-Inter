@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 import '../utillity/my_constant.dart';
 import '../widgets/show_image.dart';
 import '../widgets/show_title.dart';
@@ -21,6 +21,7 @@ class _Contact_serviceState extends State<Contact_service> {
         children: <Widget>[
           buildImage(size),
           buildFacebook(),
+          Text('Call: 087-075-4451'),
           
         ],
       ),
@@ -47,12 +48,12 @@ class _Contact_serviceState extends State<Contact_service> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ShowTitle(
-          title: 'Facebbook: ',
+          title: 'Facebook:',
           textStyle: MyConstant().h2Style(),
         ),
         TextButton(
           onPressed:  () =>
-              Navigator.pushNamed(context, MyConstant.routeCreateAccount),
+              Navigator.pushNamed(context, MyConstant.routeHome_service),
           child: Text(
             'สนามฟุตบอลหญ้าเทียม Goal Inter',
             style: TextStyle(
@@ -66,7 +67,5 @@ class _Contact_serviceState extends State<Contact_service> {
     );
   }
 
-  
-  
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/booking_service.dart';
 import 'package:goalinter/states/contact.dart';
@@ -14,6 +15,7 @@ final Map<String, WidgetBuilder> map = {
   '/member_service':(BuildContext context) => Member_Service(),
   '/list':(BuildContext context) => List_service(),
   '/contact':(BuildContext context) => Contact_service(),
+  '/home':(BuildContext context) => Home_service(),
 
   
 };

@@ -33,7 +33,7 @@ class _List_serviceState extends State<List_service> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 80),
+          margin: EdgeInsets.only(top: 0),
           width: size * 0.6,
           child: ShowImage(
             path: MyConstant.image1,
