@@ -13,8 +13,9 @@ class MyConstant {
 
   // Image
   static String image1 = 'asset/images/Logo.png';
-  static String image2 = 'asset/images/meow.jpg';
-  static String image3 = 'asset/images/eiei.jpg';
+  static String imagehome = 'asset/images/Goal2.jpg';
+  static String imagecontact = 'asset/images/contact.jpg';
+  static String imageface = 'asset/images/facebook.png';
 
   // Color
   static Color primary = Color(0xff73A9AD);

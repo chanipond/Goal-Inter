@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:goalinter/states/home.dart';
+import 'package:goalinter/states/member_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_image.dart';

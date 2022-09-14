@@ -19,13 +19,16 @@ class _List_serviceState extends State<List_service> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           buildImage(size),
-          Text("List naja ya tum za"),
+          Text(
+            "Empty",
+            style: TextStyle(fontSize: 18),
+          ),
         ],
       ),
     );
   }
 
-   Row buildImage(double size) {
+  Row buildImage(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

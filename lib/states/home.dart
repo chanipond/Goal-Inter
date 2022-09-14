@@ -1,76 +1,52 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:goalinter/states/contact.dart';
-import 'package:goalinter/states/list.dart';
-import 'package:goalinter/utillity/my_constant.dart';
-import 'package:goalinter/widgets/show_signout.dart';
-import 'package:goalinter/widgets/show_title.dart';
 
-class Member_Service extends StatefulWidget {
-  const Member_Service({Key? key}) : super(key: key);
+import '../utillity/my_constant.dart';
+import '../widgets/show_image.dart';
+
+class Home_service extends StatefulWidget {
+  const Home_service({Key? key}) : super(key: key);
 
   @override
-  State<Member_Service> createState() => _Member_ServiceState();
+  State<Home_service> createState() => _Home_serviceState();
 }
 
-class _Member_ServiceState extends State<Member_Service> {
-  int currentIndex = 0;
-  List<Widget> _widgetOptions = <Widget>[
-    Text('Home'),
-    List_service(),
-    Text('Contact us'),
-  ];
-
-  void _onItemTap(int index){
-    setState(() {
-        currentIndex = index;
-    });
-  }
-
+class _Home_serviceState extends State<Home_service> {
   @override
   Widget build(BuildContext context) {
+    // double size = MediaQuery.of(context).size.width;
+    // return Scaffold(
+    //     body: Center(
+    //         child: Form(
+    //             child: SingleChildScrollView(
+    //   child: Column(
+    //     mainAxisAlignment: MainAxisAlignment.center,
+    //     children: <Widget>[
+    //       buildImage(size),
+    //       Text("Home naja"),
+    //     ],
+    //   ),
+    // ))));
+  // }
+
+  // Row buildImage(double size) {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Container(
+  //         margin: EdgeInsets.only(top: 80),
+  //         width: size * 1,
+  //         child: ShowImage(
+  //           path: MyConstant.imagehome,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+// }
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(''),
-        backgroundColor: MyConstant.primary,
-      ),
-      drawer: Drawer(
-        child: ShowSignOut(),
-      ),
-      body: Center(
-        child: _widgetOptions.elementAt(currentIndex),
-        // Text(
-        //   "WELCOME",
-        //   style: MyConstant().h1Style(),
-        // ),
-      ),
-      bottomNavigationBar:
-          BottomNavigationBar(
-            backgroundColor: MyConstant.primary,
-            selectedItemColor: MyConstant.dark, 
-            iconSize: 25,
-            // selectedFontSize: 18,
-            unselectedItemColor: MyConstant.white,
-            // unselectedFontSize: 14,
-            showUnselectedLabels: false,
-            // currentIndex: currentIndex,
-            // onTap: (index) => setState(() => currentIndex = index),
-            items: [
-        BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            ),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.assignment_outlined),
-            label: 'List',
-            ),
-            BottomNavigationBarItem(
-            icon: Icon(Icons.assignment_ind_rounded),
-            label: 'Contact us',
-            ),
-      ],
-      currentIndex: currentIndex,
-      onTap: _onItemTap,
+      body: SingleChildScrollView(
+        child: ShowImage(path: MyConstant.imagehome),
       ),
     );
   }

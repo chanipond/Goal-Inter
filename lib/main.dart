@@ -3,7 +3,7 @@ import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/booking_service.dart';
 import 'package:goalinter/states/contact.dart';
 import 'package:goalinter/states/create_account.dart';
-import 'package:goalinter/states/home.dart';
+import 'package:goalinter/states/member_service.dart';
 import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 
