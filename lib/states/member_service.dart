@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goalinter/states/Home.dart';
+import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/contact.dart';
 import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
@@ -32,11 +33,44 @@ class _Member_ServiceState extends State<Member_Service> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        // title: Text(''),
         backgroundColor: MyConstant.primary,
       ),
       drawer: Drawer(
-        child: ShowSignOut(),
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 220,
+              width: double.infinity,
+              color: MyConstant.primary,
+              child: Column(
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.only(top: 50)),
+                  CircleAvatar(
+                    backgroundImage: AssetImage("asset/images/Logo.png"),
+                    radius: 60.0,
+                  )
+                ],
+              ),
+            ),
+            ListTile(
+              title: Text("Information"),
+              onTap: (){
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (BuildContext context) => Authen()));},
+            ),
+            ListTile(
+              title: Text("Goal-Inter Football Field"),
+            ),
+            ListTile(
+              title: Text("Booking"),
+            ),
+
+
+          ],
+        ),
+        // child: ShowSignOut(),
       ),
       body: Center(
         child: _widgetOptions.elementAt(currentIndex),

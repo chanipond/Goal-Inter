@@ -26,7 +26,7 @@ class _CreateAccountState extends State<CreateAccount> {
   Future register() async{
     // var url = ;
     var response = await http.post(
-      Uri.parse("http://192.168.1.36/goalinter_project/register.php"), 
+      Uri.parse("http://10.0.0.74/goalinter_project/register.php"), 
       body: {
       "username" : userController.text,
       "lastname" : lastController.text,
@@ -47,15 +47,32 @@ class _CreateAccountState extends State<CreateAccount> {
         fontSize: 16.0
       );
     }else{
-      Fluttertoast.showToast(
-        msg: "Registration Successful",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0
+      // Fluttertoast.showToast(
+      //   msg: "Registration Successful",
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      //   timeInSecForIosWeb: 1,
+      //   backgroundColor: Colors.green,
+      //   textColor: Colors.white,
+      //   fontSize: 16.0
+      // );
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Register Success"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
       );
+      
     }
   }
 

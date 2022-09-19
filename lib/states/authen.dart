@@ -21,15 +21,14 @@ class _AuthenState extends State<Authen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
 
-  Future login() async{
-    var response = await http.post(
-      Uri.parse("http://192.168.1.34/goalinter_project/login.php"), 
-      body: {
-      "email" : emailController.text,
-      "password" : pwdController.text,
+  Future login() async {
+    var response = await http
+        .post(Uri.parse("http://10.0.0.74/goalinter_project/login.php"), body: {
+      "email": emailController.text,
+      "password": pwdController.text,
     });
     var data = json.decode(response.body);
-    if(data == "Success"){
+    if (data == "Success") {
       Fluttertoast.showToast(
         msg: "Login Successful",
         toastLength: Toast.LENGTH_SHORT,
@@ -39,17 +38,33 @@ class _AuthenState extends State<Authen> {
         textColor: Colors.white,
         fontSize: 16.0
       );
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Member_Service()));
-    }else{
+      // showDialog(
+      //   context: context,
+      //   builder: (BuildContext context) {
+      //     return AlertDialog(
+      //       title: Text(" "),
+      //       actions: <Widget>[
+      //         FlatButton(
+      //           child: Text("OK"),
+      //           onPressed: () {
+      //             Navigator.of(context).pop();
+      //           },
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Member_Service()));
+    } else {
       Fluttertoast.showToast(
-        msg: "Email & Password Incorrect",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
+          msg: "Email & Password Incorrect",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
@@ -109,8 +124,7 @@ class _AuthenState extends State<Authen> {
           width: size * 0.6,
           child: ElevatedButton(
             style: MyConstant().MyButtonStyle(),
-            onPressed: () => 
-              login(),
+            onPressed: () => login(),
             child: Text(
               'Login',
               style: TextStyle(
