@@ -26,9 +26,9 @@ class ShowSignOut extends StatelessWidget {
               title: 'Sign Out',
               textStyle: MyConstant().h2WhiteStyle(),
             ),
-            subtitle: ShowTitle(
-                title: 'Sign Out And Go to Authen',
-                textStyle: MyConstant().h3WhiteStyle()),
+            // subtitle: ShowTitle(
+            //     title: 'Sign Out',
+            //     textStyle: MyConstant().h3WhiteStyle()),
           ),
         ],
       );

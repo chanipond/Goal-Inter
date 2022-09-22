@@ -17,7 +17,7 @@ class CreateAccount extends StatefulWidget {
 class _CreateAccountState extends State<CreateAccount> {
   // String? sedlectpwd;
   final formKey = GlobalKey<FormState>();
-  TextEditingController userController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController lastController = TextEditingController();
   TextEditingController telController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -26,9 +26,9 @@ class _CreateAccountState extends State<CreateAccount> {
   Future register() async{
     // var url = ;
     var response = await http.post(
-      Uri.parse("http://10.0.0.74/goalinter_project/register.php"), 
+      Uri.parse("http://10.34.5.76/goalinter_project/register.php"), 
       body: {
-      "username" : userController.text,
+      "firstname" : nameController.text,
       "lastname" : lastController.text,
       "telephonenumber" : telController.text,
       "email" : emailController.text,
@@ -84,15 +84,15 @@ class _CreateAccountState extends State<CreateAccount> {
           margin: EdgeInsets.only(top: 20),
           width: size * 0.8,
           child: TextFormField(
-            controller: userController,
+            controller: nameController,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please enter Username';
+                return 'Please enter Firstname';
               } else {}
             },
             decoration: InputDecoration(
               labelStyle: MyConstant().h3Style(),
-              labelText: 'Username',
+              labelText: 'Firstname',
               prefixIcon: Icon(
                 Icons.accessibility_new_rounded,
                 color: MyConstant.dark,
@@ -260,23 +260,23 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   // Future<Null> InsertData() async {
-  //   String Username = userController.text;
+  //   String firstname = firstController.text;
   //   String Lastname = lastController.text;
   //   String Telephone = telController.text;
   //   String Email = emailController.text;
   //   String Password = pwdController.text;
 
   //   print(
-  //       '## username = $Username, lastname = $Lastname, telphone = $Telephone, email = $Email, password = $Password');
+  //       '## firstname = $firstname, lastname = $Lastname, telphone = $Telephone, email = $Email, password = $Password');
   //   String path =
-  //       '${MyConstant.domain}/goalinter_project/getUserWhereUser.php?isAdd=true&username=$Username';
+  //       '${MyConstant.domain}/goalinter_project/getfirstWherefirst.php?isAdd=true&firstname=$firstname';
   //   await Dio().get(path).then((value) async {
   //     print('## value ==>> $value');
   //     if (value.toString() == 'null') {
-  //       print('## user ok');
+  //       print('## first ok');
   //       // if(file == null){
   //       //   processInsertMySQL(
-  //       //     username: Username,
+  //       //     firstname: firstname,
   //       //     lastname: Lastname,
   //       //     telephonenumber: Telephone,
   //       //     email: Email,
@@ -287,25 +287,25 @@ class _CreateAccountState extends State<CreateAccount> {
   //       // }
   //     } else {
   //       MyDialog()
-  //           .normalDialog(context, 'User Already!!', 'Please Change User');
+  //           .normalDialog(context, 'first Already!!', 'Please Change first');
   //     }
   //   });
   // }
 
   // Future<Null> processInsertMySQL(
-  //     {String? username,
+  //     {String? firstname,
   //     String? lastname,
   //     String? telephonenumber,
   //     String? email,
   //     String? password}) async {
-  //   String apiInsertUser =
-  //       '${MyConstant.domain}/goalinter_project/insertUser.php?isAdd=true&username=$username&lastname=$lastname&telephonenumber=$telephonenumber&email=$email&password=$password';
-  //   await Dio().get(apiInsertUser).then((value) {
+  //   String apiInsertfirst =
+  //       '${MyConstant.domain}/goalinter_project/insertfirst.php?isAdd=true&firstname=$firstname&lastname=$lastname&telephonenumber=$telephonenumber&email=$email&password=$password';
+  //   await Dio().get(apiInsertfirst).then((value) {
   //     if (value.toString() == 'true') {
   //       Navigator.pop(context, MyConstant.routeAuthen);
   //     } else {
   //       MyDialog().normalDialog(
-  //           context, 'Create New User False😭', 'Please Try Again');
+  //           context, 'Create New first False😭', 'Please Try Again');
   //     }
   //   });
   // }

@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
+import 'package:goalinter/states/booking_service.dart';
 import 'package:goalinter/states/contact.dart';
+import 'package:goalinter/states/infor_service.dart';
 import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_signout.dart';
@@ -54,20 +56,42 @@ class _Member_ServiceState extends State<Member_Service> {
               ),
             ),
             ListTile(
-              title: Text("Information"),
+              tileColor: Color(0xFFF94C66),
+              leading: Icon(
+              Icons.exit_to_app,
+              size: 32,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+              title: Text("Logout"),
               onTap: (){
                 Navigator.of(context).pop();
                 Navigator.push(context, MaterialPageRoute(
                   builder: (BuildContext context) => Authen()));},
+              textColor: Color.fromARGB(255, 253, 253, 253),
+            ),
+            ListTile(
+              title: Text("Information"),
+              onTap: (){
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (BuildContext context) => Info_service()));},
             ),
             ListTile(
               title: Text("Goal-Inter Football Field"),
+              onTap: (){
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (BuildContext context) => Member_Service()));},
             ),
             ListTile(
               title: Text("Booking"),
+              onTap: (){
+                Navigator.of(context).pop();
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (BuildContext context) => Booking_service()));},
+              
             ),
-
-
+            
           ],
         ),
         // child: ShowSignOut(),

@@ -23,7 +23,7 @@ class _AuthenState extends State<Authen> {
 
   Future login() async {
     var response = await http
-        .post(Uri.parse("http://10.0.0.74/goalinter_project/login.php"), body: {
+        .post(Uri.parse("http://10.34.5.76/goalinter_project/login.php"), body: {
       "email": emailController.text,
       "password": pwdController.text,
     });
