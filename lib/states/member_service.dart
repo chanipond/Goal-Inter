@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:goalinter/states/Field_service.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/booking_service.dart';
@@ -81,7 +82,7 @@ class _Member_ServiceState extends State<Member_Service> {
               onTap: (){
                 Navigator.of(context).pop();
                 Navigator.push(context, MaterialPageRoute(
-                  builder: (BuildContext context) => Member_Service()));},
+                  builder: (BuildContext context) => Field_service()));},
             ),
             ListTile(
               title: Text("Booking"),

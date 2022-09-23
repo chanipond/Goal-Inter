@@ -4,14 +4,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class Info_service extends StatefulWidget {
-  const Info_service({Key? key}) : super(key: key);
+class Field_service extends StatefulWidget {
+  const Field_service({Key? key}) : super(key: key);
 
   @override
-  State<Info_service> createState() => _Info_serviceState();
+  State<Field_service> createState() => _Field_serviceState();
 }
 
-class _Info_serviceState extends State<Info_service> {
+class _Field_serviceState extends State<Field_service> {
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
@@ -28,7 +28,7 @@ class _Info_serviceState extends State<Info_service> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyConstant.primary,
-        title: Text("Information"),
+        title: Text("Goal-Inter Football Field"),
       ),
       body: Container(
         child: Center(child: ListView(
@@ -68,4 +68,3 @@ class _Info_serviceState extends State<Info_service> {
     );
   }
 }
-

@@ -26,7 +26,7 @@ class _CreateAccountState extends State<CreateAccount> {
   Future register() async{
     // var url = ;
     var response = await http.post(
-      Uri.parse("http://10.34.5.76/goalinter_project/register.php"), 
+      Uri.parse("http://192.168.1.40/goalinter_project/register.php"), 
       body: {
       "firstname" : nameController.text,
       "lastname" : lastController.text,

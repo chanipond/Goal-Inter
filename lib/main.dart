@@ -8,6 +8,7 @@ import 'package:goalinter/states/infor_service.dart';
 import 'package:goalinter/states/member_service.dart';
 import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
+import 'package:goalinter/states/field_service.dart';
 
 final Map<String, WidgetBuilder> map = {
   '/authen':(BuildContext context) => Authen(),
@@ -18,6 +19,7 @@ final Map<String, WidgetBuilder> map = {
   '/contact':(BuildContext context) => Contact_service(),
   '/home':(BuildContext context) => Home_service(),
   '/infor_service':(BuildContext context) => Info_service(),
+  '/field_service':(BuildContext context) => Field_service(),
 
   
 };

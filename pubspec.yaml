@@ -39,6 +39,7 @@ dependencies:
   http:
   fluttertoast: 
   url_launcher: ^6.1.5
+  carousel_slider: ^4.1.1
   # http: ^0.13.5
 
 dev_dependencies:
