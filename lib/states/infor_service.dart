@@ -12,17 +12,6 @@ class Info_service extends StatefulWidget {
 }
 
 class _Info_serviceState extends State<Info_service> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: MyConstant.primary,
-//         title: Text("Information"),
-//       ),
-//     );
-//   }
-// }
-
  @override
   Widget build(BuildContext context) {
     return Scaffold(

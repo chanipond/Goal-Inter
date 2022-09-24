@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:goalinter/utillity/my_constant.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class Booking_service extends StatefulWidget {
@@ -19,6 +21,10 @@ class _Booking_serviceState extends State<Booking_service> {
         backgroundColor: MyConstant.primary,
         title: Text("Booking"),
       ),
-  );
+      body: Center(
+        child: 
+        Text("Booking Page Commingsoon"),
+     ),
+    );
   }
 }

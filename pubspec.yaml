@@ -71,6 +71,9 @@ flutter:
     - asset/images/Goal2.jpg
     - asset/images/contact1.jpg
     - asset/images/facebook.png
+    - asset/images/field1.jpg
+    - asset/images/field2.jpg
+    - asset/images/field3.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
