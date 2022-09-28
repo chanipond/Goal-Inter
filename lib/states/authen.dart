@@ -38,22 +38,7 @@ class _AuthenState extends State<Authen> {
         textColor: Colors.white,
         fontSize: 16.0
       );
-      // showDialog(
-      //   context: context,
-      //   builder: (BuildContext context) {
-      //     return AlertDialog(
-      //       title: Text(" "),
-      //       actions: <Widget>[
-      //         FlatButton(
-      //           child: Text("OK"),
-      //           onPressed: () {
-      //             Navigator.of(context).pop();
-      //           },
-      //         ),
-      //       ],
-      //     );
-      //   },
-      // );
+  
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Member_Service()));
     } else {

@@ -20,6 +20,7 @@ class _Field_serviceState extends State<Field_service> {
         title: Text("Goal-Inter Football Field"),
       ),
       body: Container(
+        margin: EdgeInsets.only(top: 40),
           child: Center(
         child: ListView(
           children: <Widget>[
@@ -29,7 +30,7 @@ class _Field_serviceState extends State<Field_service> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     image: DecorationImage(
-                      image: AssetImage('asset/images/field1.jpg'),
+                      image: AssetImage('asset/images/numfield.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -38,23 +39,23 @@ class _Field_serviceState extends State<Field_service> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     image: DecorationImage(
-                      image: AssetImage('asset/images/field2.jpg'),
+                      image: AssetImage('asset/images/book.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    image: DecorationImage(
-                      image: AssetImage('asset/images/field3.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                )
+                // Container(
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(10.0),
+                //     image: DecorationImage(
+                //       image: AssetImage('asset/images/field3.jpg'),
+                //       fit: BoxFit.cover,
+                //     ),
+                //   ),
+                // )
               ],
               options: CarouselOptions(
-                height: 500.0,
+                height: 280.0,
                 autoPlay: true,
                 enlargeCenterPage: true,
                 viewportFraction: 0.9,
@@ -63,7 +64,7 @@ class _Field_serviceState extends State<Field_service> {
                 enableInfiniteScroll: true,
                 autoPlayAnimationDuration: Duration(milliseconds: 400),
               ),
-            ),Text("\t\t\t อัตราค่าบริการ \n \t\t\tไม่บอกราคาให้หรอกนะอิอิ"),
+            ),Text("\n\t\t\t อัตราค่าบริการ \n \t\t\tราคาสนามละ 800 บาท/ชั่วโมง"),
           ],
         ),
       )),

@@ -19,15 +19,18 @@ class _Contact_serviceState extends State<Contact_service> {
         Uri.parse('https://www.facebook.com/profile.php?id=100047772746105');
     return Scaffold(
       body: Center(
-        child: RichText(
+        child: Column(
+          children: <Widget>[
+            
+            Image.asset('asset/images/facebook.png'),
+        RichText(
           text: TextSpan(
             children: [
               TextSpan(
-                  text: 'Facebook : ',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.black87)),
+                  text: '\nFacebook : ',
+                  style: MyConstant().h2Style(),),
               TextSpan(
-                  text: 'สนามฟุตบอลหญ้าเทียม Goal Inter',
+                  text: 'สนามฟุตบอลหญ้าเทียม Goal Inter\n',
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.blue),
                   recognizer: TapGestureRecognizer()
@@ -37,7 +40,9 @@ class _Contact_serviceState extends State<Contact_service> {
             ],
           ),
         ),
-      ),
+        Image.asset('asset/images/contact1.jpg'),
+        Text('\nTel: 0870754451', style: MyConstant().h2Style(),),
+      ],)),
     );
     //   double size = MediaQuery.of(context).size.width;
     //   return Center(

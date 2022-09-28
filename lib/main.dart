@@ -9,6 +9,8 @@ import 'package:goalinter/states/member_service.dart';
 import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/states/field_service.dart';
+import 'package:booking_calendar/booking_calendar.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 final Map<String, WidgetBuilder> map = {
   '/authen':(BuildContext context) => Authen(),
@@ -28,7 +30,10 @@ String? initlaRoute;
 
 void main(){
   initlaRoute = MyConstant.routeAuthen;
-  runApp(MyApp());
+  
+  // runApp(MyApp());
+  initializeDateFormatting()
+      .then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
