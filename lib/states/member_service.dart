@@ -12,6 +12,7 @@ import 'package:goalinter/widgets/show_signout.dart';
 import 'package:goalinter/widgets/show_title.dart';
 
 
+
 class Member_Service extends StatefulWidget {
   const Member_Service({Key? key}) : super(key: key);
 
@@ -26,6 +27,7 @@ class _Member_ServiceState extends State<Member_Service> {
     List_service(),
     Contact_service(),
   ];
+
 
   void _onItemTap(int index){
     setState(() {
@@ -66,7 +68,6 @@ class _Member_ServiceState extends State<Member_Service> {
             ),
               title: Text("Logout"),
               onTap: (){
-                Navigator.of(context).pop();
                 Navigator.push(context, MaterialPageRoute(
                   builder: (BuildContext context) => Authen()));},
               textColor: Color.fromARGB(255, 253, 253, 253),

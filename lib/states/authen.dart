@@ -23,7 +23,8 @@ class _AuthenState extends State<Authen> {
 
   Future login() async {
     var response = await http
-        .post(Uri.parse("http://10.0.0.74/goalinter_project/login.php"), body: {
+        .post(Uri.parse("http://10.34.5.76/goalinter_project/login.php"), 
+      body: {
       "email": emailController.text,
       "password": pwdController.text,
     });
@@ -38,7 +39,6 @@ class _AuthenState extends State<Authen> {
         textColor: Colors.white,
         fontSize: 16.0
       );
-  
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Member_Service()));
     } else {
@@ -75,6 +75,8 @@ class _AuthenState extends State<Authen> {
       ),
     );
   }
+
+  
 
   Row buildCreateAccount() {
     return Row(

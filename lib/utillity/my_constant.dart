@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // Genernal
   static String appName = 'GoalInter';
-  // static String domain = 'https://e669-110-168-84-128.ap.ngrok.io';
+  // static String domain = 'https://10.0.0.155';
 
   // Route
   static String routeAuthen = '/authen';
   static String routeCreateAccount = '/create_account';
   static String routeBooking_service = '/booking_service';
-  static String routeHome_service = '/home';
+  static String routeMember_service = '/member_service ';
 
   // Image
-  static String image1 = 'asset/images/Logo.png';
+  static String image1 = 'asset/images/LOGO.png';
   static String imagehome = 'asset/images/Goal2.jpg';
   static String imagecontact = 'asset/images/contact.jpg';
   static String imageface = 'asset/images/facebook.png';

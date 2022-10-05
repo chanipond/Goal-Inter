@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 // import 'package:dio/dio.dart';
@@ -16,6 +17,7 @@ class CreateAccount extends StatefulWidget {
 
 class _CreateAccountState extends State<CreateAccount> {
   // String? sedlectpwd;
+  bool statusRedEye = true;
   final formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController lastController = TextEditingController();
@@ -26,7 +28,7 @@ class _CreateAccountState extends State<CreateAccount> {
   Future register() async{
     // var url = ;
     var response = await http.post(
-      Uri.parse("http://10.0.0.74/goalinter_project/register.php"), 
+      Uri.parse("http://10.34.5.76/goalinter_project/register.php"), 
       body: {
       "firstname" : nameController.text,
       "lastname" : lastController.text,
@@ -80,9 +82,8 @@ class _CreateAccountState extends State<CreateAccount> {
             actions: <Widget>[
               TextButton(
                 child: Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: 
+                  () => Navigator.pushNamed(context, MyConstant.routeAuthen),
               ),
             ],
           );
@@ -211,11 +212,15 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size * 0.8,
           child: TextFormField(
             controller: emailController,
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter Email';
-              } else {}
-            },
+            keyboardType: TextInputType.emailAddress,
+            validator: (email) => email != null && !EmailValidator.validate(email)
+              ? 'Please enter a valid email'
+              : null,
+            // validator: (value) {
+            //   if (value!.isEmpty) {
+            //     return 'Please enter Email';
+            //   } else {}
+            // },
             decoration: InputDecoration(
               labelStyle: MyConstant().h3Style(),
               labelText: 'Email',
@@ -253,7 +258,24 @@ class _CreateAccountState extends State<CreateAccount> {
                 return 'Please enter Password';
               } else {}
             },
+            obscureText: statusRedEye,
             decoration: InputDecoration(
+              suffixIcon: IconButton(
+                onPressed: () {
+                  setState(() {
+                    statusRedEye = !statusRedEye;
+                  });
+                },
+                icon: statusRedEye
+                    ? Icon(
+                        Icons.remove_red_eye,
+                        color: MyConstant.dark,
+                      )
+                    : Icon(
+                        Icons.remove_red_eye_outlined,
+                        color: MyConstant.dark,
+                      ),
+              ),
               labelStyle: MyConstant().h3Style(),
               labelText: 'Password',
               prefixIcon: Icon(
@@ -383,5 +405,3 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 }
-
-
