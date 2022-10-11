@@ -1,12 +1,15 @@
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:goalinter/states/member_service.dart';
-import 'package:http/http.dart' as http;
+import 'package:goalinter/data/profile.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_image.dart';
 import 'package:goalinter/widgets/show_title.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Authen extends StatefulWidget {
   const Authen({Key? key}) : super(key: key);
@@ -17,41 +20,9 @@ class Authen extends StatefulWidget {
 
 class _AuthenState extends State<Authen> {
   bool statusRedEye = true;
-
+  final formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
-
-  Future login() async {
-    var response = await http
-        .post(Uri.parse("http://10.34.5.76/goalinter_project/login.php"), 
-      body: {
-      "email": emailController.text,
-      "password": pwdController.text,
-    });
-    var data = json.decode(response.body);
-    if (data == "Success") {
-      Fluttertoast.showToast(
-        msg: "Login Successful",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Member_Service()));
-    } else {
-      Fluttertoast.showToast(
-          msg: "Email & Password Incorrect",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,21 +33,22 @@ class _AuthenState extends State<Authen> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
           behavior: HitTestBehavior.opaque,
-          child: ListView(
-            children: [
-              buildImage(size),
-              buildEmail(size),
-              buildPassword(size),
-              buildLogin(size),
-              buildCreateAccount(),
-            ],
+          child: Form(
+            key: formKey,
+            child: ListView(
+              children: [
+                buildImage(size),
+                buildEmail(size),
+                buildPassword(size),
+                buildLogin(size),
+                buildCreateAccount(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-
-  
 
   Row buildCreateAccount() {
     return Row(
@@ -111,7 +83,14 @@ class _AuthenState extends State<Authen> {
           width: size * 0.6,
           child: ElevatedButton(
             style: MyConstant().MyButtonStyle(),
-            onPressed: () => login(),
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                String email = emailController.text;
+                String password = pwdController.text;
+                print('## email = $email, password = $password');
+                checkAuthen(email: email, password: password);
+              }
+            },
             child: Text(
               'Login',
               style: TextStyle(
@@ -126,6 +105,58 @@ class _AuthenState extends State<Authen> {
     );
   }
 
+  Future<Null> checkAuthen({String? email, String? password}) async {
+    String apiCheckAuthen = '${MyConstant.domain}/goalinter_project/getEmailWhereEmail.php?isAdd=true&email=$email';
+    await Dio().get(apiCheckAuthen).then((value) async {
+      print('value = $value');
+      if (value.toString() == 'null') {
+        Fluttertoast.showToast(
+            msg: 'No $email in my Database',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      } else {
+        for (var item in json.decode(value.data)) {
+          PrefProfile model = PrefProfile.fromMap(item);
+          if (password == model.password) {
+            // Success Authen
+            String userlevel = model.userlevel;
+            print('userlevel = $userlevel');
+
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+            preferences.setString('id', model.id);
+            preferences.setString('userlevel', userlevel);
+            preferences.setString('firstname', model.firstname);
+            preferences.setString('lastname', model.lastname);
+
+            switch (userlevel) {
+              case 'a':
+                Navigator.pushReplacementNamed(context, '/admin_service');
+                break;
+              case 'm':
+                Navigator.pushReplacementNamed(context, '/member_service');
+                break;
+              default:
+            }
+          } else {
+            // Authen False
+            Fluttertoast.showToast(
+                msg: 'Password False',
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          }
+        }
+      }
+    });
+  }
+
   Row buildEmail(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -137,8 +168,10 @@ class _AuthenState extends State<Authen> {
             controller: emailController,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please enter Email';
-              } else {}
+                return 'Please enter email';
+              } else {
+                return null;
+              }
             },
             decoration: InputDecoration(
               labelStyle: MyConstant().h3Style(),
@@ -173,8 +206,10 @@ class _AuthenState extends State<Authen> {
             controller: pwdController,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please enter Password';
-              } else {}
+                return 'Please enter password';
+              } else {
+                return null;
+              }
             },
             obscureText: statusRedEye,
             decoration: InputDecoration(
@@ -210,18 +245,6 @@ class _AuthenState extends State<Authen> {
               ),
             ),
           ),
-        ),
-      ],
-    );
-  }
-
-  Row buildAppName() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ShowTitle(
-          title: MyConstant.appName,
-          textStyle: MyConstant().h1Style(),
         ),
       ],
     );

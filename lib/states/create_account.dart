@@ -1,22 +1,20 @@
-import 'dart:convert';
+// ignore_for_file: prefer_const_constructors, prefer_void_to_null, avoid_print
+
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
-// import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:goalinter/utillity/my_constant.dart';
-// import 'package:goalinter/utillity/my_dialog.dart';
-// import 'package:goalinter/widgets/show_title.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
 
   @override
-  State<CreateAccount> createState() => _CreateAccountState();
+  _CreateAccountState createState() => _CreateAccountState();
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  // String? sedlectpwd;
   bool statusRedEye = true;
   final formKey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
@@ -24,73 +22,10 @@ class _CreateAccountState extends State<CreateAccount> {
   TextEditingController telController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
-  
-  Future register() async{
-    // var url = ;
-    var response = await http.post(
-      Uri.parse("http://10.34.5.76/goalinter_project/register.php"), 
-      body: {
-      "firstname" : nameController.text,
-      "lastname" : lastController.text,
-      "telephonenumber" : telController.text,
-      "email" : emailController.text,
-      "password" : pwdController.text,
-    });
 
-    var data = json.decode(response.body);
-    if (data == "Error"){
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Failed to register"),
-            actions: <Widget>[
-              TextButton(
-                child: Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-      // Fluttertoast.showToast(
-      //   msg: "Failed to register",
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      //   timeInSecForIosWeb: 1,
-      //   backgroundColor: Colors.red,
-      //   textColor: Colors.white,
-      //   fontSize: 16.0
-      // );
-    }else{
-      // Fluttertoast.showToast(
-      //   msg: "Registration Successful",
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      //   timeInSecForIosWeb: 1,
-      //   backgroundColor: Colors.green,
-      //   textColor: Colors.white,
-      //   fontSize: 16.0
-      // );
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Register Success"),
-            actions: <Widget>[
-              TextButton(
-                child: Text("OK"),
-                onPressed: 
-                  () => Navigator.pushNamed(context, MyConstant.routeAuthen),
-              ),
-            ],
-          );
-        },
-      );
-      
-    }
+  @override
+  void initState() {
+    super.initState();
   }
 
   Row buildName(double size) {
@@ -104,7 +39,7 @@ class _CreateAccountState extends State<CreateAccount> {
             controller: nameController,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please enter Firstname';
+                return 'Please enter firstname';
               } else {}
             },
             decoration: InputDecoration(
@@ -140,7 +75,7 @@ class _CreateAccountState extends State<CreateAccount> {
             controller: lastController,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please enter Lastname';
+                return 'Please enter lastname';
               } else {}
             },
             decoration: InputDecoration(
@@ -177,7 +112,7 @@ class _CreateAccountState extends State<CreateAccount> {
             keyboardType: TextInputType.phone,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please enter Telephone Number';
+                return 'Please enter telephone number';
               } else {}
             },
             maxLength: 10,
@@ -213,14 +148,10 @@ class _CreateAccountState extends State<CreateAccount> {
           child: TextFormField(
             controller: emailController,
             keyboardType: TextInputType.emailAddress,
-            validator: (email) => email != null && !EmailValidator.validate(email)
-              ? 'Please enter a valid email'
-              : null,
-            // validator: (value) {
-            //   if (value!.isEmpty) {
-            //     return 'Please enter Email';
-            //   } else {}
-            // },
+            validator: (email) =>
+                email != null && !EmailValidator.validate(email)
+                    ? 'Please enter a valid email'
+                    : null,
             decoration: InputDecoration(
               labelStyle: MyConstant().h3Style(),
               labelText: 'Email',
@@ -255,7 +186,7 @@ class _CreateAccountState extends State<CreateAccount> {
             maxLength: 8,
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please enter Password';
+                return 'Please enter password';
               } else {}
             },
             obscureText: statusRedEye,
@@ -297,56 +228,80 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
-  // Future<Null> InsertData() async {
-  //   String firstname = firstController.text;
-  //   String Lastname = lastController.text;
-  //   String Telephone = telController.text;
-  //   String Email = emailController.text;
-  //   String Password = pwdController.text;
+  Future<Null> register() async {
+    String firstname = nameController.text;
+    String lastname = lastController.text;
+    String telephonenumber = telController.text;
+    String email = emailController.text;
+    String password = pwdController.text;
+    print(
+        'name = $firstname, lastname = $lastname, telephonenumber = $telephonenumber, email = $email, password = $password');
+    String path =
+        '${MyConstant.domain}/goalinter_project/getEmailWhereEmail.php?isAdd=true&email=$email';
+    await Dio().get(path).then((value) {
+      print('value = $value');
+      if (value.toString() == 'null') {
+        print('Have email in my Database');
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("This account has been used"),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      processInsertMySQL(
+        firstname : firstname,
+        lastname : lastname,
+        telephonenumber : telephonenumber,
+        email: email,
+        passwordenc : password,
+      );
+    });
+  }
 
-  //   print(
-  //       '## firstname = $firstname, lastname = $Lastname, telphone = $Telephone, email = $Email, password = $Password');
-  //   String path =
-  //       '${MyConstant.domain}/goalinter_project/getfirstWherefirst.php?isAdd=true&firstname=$firstname';
-  //   await Dio().get(path).then((value) async {
-  //     print('## value ==>> $value');
-  //     if (value.toString() == 'null') {
-  //       print('## first ok');
-  //       // if(file == null){
-  //       //   processInsertMySQL(
-  //       //     firstname: firstname,
-  //       //     lastname: Lastname,
-  //       //     telephonenumber: Telephone,
-  //       //     email: Email,
-  //       //     password: Password,
-  //       //   );
-  //       // } else {
-  //       //   print('### what');
-  //       // }
-  //     } else {
-  //       MyDialog()
-  //           .normalDialog(context, 'first Already!!', 'Please Change first');
-  //     }
-  //   });
-  // }
-
-  // Future<Null> processInsertMySQL(
-  //     {String? firstname,
-  //     String? lastname,
-  //     String? telephonenumber,
-  //     String? email,
-  //     String? password}) async {
-  //   String apiInsertfirst =
-  //       '${MyConstant.domain}/goalinter_project/insertfirst.php?isAdd=true&firstname=$firstname&lastname=$lastname&telephonenumber=$telephonenumber&email=$email&password=$password';
-  //   await Dio().get(apiInsertfirst).then((value) {
-  //     if (value.toString() == 'true') {
-  //       Navigator.pop(context, MyConstant.routeAuthen);
-  //     } else {
-  //       MyDialog().normalDialog(
-  //           context, 'Create New first False😭', 'Please Try Again');
-  //     }
-  //   });
-  // }
+  Future<Null> processInsertMySQL(
+      {String? firstname,
+      String? lastname,
+      String? telephonenumber,
+      String? email,
+      String? passwordenc}) async {
+    print('Success');
+    String apiinsertUser =
+        '${MyConstant.domain}/goalinter_project/insertUser.php?isAdd=true&firstname=$firstname&lastname=$lastname&telephonenumber=$telephonenumber&email=$email&password=$passwordenc&userlevel=m';
+    await Dio().get(apiinsertUser).then((value) {
+      if (value.toString() == 'true') {
+        Navigator.pop(context);
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Register False"),
+              actions: <Widget>[
+                TextButton(
+                  child: Text("Try Again"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

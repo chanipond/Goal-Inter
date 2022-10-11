@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:goalinter/widgets/show_image.dart';

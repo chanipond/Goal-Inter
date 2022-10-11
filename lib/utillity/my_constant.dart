@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // Genernal
   static String appName = 'GoalInter';
-  // static String domain = 'https://10.0.0.155';
+  // static String ipAddress ='10.34.5.76';
+  static String domain = 'https://216d-2403-6200-8967-dcc3-601c-2700-b2b3-111.ap.ngrok.io';
 
   // Route
   static String routeAuthen = '/authen';
   static String routeCreateAccount = '/create_account';
-  static String routeBooking_service = '/booking_service';
-  static String routeMember_service = '/member_service ';
+  static String routeMember = '/member_service';
+  static String routeBooking = '/booking_service';
+  static String routeAdmin = '/admin_service ';
 
   // Image
   static String image1 = 'asset/images/LOGO.png';
@@ -23,6 +25,7 @@ class MyConstant {
   static Color ligth = Color(0xff395B64);
   static Color button = Color(0xffFEF9A7);
   static Color white = Color.fromARGB(255, 255, 255, 255);
+  static Color gray = Color.fromARGB(255, 212, 212, 212);
 
   // Style
   TextStyle h1Style() => TextStyle(

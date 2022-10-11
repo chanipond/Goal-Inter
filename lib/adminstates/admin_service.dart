@@ -1,25 +1,25 @@
 // import 'package:flutter/cupertino.dart';
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields, sort_child_properties_last, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields, camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:goalinter/adminstates/editinfor_service.dart';
 import 'package:goalinter/states/Field_service.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/booking_service.dart';
 import 'package:goalinter/states/contact.dart';
-import 'package:goalinter/states/infor_service.dart';
 import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Member_Service extends StatefulWidget {
-  const Member_Service({Key? key}) : super(key: key);
+class Admin_Service extends StatefulWidget {
+  const Admin_Service({Key? key}) : super(key: key);
 
   @override
-  State<Member_Service> createState() => _Member_ServiceState();
+  State<Admin_Service> createState() => _Admin_ServiceState();
 }
 
-class _Member_ServiceState extends State<Member_Service> {
+class _Admin_ServiceState extends State<Admin_Service> {
   int currentIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     Home_service(),
@@ -38,7 +38,7 @@ class _Member_ServiceState extends State<Member_Service> {
     return Scaffold(
       appBar: AppBar(
         // title: Text(''),
-        backgroundColor: MyConstant.primary,
+        backgroundColor: MyConstant.gray,
       ),
       drawer: Drawer(
         child: LayoutBuilder(
@@ -51,7 +51,7 @@ class _Member_ServiceState extends State<Member_Service> {
                     children: <Widget>[
                       DrawerHeader(
                         decoration: BoxDecoration(
-                          color: MyConstant.primary,
+                          color: MyConstant.gray,
                         ),
                         margin: EdgeInsets.all(0.0),
                         child: Center(
@@ -59,18 +59,18 @@ class _Member_ServiceState extends State<Member_Service> {
                         ),
                       ),
                       ListTile(
-                        title: Text("Information"),
+                        title: Text("Edit Information"),
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      Info_service()));
+                                      EditInfor_Service()));
                         },
                       ),
                       ListTile(
-                        title: Text("Goal-Inter Football Field"),
+                        title: Text("Mamber"),
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.push(
@@ -107,10 +107,9 @@ class _Member_ServiceState extends State<Member_Service> {
                                       builder: (context) => Authen()),
                                   (route) => false));
                         },
-                      )
+                      ),
                     ],
                   ),
-                  // child: ShowSignOut(),
                 ),
               ),
             );
@@ -119,17 +118,13 @@ class _Member_ServiceState extends State<Member_Service> {
       ),
       body: Center(
         child: _widgetOptions.elementAt(currentIndex),
-        // Text(
-        //   "WELCOME",
-        //   style: MyConstant().h1Style(),
-        // ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: MyConstant.primary,
-        selectedItemColor: MyConstant.dark,
+        backgroundColor: MyConstant.gray,
+        selectedItemColor: MyConstant.white,
         iconSize: 25,
         // selectedFontSize: 18,
-        unselectedItemColor: MyConstant.white,
+        unselectedItemColor: Color.fromARGB(255, 160, 160, 160),
         // unselectedFontSize: 14,
         showUnselectedLabels: false,
         // currentIndex: currentIndex,

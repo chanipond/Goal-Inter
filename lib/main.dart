@@ -1,4 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import 'package:goalinter/adminstates/addinfor.dart';
+import 'package:goalinter/adminstates/admin_service.dart';
+import 'package:goalinter/adminstates/editinfor_service.dart';
+// import 'package:goalinter/adminstates/editinfo.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/booking_service.dart';
@@ -9,6 +15,7 @@ import 'package:goalinter/states/member_service.dart';
 import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/states/field_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final Map<String, WidgetBuilder> map = {
   '/authen':(BuildContext context) => Authen(),
@@ -20,14 +27,37 @@ final Map<String, WidgetBuilder> map = {
   '/home':(BuildContext context) => Home_service(),
   '/infor_service':(BuildContext context) => Info_service(),
   '/field_service':(BuildContext context) => Field_service(),
+  '/admin_service':(BuildContext context) => Admin_Service(),
+  '/editinfor_service':(BuildContext context) => EditInfor_Service(),
+  '/addinfor_service':(BuildContext context) => AddInfor(),
+  
 
   
 };
 
 String? initlaRoute;
 
-void main(){
-  initlaRoute = MyConstant.routeAuthen;
+Future<Null> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  String? userlevel = preferences.getString('userlevel');
+  print('userlevel = $userlevel');
+  if(userlevel?.isEmpty ?? true) {
+    initlaRoute = MyConstant.routeAuthen;
+    runApp(MyApp());
+  } else {
+    switch (userlevel) {
+      case 'a':
+        initlaRoute = MyConstant.routeAdmin;
+        runApp(MyApp());
+        break;
+      case 'm':
+        initlaRoute = MyConstant.routeMember;
+        runApp(MyApp());
+        break;
+      default:
+    }
+  }
   runApp(MyApp());
 }
 
