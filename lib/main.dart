@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:goalinter/adminstates/addinfor.dart';
 import 'package:goalinter/adminstates/admin_service.dart';
 import 'package:goalinter/adminstates/editinfor_service.dart';
-// import 'package:goalinter/adminstates/editinfo.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/booking_service.dart';

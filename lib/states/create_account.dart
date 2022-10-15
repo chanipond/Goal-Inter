@@ -350,11 +350,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         },
                         child: Text(
                           'Register',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            // color: Colors.black,
-                          ),
+                          style: MyConstant().h3Style(),
                         ),
                       ),
                     ),
