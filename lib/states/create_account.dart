@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -109,14 +110,21 @@ class _CreateAccountState extends State<CreateAccount> {
           width: size * 0.8,
           child: TextFormField(
             controller: telController,
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
             validator: (value) {
               if (value!.isEmpty) {
                 return 'Please enter telephone number';
-              } else {}
+              } else if(value.length !=10)
+               {
+                return 'Should be at least 10 digits';
+               }
+               else {}
             },
             maxLength: 10,
-            decoration: InputDecoration(
+              decoration: InputDecoration(
               labelStyle: MyConstant().h3Style(),
               labelText: 'Telephone Number',
               prefixIcon: Icon(

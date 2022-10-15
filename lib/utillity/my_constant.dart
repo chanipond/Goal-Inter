@@ -4,7 +4,7 @@ class MyConstant {
   // Genernal
   static String appName = 'GoalInter';
   // static String ipAddress ='10.34.5.76';
-  static String domain = 'https://216d-2403-6200-8967-dcc3-601c-2700-b2b3-111.ap.ngrok.io';
+  static String domain = 'https://7a23-110-171-14-206.ap.ngrok.io';
 
   // Route
   static String routeAuthen = '/authen';
