@@ -45,7 +45,9 @@ dependencies:
   shared_preferences: ^2.0.15
   line_icons: ^2.0.1
   image_picker: ^0.8.6
-  get: ^4.6.5
+  
+  get: 
+  # cached_network_image: ^3.1.0
   # booking_calendar: ^1.1.6
   # http: ^0.13.5
   
@@ -90,6 +92,7 @@ flutter:
     - asset/images/book.jpg
     - asset/images/add-image.png
     - asset/images/image.png
+    - asset/images/payment.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

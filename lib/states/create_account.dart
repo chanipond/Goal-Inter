@@ -284,29 +284,13 @@ class _CreateAccountState extends State<CreateAccount> {
       String? telephonenumber,
       String? email,
       String? passwordenc}) async {
-    print('Success');
+    // print('Success');
     String apiinsertUser =
         '${MyConstant.domain}/goalinter_project/insertUser.php?isAdd=true&firstname=$firstname&lastname=$lastname&telephonenumber=$telephonenumber&email=$email&password=$passwordenc&userlevel=m';
     await Dio().get(apiinsertUser).then((value) {
       if (value.toString() == 'true') {
         Navigator.pop(context);
       } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Register False"),
-              actions: <Widget>[
-                TextButton(
-                  child: Text("Try Again"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
       }
     });
   }

@@ -8,6 +8,7 @@ import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_image.dart';
 import 'package:goalinter/widgets/show_title.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddInfor extends StatefulWidget {
   const AddInfor({Key? key}) : super(key: key);
@@ -22,6 +23,7 @@ class _AddInforState extends State<AddInfor> {
   File? file;
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
+  List<String> paths = [];
 
   @override
   void initState() {
@@ -234,16 +236,30 @@ class _AddInforState extends State<AddInfor> {
           for (var item in files) {
             int i = Random().nextInt(100000);
             String nameFile = 'information$i.jpg';
+            paths.add('/Information/$nameFile');
+
             Map<String, dynamic> map = {};
             map['file'] =
                 await MultipartFile.fromFile(item!.path, filename: nameFile);
             FormData data = FormData.fromMap(map);
-            await Dio()
-                .post(apisaveInfo, data: data)
-                .then((value) {
+            await Dio().post(apisaveInfo, data: data).then((value) async {
                   print('Upload Success');
                   loop++;
                   if(loop >= files.length){
+
+                    SharedPreferences preferences = await SharedPreferences.getInstance();
+                    String id = preferences.getString('id')!;
+                    String title = titleController.text;
+                    String content = contentController.text;
+                    String image = paths.toString();
+                    print('id = $id');
+                    print('title = $title, content = $content');
+                    print('image = $image');
+
+                    String path = '${MyConstant.domain}/goalinter_project/insertInformation.php?isAdd=true&id=$id&title=$title&content=$content&image=$image';
+
+                    await Dio().get(path).then((value) => Navigator.pop(context));
+
                     Navigator.pop(context);
                   }
                   

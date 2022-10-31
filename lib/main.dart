@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:goalinter/adminstates/addinfor.dart';
 import 'package:goalinter/adminstates/admin_service.dart';
+import 'package:goalinter/adminstates/adminbooking.dart';
 import 'package:goalinter/adminstates/editinfor_service.dart';
+import 'package:goalinter/adminstates/viewmember.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/booking_service.dart';
@@ -12,6 +14,7 @@ import 'package:goalinter/states/create_account.dart';
 import 'package:goalinter/states/infor_service.dart';
 import 'package:goalinter/states/member_service.dart';
 import 'package:goalinter/states/list.dart';
+import 'package:goalinter/states/payin.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/states/field_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +32,9 @@ final Map<String, WidgetBuilder> map = {
   '/admin_service':(BuildContext context) => Admin_Service(),
   '/editinfor_service':(BuildContext context) => EditInfor_Service(),
   '/addinfor_service':(BuildContext context) => AddInfor(),
-  
+  '/adminbooking':(BuildContext context) => Booking_Admin(),
+  '/payin':(BuildContext context) => UploadImage(),
+  '/viewmember':(BuildContext context) => Viewmember_service(),
 
   
 };

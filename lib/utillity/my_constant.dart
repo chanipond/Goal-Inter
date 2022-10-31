@@ -7,7 +7,7 @@ class MyConstant {
   // Genernal
   static String appName = 'GoalInter';
     // cmd: ngrok http 80
-  static String domain = 'https://5040-2001-fb1-3f-aa51-2483-a84-89dd-80d6.ap.ngrok.io';
+  static String domain = 'https://ad97-158-108-228-50.ap.ngrok.io';
 
   // Route
   static String routeAuthen = '/authen';
@@ -15,6 +15,7 @@ class MyConstant {
   static String routeMember = '/member_service';
   static String routeAdmin = '/admin_service';
   static String routeBooking = '/booking_service';
+  static String routePayin = '/payin';
 
   // Image
   static String image1 = 'asset/images/LOGO.png';
@@ -24,6 +25,7 @@ class MyConstant {
   static String imageaddpic = 'asset/images/add-image.png';
   static String imagepic = 'asset/images/image.png';
   static String imagebook = 'asset/images/book.jpg';
+  static String imagepay = 'asset/images/payment.png';
 
   // Color
   static Color primary = Color(0xff73A9AD);
@@ -92,6 +94,33 @@ class MyConstant {
         },
       ),
     );
+  }
+
+  Future<Null> normalDialog(
+      BuildContext context, String title, String message) async {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: ListTile(
+          leading: ShowImage(path: MyConstant.image1),
+          title: Text(
+            title,
+            style: TextStyle(color: MyConstant.dark),
+          ),
+          subtitle: Text(
+            message,
+            style: TextStyle(color: MyConstant.dark),
+          ),
+        ),
+        children: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+      
   }
 
 

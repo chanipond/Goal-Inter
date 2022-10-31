@@ -2,11 +2,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields, camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:goalinter/adminstates/adminbooking.dart';
 import 'package:goalinter/adminstates/editinfor_service.dart';
+import 'package:goalinter/adminstates/viewmember.dart';
 import 'package:goalinter/states/Field_service.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
-import 'package:goalinter/states/booking_service.dart';
 import 'package:goalinter/states/contact.dart';
 import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
@@ -70,14 +71,14 @@ class _Admin_ServiceState extends State<Admin_Service> {
                         },
                       ),
                       ListTile(
-                        title: Text("Mamber"),
+                        title: Text("Member"),
                         onTap: () {
                           Navigator.of(context).pop();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      Field_service()));
+                                      Viewmember_service()));
                         },
                       ),
                       ListTile(
@@ -88,7 +89,7 @@ class _Admin_ServiceState extends State<Admin_Service> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      Booking_service()));
+                                      Booking_Admin()));
                         },
                       ),
                       Expanded(child: SizedBox()),

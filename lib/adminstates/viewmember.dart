@@ -1,26 +1,27 @@
-// ignore_for_file: prefer_const_constructors, camel_case_types, avoid_unnecessary_containers, sized_box_for_whitespace
+// ignore_for_file: camel_case_types
 
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:goalinter/data/information.dart';
+import 'package:goalinter/data/profile.dart';
 import 'package:goalinter/utillity/my_constant.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:goalinter/widgets/show_progress.dart';
 import 'package:goalinter/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Info_service extends StatefulWidget {
-  const Info_service({Key? key}) : super(key: key);
+class Viewmember_service extends StatefulWidget {
+  const Viewmember_service({Key? key}) : super(key: key);
 
   @override
-  State<Info_service> createState() => _Info_serviceState();
+  State<Viewmember_service> createState() => _Viewmember_serviceState();
 }
 
-class _Info_serviceState extends State<Info_service> {
+class _Viewmember_serviceState extends State<Viewmember_service> {
   bool load = true;
   bool? havedata;
-  List<PrefInformation> informations = [];
+  List<PrefProfile> profies = [];
 
   @override
   void initState() {
@@ -30,10 +31,10 @@ class _Info_serviceState extends State<Info_service> {
 
   Future<Null> loadValueFormAPI() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? id = preferences.getString('id')!;
-    String apiGetInfor =
-        '${MyConstant.domain}/goalinter_project/getInforWhereIdinfor.php?isAdd=true&id=2';
-    await Dio().get(apiGetInfor).then((value) {
+    // String? id = preferences.getString('id')!;
+    String apiGetUser =
+        '${MyConstant.domain}/goalinter_project/getid.php?isAdd=true&userlevel=m';
+    await Dio().get(apiGetUser).then((value) {
       if (value.toString() == 'null') {
         // nodata
         setState(() {
@@ -43,13 +44,13 @@ class _Info_serviceState extends State<Info_service> {
       } else {
         // havedata
         for (var item in json.decode(value.data)) {
-          PrefInformation model = PrefInformation.fromMap(item);
-          print('title = ${model.title}');
+          PrefProfile model = PrefProfile.fromMap(item);
+          print('firstname = ${model.firstname}');
           
           setState(() {
             load = false;
             havedata = true;
-            informations.add(model);
+            profies.add(model);
           });
         }
       }
@@ -60,8 +61,8 @@ class _Info_serviceState extends State<Info_service> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Information'),
-        backgroundColor: MyConstant.primary,
+        backgroundColor: MyConstant.gray,
+        title: Text("Member"),
       ),
       body: load
           ? ShowProgress()
@@ -74,11 +75,12 @@ class _Info_serviceState extends State<Info_service> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ShowTitle(
-                          title: 'No Information',
+                          title: 'No Member',
                           textStyle: MyConstant().h1Style()),
                     ],
                   ),
                 ),
+          
     );
   }
 
@@ -91,30 +93,23 @@ class _Info_serviceState extends State<Info_service> {
 
   ListView buildListView(BoxConstraints constraints) {
     return ListView.builder(
-      itemCount: informations.length,
+      itemCount: profies.length,
       itemBuilder: (context, index) => Card(
         child: Row(
           children: [
-            Container(
-              padding: EdgeInsets.all(10),
-              width: constraints.maxWidth * 0.5 - 4,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // ShowTitle(
-                  //   title: informations[index].title,
-                  //   textStyle: MyConstant().h2Style(),
-                  // ),
-                  Container(
-                    height: constraints.maxWidth * 0.5,
-                    child: Image.network(
-                      Url(informations[index].image),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   padding: EdgeInsets.all(10),
+            //   width: constraints.maxWidth * 0.5 - 4,
+            //   child: Column(
+            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //     children: [
+            //       // ShowTitle(
+            //       //   title: profies[index].title,
+            //       //   textStyle: MyConstant().h2Style(),
+            //       // ),
+            //     ],
+            //   ),
+            // ),
             Container(
               margin: EdgeInsets.only(top: 20),
               padding: EdgeInsets.all(10),
@@ -125,11 +120,15 @@ class _Info_serviceState extends State<Info_service> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ShowTitle(
-                    title: informations[index].title,
+                    title: profies[index].firstname,
                     textStyle: MyConstant().h2Style(),
                   ),
                   ShowTitle(
-                    title: informations[index].content,
+                    title: profies[index].lastname,
+                    textStyle: MyConstant().h2Style(),
+                  ),
+                  ShowTitle(
+                    title: profies[index].email,
                     textStyle: MyConstant().h3Style(),
                   ),
                 ],
@@ -141,4 +140,3 @@ class _Info_serviceState extends State<Info_service> {
     );
   }
 }
-

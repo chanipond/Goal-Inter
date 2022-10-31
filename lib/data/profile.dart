@@ -89,7 +89,8 @@ class PrefProfile {
 
   @override
   int get hashCode {
-    return id.hashCode ^
+    return 
+        id.hashCode ^
         firstname.hashCode ^
         lastname.hashCode ^
         telephonenumber.hashCode ^
