@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:goalinter/data/booking.dart';
+import 'package:goalinter/states/booking_service.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_image.dart';
 import 'package:goalinter/widgets/show_title.dart';
@@ -25,7 +26,10 @@ class _UploadImageState extends State<UploadImage> {
   String slip = '';
   List<File> files = [];
   File? file;
-  // PrefBooking? booking;
+  String? date = datetest;
+  String? time = timetest;
+  String? typeField = fieldtest;
+  PrefBooking? booking;
 
   @override
   void initState() {
@@ -50,10 +54,10 @@ class _UploadImageState extends State<UploadImage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                buildTitle("Date: "),
-                buildTitle("Time: "),
-                buildTitle("Field: "),
-                buildTitle("Promtpay : 0922653849"),
+                buildTitle("Date: $date"),
+                buildTitle("Time: $time"),
+                buildTitle("Field: $typeField"),
+                buildTitle("Promtpay : 0870754451"),
                 buildTitle("Price : 800 Bath"),
                 buildTitle("Upload payment receipt"),
                 buildslip(size),
@@ -139,6 +143,7 @@ class _UploadImageState extends State<UploadImage> {
                 } else {
                   print('Process Insert to Database');
                   uploadPicture();
+                  Navigator.pushReplacementNamed(context, '/member_service');
                 }
               }
             },
@@ -158,21 +163,21 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   Future<Null> uploadPicture() async {
-    String apisaveSlip = '${MyConstant.domain}/goalinter_project/saveSlip.php';
-    int i = Random().nextInt(100000);
-    String nameFile = 'slip$i.jpg';
-    Map<String, dynamic> map = Map();
-    map['file'] = await MultipartFile.fromFile(file!.path,filename: nameFile);
-    FormData data = FormData.fromMap(map);
-    await Dio().post(apisaveSlip, data: data).then((value) {
-    print('value = $value');
-    slip = '/goalinter_project/slip/$nameFile';
-  });
+  //   String apisaveSlip = '${MyConstant.domain}/goalinter_project/saveSlip.php';
+  //   int i = Random().nextInt(100000);
+  //   String nameFile = 'slip$i.jpg';
+  //   Map<String, dynamic> map = Map();
+  //   map['file'] = await MultipartFile.fromFile(file!.path,filename: nameFile);
+  //   FormData data = FormData.fromMap(map);
+  //   await Dio().post(apisaveSlip, data: data).then((value) {
+  //   print('value = $value');
+  //   slip = '/goalinter_project/slip/$nameFile';
+  // });
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String id = preferences.getString('id')!;
     String path =
-        '${MyConstant.domain}/goalinter_project/getUser.php?isAdd=true&id=$id';
+        '${MyConstant.domain}/goalinter_project/getidbookWhereid.php?isAdd=true&id=$id&status=w';
     await Dio().get(path).then((value) async {
       if (value.toString() == 'null') {
         if (file == null) {

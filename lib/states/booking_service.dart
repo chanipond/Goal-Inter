@@ -11,6 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 var datetest;
+var timetest;
+var fieldtest;
 
 class Booking_service extends StatefulWidget {
   const Booking_service({Key? key, this.time}) : super(key: key);
@@ -64,9 +66,9 @@ class _Booking_serviceState extends State<Booking_service> {
     return Scaffold(
       appBar:
           AppBar(
-            actions: [
-              CheckDate(),
-            ],
+            // actions: [
+            //   CheckDate(),
+            // ],
             backgroundColor: MyConstant.primary, 
             title: Text("Booking"), 
           ),
@@ -101,6 +103,7 @@ class _Booking_serviceState extends State<Booking_service> {
                           onChanged: (newValue) {
                             setState(() {
                               valueTime = newValue as String?;
+                              timetest = valueTime;
                             });
                           },
                           items: listItem.map((valuestart) {
@@ -162,16 +165,16 @@ class _Booking_serviceState extends State<Booking_service> {
     );
   }
 
-  IconButton CheckDate() {
-    return IconButton(
-      onPressed: () {
-            print('Check Date');
-            Navigator.pushReplacementNamed(context, '/checkdate');
-            // uploadPictureAndInsertData();
-      },
-      icon: Icon(Icons.date_range_outlined),
-    );
-  }
+  // IconButton CheckDate() {
+  //   return IconButton(
+  //     onPressed: () {
+  //           print('Check Date');
+  //           Navigator.pushReplacementNamed(context, '/checkdate');
+  //           // uploadPictureAndInsertData();
+  //     },
+  //     icon: Icon(Icons.date_range_outlined),
+  //   );
+  // }
 
   Container buildTitle(String title) {
     return Container(
@@ -237,6 +240,7 @@ class _Booking_serviceState extends State<Booking_service> {
             onChanged: (value) {
               setState(() {
                 typeField = value as String?;
+                fieldtest = typeField;
               });
             },
             title: ShowTitle(
@@ -261,6 +265,7 @@ class _Booking_serviceState extends State<Booking_service> {
             onChanged: (value) {
               setState(() {
                 typeField = value as String?;
+                fieldtest = typeField;
               });
             },
             title: ShowTitle(
@@ -285,6 +290,7 @@ class _Booking_serviceState extends State<Booking_service> {
             onChanged: (value) {
               setState(() {
                 typeField = value as String?;
+                fieldtest = typeField;
               });
             },
             title: ShowTitle(

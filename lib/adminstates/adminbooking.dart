@@ -318,7 +318,7 @@ class _Booking_AdminState extends State<Booking_Admin> {
     print(
         'id = $id, firstname = $firstname, lastname = $lastname, date = $date, time = $time, typeField = $typeField');
     String path =
-        '${MyConstant.domain}/goalinter_project/getDatebyAdmin.php?isAdd=true';
+        '${MyConstant.domain}/goalinter_project/getDatebyAdmin.php?isAdd=true&status=w';
     await Dio().get(path).then((value) {
       
       if (value.toString() == 'null') {
@@ -335,7 +335,7 @@ class _Booking_AdminState extends State<Booking_Admin> {
                   child: Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.pushReplacementNamed(context, '/adminpay');
+                    // Navigator.pushReplacementNamed(context, '/adminpay');
                   },
                 ),
               ],
@@ -366,23 +366,23 @@ class _Booking_AdminState extends State<Booking_Admin> {
         '${MyConstant.domain}/goalinter_project/insertDate.php?isAdd=true&id=$id&firstname=$firstname&lastname=$lastname&date=$date&time=$time&typeField=$typeField&status=w';
     await Dio().get(apiinsertField).then((value) {
       if (value.toString() == 'true') {
-        for( var time in listItem){
-                if(valueTime == time){
-                  print('true');
-                  print(valueTime);
-                  print(listItem);
-                  print(listItem.indexOf(time));
-                  listItem.removeAt(listItem.indexOf(time));
-                  print(listItem);
+        // for( var time in listItem){
+        //         if(valueTime == time){
+        //           print('true');
+        //           print(valueTime);
+        //           print(listItem);
+        //           print(listItem.indexOf(time));
+        //           listItem.removeAt(listItem.indexOf(time));
+        //           print(listItem);
               
-                }else{
-                  print('false');
-                  print(valueTime);
-                  print(time);
+        //         }else{
+        //           print('false');
+        //           print(valueTime);
+        //           print(time);
                   
-                }
-              }
-        // Navigator.pushReplacementNamed(context, '/payin');
+        //         }
+        //       }
+        Navigator.pushReplacementNamed(context, '/adminpay');
       } else {
         showDialog(
           context: context,
