@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -10,14 +12,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../utillity/my_constant.dart';
 import '../widgets/show_image.dart';
 
-class List_service extends StatefulWidget {
-  const List_service({Key? key}) : super(key: key);
+class ListAdmin_service extends StatefulWidget {
+  const ListAdmin_service({Key? key}) : super(key: key);
 
   @override
-  State<List_service> createState() => _List_serviceState();
+  State<ListAdmin_service> createState() => _ListAdmin_serviceState();
 }
 
-class _List_serviceState extends State<List_service> {
+class _ListAdmin_serviceState extends State<ListAdmin_service> {
   bool load = true;
   bool? havedata;
   List<PrefBooking> books = [];
@@ -29,10 +31,16 @@ class _List_serviceState extends State<List_service> {
   }
 
     Future<Null> loadValueFormAPI() async {
+
+      if(books.length != 0){
+      books.clear();
+    } else {
+      print('no data');
+    }
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? id = preferences.getString('id')!;
     String apiGetBook =
-        '${MyConstant.domain}/goalinter_project/getidfrobook.php?isAdd=true&id=$id';
+        '${MyConstant.domain}/goalinter_project/getidbyadmin.php?isAdd=true&status=w';
     await Dio().get(apiGetBook).then((value) {
       if (value.toString() == 'null') {
         // nodata
@@ -44,7 +52,7 @@ class _List_serviceState extends State<List_service> {
         // havedata
         for (var item in json.decode(value.data)) {
           PrefBooking model = PrefBooking.fromMap(item);
-          print('id = ${model.id}');
+          print('date = ${model.date}');
           
           setState(() {
             load = false;
@@ -57,7 +65,7 @@ class _List_serviceState extends State<List_service> {
   }
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width;
+    // double size = MediaQuery.of(context).size.width;
     return load
           ? ShowProgress()
           : havedata!
@@ -118,22 +126,65 @@ class _List_serviceState extends State<List_service> {
                   Row(
                     children: [
                       ShowTitle(
-                            title: '⏲️ Time: ',
-                            textStyle: MyConstant().h3Style(),
-                          ),
-                      ShowTitle(
-                            title: books[index].time,
-                            textStyle: MyConstant().h3Style(),
+                        title: '⏲️ Time: ',
+                        textStyle: MyConstant().h3Style(),
                       ),
+                    ShowTitle(
+                    title: books[index].time,
+                    textStyle: MyConstant().h3Style(),
+                    ),
                     ],
+                  
                   ),
-                      
+                  IconButton(
+                          onPressed: () {
+                            print('You Click Delete = $index');
+                            confirmDelete(books[index]);
+                          },
+                          icon: Icon(Icons.delete)),
+                  
                 ],
               ),
             ),
+
+            
           ],
         ),
       ),
+    );
+  }
+  Future<Null> confirmDelete(PrefBooking booking) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+          title: ListTile(
+            // leading: Image.network(Url(booking.slip), fit: BoxFit.cover),
+            title: ShowTitle(
+              title: 'Are you sure to delete ${booking.firstname} Date ${booking.date}?',
+              textStyle: MyConstant().h2Style(),
+            ),
+            // subtitle: ShowTitle(
+            //   title: information.content,
+            //   textStyle: MyConstant().h3Style(),
+            // ),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () async {
+                  print('Delete information = ${booking.id}');
+                  String apiDelteInfor =
+                      '${MyConstant.domain}/goalinter_project/deleteBook.php?isAdd=true&id_booking=${booking.id_booking}';
+                  await Dio().get(apiDelteInfor).then((value) {
+                    Navigator.pop(context);
+                    loadValueFormAPI();
+                });
+                },
+                child: Text('Delete'),
+                // onPressed: () => Navigator.pop(context), child: Text('Delete')
+                ),
+            TextButton(
+                onPressed: () => Navigator.pop(context), child: Text('Cancel')),
+          ]),
     );
   }
 }

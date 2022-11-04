@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:goalinter/adminstates/adminbooking.dart';
 import 'package:goalinter/data/booking.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_image.dart';
@@ -13,18 +14,21 @@ import 'package:goalinter/widgets/show_title.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UploadImage extends StatefulWidget {
-  const UploadImage({Key? key}) : super(key: key);
+class Adminpay extends StatefulWidget {
+  const Adminpay({Key? key}) : super(key: key);
 
   @override
-  State<UploadImage> createState() => _UploadImageState();
+  State<Adminpay> createState() => _AdminpayState();
 }
 
-class _UploadImageState extends State<UploadImage> {
+class _AdminpayState extends State<Adminpay> {
   final formKey = GlobalKey<FormState>();
   String slip = '';
   List<File> files = [];
   File? file;
+  String? date = datetest;
+  String? time = timetest;
+  String? typeField = fieldtest;
   // PrefBooking? booking;
 
   @override
@@ -40,7 +44,7 @@ class _UploadImageState extends State<UploadImage> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar:
-          AppBar(backgroundColor: MyConstant.primary, title: Text("Booking")),
+          AppBar(backgroundColor: MyConstant.gray, title: Text("Booking")),
       body: SafeArea(
           child: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -50,9 +54,9 @@ class _UploadImageState extends State<UploadImage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                buildTitle("Date: "),
-                buildTitle("Time: "),
-                buildTitle("Field: "),
+                buildTitle("Date: $date "),
+                buildTitle("Time: $time "),
+                buildTitle("Field: $typeField "),
                 buildTitle("Promtpay : 0922653849"),
                 buildTitle("Price : 800 Bath"),
                 buildTitle("Upload payment receipt"),
@@ -172,7 +176,7 @@ class _UploadImageState extends State<UploadImage> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String id = preferences.getString('id')!;
     String path =
-        '${MyConstant.domain}/goalinter_project/getUser.php?isAdd=true&id=$id';
+        '${MyConstant.domain}/goalinter_project/getidbookWhereid.php?isAdd=true&id=$id';
     await Dio().get(path).then((value) async {
       if (value.toString() == 'null') {
         if (file == null) {

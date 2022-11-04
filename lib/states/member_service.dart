@@ -1,7 +1,11 @@
 // import 'package:flutter/cupertino.dart';
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_final_fields, sort_child_properties_last, use_build_context_synchronously
 
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:goalinter/data/profile.dart';
 import 'package:goalinter/states/Field_service.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
@@ -27,10 +31,53 @@ class _Member_ServiceState extends State<Member_Service> {
     Contact_service(),
   ];
 
+  PrefProfile? profiles;
+
   void _onItemTap(int index) {
     setState(() {
       currentIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    findUser();
+  }
+
+  Future<Null> findUser() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String id = preferences.getString('id')!;
+    print('id = $id');
+    String apiGetUser =
+        '${MyConstant.domain}/goalinter_project/getUser.php?isAdd=true&id=$id';
+    await Dio().get(apiGetUser).then((value) {
+      for (var item in json.decode(value.data)) {
+        setState(() {
+          profiles = PrefProfile.fromMap(item);
+          print('user = ${profiles!.firstname}');
+        });
+      }
+    });
+  }
+
+  UserAccountsDrawerHeader buildHead() {
+    return UserAccountsDrawerHeader(
+      decoration: BoxDecoration(
+        color: MyConstant.primary,
+        gradient: RadialGradient(
+          colors: [MyConstant.white, MyConstant.dark],
+          center: Alignment(-0.8, -0.2),
+          radius: 1,
+        ),
+      ),
+      accountName: Text(
+        profiles == null ? 'Name' : '${profiles!.firstname}',
+        style: TextStyle(color: MyConstant.white),
+      ),
+      accountEmail: Text(profiles == null ? 'Email' : '${profiles!.email}',
+          style: TextStyle(color: MyConstant.white)),
+    );
   }
 
   @override
@@ -49,14 +96,26 @@ class _Member_ServiceState extends State<Member_Service> {
                 child: IntrinsicHeight(
                   child: Column(
                     children: <Widget>[
-                      DrawerHeader(
+                      // DrawerHeader(
+                      //   decoration: BoxDecoration(
+                      //     color: MyConstant.primary,
+                      //   ),
+                      //   margin: EdgeInsets.all(0.0),
+                      //   child: Center(
+                      //     child: Text("Goal-Inter"),
+                      //   ),
+
+                      // ),
+                      UserAccountsDrawerHeader(
                         decoration: BoxDecoration(
                           color: MyConstant.primary,
                         ),
-                        margin: EdgeInsets.all(0.0),
-                        child: Center(
-                          child: Text("Goal-Inter"),
-                        ),
+                        accountName: Text(profiles == null
+                            ? 'firstname'
+                            : profiles!.firstname),
+                        accountEmail: Text(profiles == null
+                            ? 'email'
+                            : profiles!.email),
                       ),
                       ListTile(
                         title: Text("Information"),

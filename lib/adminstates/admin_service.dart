@@ -3,9 +3,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:goalinter/adminstates/adminbooking.dart';
-import 'package:goalinter/adminstates/editinfor_service.dart';
+import 'package:goalinter/adminstates/admininfor_service.dart';
+import 'package:goalinter/adminstates/listbyadmin.dart';
 import 'package:goalinter/adminstates/viewmember.dart';
-import 'package:goalinter/states/Field_service.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/contact.dart';
@@ -24,7 +24,7 @@ class _Admin_ServiceState extends State<Admin_Service> {
   int currentIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
     Home_service(),
-    List_service(),
+    ListAdmin_service(),
     Contact_service(),
   ];
 
@@ -67,7 +67,7 @@ class _Admin_ServiceState extends State<Admin_Service> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      EditInfor_Service()));
+                                      AdminInfor_service()));
                         },
                       ),
                       ListTile(

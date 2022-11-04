@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:goalinter/data/profile.dart';
 import 'package:goalinter/utillity/my_constant.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:goalinter/widgets/show_progress.dart';
 import 'package:goalinter/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -97,19 +96,6 @@ class _Viewmember_serviceState extends State<Viewmember_service> {
       itemBuilder: (context, index) => Card(
         child: Row(
           children: [
-            // Container(
-            //   padding: EdgeInsets.all(10),
-            //   width: constraints.maxWidth * 0.5 - 4,
-            //   child: Column(
-            //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //     children: [
-            //       // ShowTitle(
-            //       //   title: profies[index].title,
-            //       //   textStyle: MyConstant().h2Style(),
-            //       // ),
-            //     ],
-            //   ),
-            // ),
             Container(
               margin: EdgeInsets.only(top: 20),
               padding: EdgeInsets.all(10),
@@ -126,6 +112,10 @@ class _Viewmember_serviceState extends State<Viewmember_service> {
                   ShowTitle(
                     title: profies[index].lastname,
                     textStyle: MyConstant().h2Style(),
+                  ),
+                  ShowTitle(
+                    title: profies[index].telephonenumber,
+                    textStyle: MyConstant().h3Style(),
                   ),
                   ShowTitle(
                     title: profies[index].email,

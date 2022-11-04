@@ -1,29 +1,49 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors, unnecessary_new, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace, unused_local_variable, use_build_context_synchronously, unnecessary_null_comparison, sort_child_properties_last, avoid_unnecessary_containers
 
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-// import 'package:goalinter/data/booking.dart';
+import 'package:goalinter/data/booking.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_title.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-var datetest;
-var timetest;
-var fieldtest;
+// var datetest;
 
-class Booking_Admin extends StatefulWidget {
-  const Booking_Admin({Key? key, this.time}) : super(key: key);
+class Booking_service extends StatefulWidget {
+  const Booking_service({Key? key, this.time}) : super(key: key);
   final String? time;
   @override
-  State<Booking_Admin> createState() => _Booking_AdminState();
+  State<Booking_service> createState() => _Booking_serviceState();
 }
 
-class _Booking_AdminState extends State<Booking_Admin> {
+// class Item{
+//   Item(this.time);
+//   String time;
+//   bool selected = false;
+
+//   @override
+//   String toString() => time;
+// }
+
+class _Booking_serviceState extends State<Booking_service> {
+  // List data = ['17:00-17:59', '18:00-18:59', '19:00-19:59', '20:00-20:59', '21:00-21:59', '22:00-22:59', '23:00-23:59'];
+  // List selectedData = [];
+  // bool? value = false;
+  // final dataList = <Item>[
+  //   Item('17:00-18:00'),
+  //   Item('18:00-19:00'),
+  //   Item('19:00-20:00'),
+  //   Item('20:00-21:00'),
+  //   Item('21:00-22:00'),
+  //   Item('22:00-23:00'),
+  //   Item('23:00-24:00'),
+  // ].obs;
   String? typeField;
   String? valueTime;
+  // String? valueChoose2;
   List listItem = [
     '17:00 - 18:00',
     '18:00 - 19:00',
@@ -33,8 +53,8 @@ class _Booking_AdminState extends State<Booking_Admin> {
     '22:00 - 23:00',
     '23:00 - 24:00'
   ];
-  
 
+  // final selectedItem = <Item>[].obs;
   final formKey = GlobalKey<FormState>();
   TextEditingController dateController = TextEditingController();
 
@@ -43,13 +63,7 @@ class _Booking_AdminState extends State<Booking_Admin> {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar:
-          AppBar(
-            // actions: [
-            //   CheckDate(),
-            // ],
-            backgroundColor: MyConstant.gray, 
-            title: Text("Booking"), 
-          ),
+          AppBar(backgroundColor: MyConstant.primary, title: Text("Booking")),
       body: SafeArea(
           child: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
@@ -81,13 +95,12 @@ class _Booking_AdminState extends State<Booking_Admin> {
                           onChanged: (newValue) {
                             setState(() {
                               valueTime = newValue as String?;
-                              timetest = valueTime;
                             });
                           },
-                          items: listItem.map((valueTime) {
+                          items: listItem.map((valuestart) {
                             return DropdownMenuItem(
-                              child: Text(valueTime),
-                              value: valueTime,
+                              child: Text(valuestart),
+                              value: valuestart,
                             );
                           }).toList(),
                         ),
@@ -96,6 +109,39 @@ class _Booking_AdminState extends State<Booking_Admin> {
                     ),
                   ],
                 ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Text('End:  '),
+                //     SizedBox(
+                //       height: 20,
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.all(8.0),
+                //       child: Container(
+                //         padding: EdgeInsets.only(left: 16, right: 16),
+                //         decoration: BoxDecoration(
+                //             border: Border.all(color: Colors.grey),
+                //             borderRadius: BorderRadius.circular(15)),
+                //         child: DropdownButton(
+                //           hint: Text('TimeEnd'),
+                //           value: valueChoose2,
+                //           onChanged: (newValue) {
+                //             setState(() {
+                //               valueChoose2 = newValue as String?;
+                //             });
+                //           },
+                //           items: listItem.map((valueend) {
+                //             return DropdownMenuItem(
+                //               child: Text(valueend),
+                //               value: valueend,
+                //             );
+                //           }).toList(),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 buildTitle("Please select field"),
                 buildRadioField1(size),
                 buildRadioField2(size),
@@ -109,17 +155,6 @@ class _Booking_AdminState extends State<Booking_Admin> {
       )),
     );
   }
-
-  // IconButton CheckDate() {
-  //   return IconButton(
-  //     onPressed: () {
-  //           print('Check Date');
-  //           // Navigator.pushReplacementNamed(context, '/checkdate');
-  //           // uploadPictureAndInsertData();
-  //     },
-  //     icon: Icon(Icons.date_range_outlined),
-  //   );
-  // }
 
   Container buildTitle(String title) {
     return Container(
@@ -160,7 +195,7 @@ class _Booking_AdminState extends State<Booking_Admin> {
                       DateFormat("dd-MM-yyyy").format(pickedDate);
                   setState(() {
                     dateController.text = formattedDate.toString();
-                    datetest = dateController.text;
+                    // datetest = dateController.text;
                   });
                 } else {
                   print("Not selected");
@@ -185,7 +220,6 @@ class _Booking_AdminState extends State<Booking_Admin> {
             onChanged: (value) {
               setState(() {
                 typeField = value as String?;
-                fieldtest = typeField;
               });
             },
             title: ShowTitle(
@@ -210,7 +244,6 @@ class _Booking_AdminState extends State<Booking_Admin> {
             onChanged: (value) {
               setState(() {
                 typeField = value as String?;
-                fieldtest = typeField;
               });
             },
             title: ShowTitle(
@@ -235,7 +268,6 @@ class _Booking_AdminState extends State<Booking_Admin> {
             onChanged: (value) {
               setState(() {
                 typeField = value as String?;
-                fieldtest = typeField;
               });
             },
             title: ShowTitle(
@@ -261,7 +293,10 @@ class _Booking_AdminState extends State<Booking_Admin> {
               valueTime = valueTime;
               // valueChoose2 = valueChoose2;
               dateController.text = dateController.text;
-              
+              // selectedItem.clear();
+              // selectedItem.addAll(dataList.where((p0) => p0.selected));
+              // print(selectedItem);
+              // selectedItem.refresh();
               if (formKey.currentState!.validate()) {
 
                   
@@ -271,6 +306,11 @@ class _Booking_AdminState extends State<Booking_Admin> {
                       context, 'Non Choose Field', 'Please Choose Field');
                 } 
                 
+                // if (valueChoose2 == null) {
+                //   print('non choose timeEnd');
+                //   MyConstant().normalDialog(context, 'Non Choose timeEnd',
+                //       'Please Choose timeEnd');
+                // }
                 if (valueTime == null) {
                   MyConstant().normalDialog(context, 'Non Choose time',
                       'Please Choose time');
@@ -288,7 +328,6 @@ class _Booking_AdminState extends State<Booking_Admin> {
                 else {
                   print('Process Insert to Database');
                   booking();
-                  
                 }
               }
             },
@@ -318,12 +357,25 @@ class _Booking_AdminState extends State<Booking_Admin> {
     print(
         'id = $id, firstname = $firstname, lastname = $lastname, date = $date, time = $time, typeField = $typeField');
     String path =
-        '${MyConstant.domain}/goalinter_project/getDatebyAdmin.php?isAdd=true';
+        '${MyConstant.domain}/goalinter_project/getdate.php?isAdd=true&id=$id';
     await Dio().get(path).then((value) {
+      // for (var item in json.decode(value.data)) {
+      //   setState(() {
+      //     print('timeStart = ${item['timeStart']} ');
+      //     print('timeEnd = ${item['timeEnd']}');
+      //   });
+      // }
+      // var a = jsonDecode(value.data);
+      
+      // print(a[1]);
+    //  String $a = value.[timeStart];
+
+      // print(a.runtimeType);
+      // var b = jsonDecode(value.data);
+      // print(b[0][1]);
       
       if (value.toString() == 'null') {
         print('Have field in my Database');
-        
       } else {
         showDialog(
           context: context,
@@ -335,7 +387,6 @@ class _Booking_AdminState extends State<Booking_Admin> {
                   child: Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    Navigator.pushReplacementNamed(context, '/adminpay');
                   },
                 ),
               ],
@@ -366,23 +417,7 @@ class _Booking_AdminState extends State<Booking_Admin> {
         '${MyConstant.domain}/goalinter_project/insertDate.php?isAdd=true&id=$id&firstname=$firstname&lastname=$lastname&date=$date&time=$time&typeField=$typeField&status=w';
     await Dio().get(apiinsertField).then((value) {
       if (value.toString() == 'true') {
-        for( var time in listItem){
-                if(valueTime == time){
-                  print('true');
-                  print(valueTime);
-                  print(listItem);
-                  print(listItem.indexOf(time));
-                  listItem.removeAt(listItem.indexOf(time));
-                  print(listItem);
-              
-                }else{
-                  print('false');
-                  print(valueTime);
-                  print(time);
-                  
-                }
-              }
-        // Navigator.pushReplacementNamed(context, '/payin');
+        Navigator.pushReplacementNamed(context, '/payin');
       } else {
         showDialog(
           context: context,
@@ -422,262 +457,3 @@ class _Booking_AdminState extends State<Booking_Admin> {
 // }
 
 }
-
-
-
-// import 'package:dio/dio.dart';
-// import 'package:flutter/material.dart';
-// import 'package:goalinter/utillity/my_constant.dart';
-// import 'package:goalinter/widgets/show_image.dart';
-// import 'package:intl/intl.dart';
-
-// class  extends StatefulWidget {
-//   const Booking_Admin({Key? key}) : super(key: key);
-
-//   @override
-//   State<Booking_Admin> createState() => _Booking_AdminState();
-// }
-
-// class _Booking_AdminState extends State<Booking_Admin> {
-//   final formKey = GlobalKey<FormState>();
-//   List<String> chipList = ["Field 1", "Field 2", "Field 3"];
-//   TextEditingController dateController = TextEditingController();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     double size = MediaQuery.of(context).size.width;
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: MyConstant.gray,
-//         title: Text("Booking")),
-//       body: SizedBox(
-//         width: 380,
-//         height: 400,
-//         child: Column(
-//           children: <Widget>[
-//             Padding(
-//               padding: EdgeInsets.all(8.0),
-//               child: Text(
-//                 'Select the field',
-//                 style: MyConstant().h2Style(),
-//               ),
-//             ),
-            
-//             Container(
-//               key: formKey,
-//                 child: Wrap(
-//               spacing: 8.0,
-//               runSpacing: 4.0,
-              
-//               children: <Widget>[
-//                 buildDate(size),
-//                 // buildImage(size),
-//                 choiceChipWidget(chipList),
-                
-//               ],
-//             )),
-//             Padding(
-//               padding: EdgeInsets.only(top: 32.0),
-//               child: Container(
-//                 child: ElevatedButton(
-//                   style: MyConstant().MyButtonStyle(),
-//                   onPressed: () {
-//                     if (formKey.currentState!.validate()) {
-//                             print('Process Insert to Database');
-//                             bookingdate();
-//                           }
-//                   },
-//                   child: Text(
-//                     'Book',
-//                     style: TextStyle(
-//                       fontSize: 16,
-//                       fontWeight: FontWeight.bold,
-//                       color: Colors.black,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       )
-//         );
-//   }
-
-//   Future<Null> bookingdate() async {
-//     String date = dateController.text;
-//     print(
-//         'date = $date');
-//     String path =
-//         '${MyConstant.domain}/goalinter_project/getDateWhereDate.php?isAdd=true&date=$date';
-//     await Dio().get(path).then((value) {
-//       print('value = $value');
-//       if (value.toString() == 'null') {
-//         print('Have date in my Database');
-//       } else {
-//         showDialog(
-//           context: context,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               title: Text("มีการจองแล้วจ้า"),
-//               actions: <Widget>[
-//                 TextButton(
-//                   child: Text("T-T"),
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                 ),
-//               ],
-//             );
-//           },
-//         );
-//       }
-//       processInsertMySQL(
-//         date : date,
-//       );
-//     });
-//   }
-
-//   Future<Null> processInsertMySQL(
-//       {String? id,
-//       String? date
-//       }) async {
-//     print('Success');
-//     String apiinsertDate =
-//         '${MyConstant.domain}/goalinter_project/insertDate.php?isAdd=true&id=$id&date=$date';
-//     await Dio().get(apiinsertDate).then((value) {
-//       if (value.toString() == 'true') {
-//         Navigator.pop(context);
-//       } else {
-//         showDialog(
-//           context: context,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               title: Text("จองไม่สำเร็จ"),
-//               actions: <Widget>[
-//                 TextButton(
-//                   child: Text("OK"),
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                 ),
-//               ],
-//             );
-//           },
-//         );
-//       }
-//     });
-//   }
-
-
-
-
-//   Row buildDate(double size) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//       Container(
-//           margin: EdgeInsets.only(top: 20),
-//           width: size * 0.8,
-//             child: TextFormField(
-//             controller : dateController,
-//             decoration: const InputDecoration(
-//               icon: Icon(Icons.calendar_today),
-//               labelText: "Select Date"
-//             ),
-//             readOnly: true,
-//             onTap: (() async{
-//               DateTime? pickedDate = await showDatePicker(context: context,
-//               initialDate: DateTime.now(),
-//               firstDate:DateTime.now(),
-//               lastDate: DateTime(2101), 
-              
-//               );
-//               if(pickedDate!=null)
-//               {
-//                 String formattedDate=DateFormat("dd-MM-yyyy").format(pickedDate);
-//                 setState(() 
-//                 {
-//                   dateController.text=formattedDate.toString();
-//                 }
-//                 );
-//               }
-//               else
-//               {
-//                  print("Not selected");
-//               }
-//               validator: (value) {
-//               if (value!.isEmpty) {
-//                 return 'Please enter date';
-//               } else {}
-//               };
-//             }),
-//           ),
-//           ),
-//       ],
-//     );
-//   }
-
-//     Row buildImage(double size) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Container(
-//           margin: EdgeInsets.only(top: 30, bottom: 30),
-//           width: size * 0.8,
-//           child: ShowImage(
-//             path: MyConstant.imagebook,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-
-// }
-
-// class choiceChipWidget extends StatefulWidget {
-//   final List<String> reportList;
-
-//   choiceChipWidget(this.reportList);
-
-//   @override
-//   _choiceChipWidgetState createState() => new _choiceChipWidgetState();
-// }
-
-// class _choiceChipWidgetState extends State<choiceChipWidget> {
-//   String selectedChoice = "";
-
-//   _buildChoiceList() {
-//     List<Widget> choices = [];
-//     widget.reportList.forEach((item) {
-//       choices.add(Container(
-//         padding: const EdgeInsets.all(2.0),
-//         child: ChoiceChip(
-//           label: Text(item),
-//           labelStyle: TextStyle(
-//               color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.bold),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(30.0),
-//           ),
-//           backgroundColor: Color(0xffededed),
-//           selectedColor: Color.fromARGB(255, 251, 206, 72),
-//           selected: selectedChoice == item,
-//           onSelected: (selected) {
-//             setState(() {
-//               selectedChoice = item;
-//             });
-//           },
-//         ),
-//       ));
-//     });
-//     return choices;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Wrap(
-//       children: _buildChoiceList(),
-//     );
-//   }
-// }
