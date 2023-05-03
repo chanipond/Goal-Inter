@@ -163,16 +163,16 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   Future<Null> uploadPicture() async {
-  //   String apisaveSlip = '${MyConstant.domain}/goalinter_project/saveSlip.php';
-  //   int i = Random().nextInt(100000);
-  //   String nameFile = 'slip$i.jpg';
-  //   Map<String, dynamic> map = Map();
-  //   map['file'] = await MultipartFile.fromFile(file!.path,filename: nameFile);
-  //   FormData data = FormData.fromMap(map);
-  //   await Dio().post(apisaveSlip, data: data).then((value) {
-  //   print('value = $value');
-  //   slip = '/goalinter_project/slip/$nameFile';
-  // });
+    String apisaveSlip = '${MyConstant.domain}/goalinter_project/saveSlip.php';
+    int i = Random().nextInt(100000);
+    String nameFile = 'slip$i.jpg';
+    Map<String, dynamic> map = Map();
+    map['file'] = await MultipartFile.fromFile(file!.path,filename: nameFile);
+    FormData data = FormData.fromMap(map);
+    await Dio().post(apisaveSlip, data: data).then((value) {
+    print('value = $value');
+    slip = '/goalinter_project/slip/$nameFile';
+  });
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String id = preferences.getString('id')!;
@@ -209,7 +209,7 @@ class _UploadImageState extends State<UploadImage> {
     //String id = preferences.getString('id')!;
     print('Work processInsertMySQL');
     String apiInsertUser =
-        '${MyConstant.domain}/goalinter_project/insertSlip.php?isAdd=true&id_booking=$id_booking&slip=$slip&status=cf';
+        '${MyConstant.domain}/goalinter_project/insertSlip.php?isAdd=true&id_booking=$id_booking&slip=$slip';
     await Dio().get(apiInsertUser).then((value) {
       if (value.toString() == 'true') {
         Navigator.pop(context);

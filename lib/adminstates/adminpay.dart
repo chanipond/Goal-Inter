@@ -162,16 +162,16 @@ class _AdminpayState extends State<Adminpay> {
   }
 
   Future<Null> uploadPicture() async {
-  //   String apisaveSlip = '${MyConstant.domain}/goalinter_project/saveSlip.php';
-  //   int i = Random().nextInt(100000);
-  //   String nameFile = 'slip$i.jpg';
-  //   Map<String, dynamic> map = Map();
-  //   map['file'] = await MultipartFile.fromFile(file!.path,filename: nameFile);
-  //   FormData data = FormData.fromMap(map);
-  //   await Dio().post(apisaveSlip, data: data).then((value) {
-  //   print('value = $value');
-  //   slip = '/goalinter_project/slip/$nameFile';
-  // });
+    String apisaveSlip = '${MyConstant.domain}/goalinter_project/saveSlip.php';
+    int i = Random().nextInt(100000);
+    String nameFile = 'slip$i.jpg';
+    Map<String, dynamic> map = Map();
+    map['file'] = await MultipartFile.fromFile(file!.path,filename: nameFile);
+    FormData data = FormData.fromMap(map);
+    await Dio().post(apisaveSlip, data: data).then((value) {
+    print('value = $value');
+    slip = '/goalinter_project/slip/$nameFile';
+  });
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? id = preferences.getString('id');

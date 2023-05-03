@@ -324,30 +324,22 @@ class _Booking_serviceState extends State<Booking_service> {
 
                   
                 
-                if (typeField == null) {
-                  MyConstant().normalDialog(
-                      context, 'Non Choose Field', 'Please Choose Field');
-                } 
-                
-                // if (valueChoose2 == null) {
-                //   print('non choose timeEnd');
-                //   MyConstant().normalDialog(context, 'Non Choose timeEnd',
-                //       'Please Choose timeEnd');
-                // }
-                if (valueTime == null) {
-                  MyConstant().normalDialog(context, 'Non Choose time',
-                      'Please Choose time');
-                }
-                
                 if(dateController.text.isEmpty){
                   MyConstant().normalDialog(context, 'Non Choose Date', 
                       'Please Choose Date');
                 }
-                // if( selectedItem.length != null) {
-                //   print('non choose time');
-                //   MyConstant().normalDialog(
-                //       context, 'Non Choose time', 'Please Choose time');
-                // }
+
+                else if (valueTime == null) {
+                  MyConstant().normalDialog(context, 'Non Choose time',
+                      'Please Choose time');
+                }
+                
+                else if
+                (typeField == null) {
+                  MyConstant().normalDialog(
+                      context, 'Non Choose Field', 'Please Choose Field');
+                } 
+
                 else {
                   print('Process Insert to Database');
                   booking();

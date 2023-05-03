@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goalinter/states/booking_service.dart';
 
 import '../utillity/my_constant.dart';
 import '../widgets/show_image.dart';
@@ -45,9 +46,10 @@ class _Home_serviceState extends State<Home_service> {
 // }
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: ShowImage(path: MyConstant.imagehome),
-      ),
+        body: Center(
+          child: Image.asset('asset/images/Goal2.jpg'),
+        ),
+              
     );
   }
 }

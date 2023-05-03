@@ -107,9 +107,15 @@ class _Info_serviceState extends State<Info_service> {
                   // ),
                   Container(
                     height: constraints.maxWidth * 0.5,
-                    child: Image.network(
-                      Url(informations[index].image),
-                      fit: BoxFit.cover,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: NetworkImage(Url(informations[index].image)),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      
                     ),
                   ),
                 ],

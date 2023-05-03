@@ -7,7 +7,7 @@ class MyConstant {
   // Genernal
   static String appName = 'GoalInter';
     // cmd: ngrok http 80
-  static String domain = 'https://8ba1-158-108-231-110.ap.ngrok.io';
+  static String domain = 'https://eecc-2001-fb1-3c-8739-5072-6e23-a491-cd79.ngrok-free.app';
 
   // Route
   static String routeAuthen = '/authen';
@@ -15,7 +15,7 @@ class MyConstant {
   static String routeMember = '/member_service';
   static String routeAdmin = '/admin_service';
   static String routeBooking = '/booking_service';
-  static String routePayin = '/payin';
+  static String routePay = '/pay';
 
   // Image
   static String image1 = 'asset/images/LOGO.png';
@@ -26,6 +26,7 @@ class MyConstant {
   static String imagepic = 'asset/images/image.png';
   static String imagebook = 'asset/images/book.jpg';
   static String imagepay = 'asset/images/payment.png';
+  static String imagefield = 'asset/images/field_book.jpg';
 
   // Color
   static Color primary = Color(0xff73A9AD);

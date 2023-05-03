@@ -11,7 +11,7 @@ import 'package:goalinter/adminstates/listbyadmin.dart';
 import 'package:goalinter/adminstates/viewmember.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
-import 'package:goalinter/states/bookfield.dart';
+// import 'package:goalinter/states/bookfield.dart';
 import 'package:goalinter/states/booking_service.dart';
 import 'package:goalinter/states/chaeckdate.dart';
 import 'package:goalinter/states/contact.dart';
@@ -23,6 +23,8 @@ import 'package:goalinter/states/payin.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/states/field_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:goalinter/states/book_service.dart';
+import 'package:goalinter/states/pay.dart';
 
 final Map<String, WidgetBuilder> map = {
   '/authen':(BuildContext context) => Authen(),
@@ -44,6 +46,8 @@ final Map<String, WidgetBuilder> map = {
   '/admininfor_service':(BuildContext context) => AdminInfor_service(),
   '/checkdate':(BuildContext context) =>checkdate_service(),
   '/adminpay':(BuildContext context) => Adminpay(),
+  '/book_service':(BuildContext context) => Book_service(),
+  '/pay':(BuildContext context) => Pay_service(),
 
 
   

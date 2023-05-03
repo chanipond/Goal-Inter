@@ -16,6 +16,8 @@ import 'package:goalinter/states/list.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'book_service.dart';
+
 class Member_Service extends StatefulWidget {
   const Member_Service({Key? key}) : super(key: key);
 
@@ -147,7 +149,7 @@ class _Member_ServiceState extends State<Member_Service> {
                               context,
                               MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      Booking_service()));
+                                      Book_service()));
                         },
                       ),
                       Expanded(child: SizedBox()),
@@ -182,6 +184,19 @@ class _Member_ServiceState extends State<Member_Service> {
         //   "WELCOME",
         //   style: MyConstant().h1Style(),
         // ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Book_service(),
+            ),
+          );
+        },
+        label: Text('Booking'),
+        icon: Icon(Icons.add_circle_outline),
+        backgroundColor: MyConstant.dark,
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: MyConstant.primary,

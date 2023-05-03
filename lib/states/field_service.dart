@@ -20,54 +20,65 @@ class _Field_serviceState extends State<Field_service> {
         title: Text("Goal-Inter Football Field"),
       ),
       body: Container(
-        margin: EdgeInsets.only(top: 40),
+          margin: EdgeInsets.only(top: 40),
           child: Center(
-        child: ListView(
-          children: <Widget>[
-            CarouselSlider(
-              items: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    image: DecorationImage(
-                      image: AssetImage('asset/images/numfield.jpg'),
-                      fit: BoxFit.cover,
+            child: ListView(
+              children: <Widget>[
+                CarouselSlider(
+                  items: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        image: DecorationImage(
+                          image: AssetImage('asset/images/numfield.jpg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        image: DecorationImage(
+                          image: AssetImage('asset/images/book.jpg'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(10.0),
+                    //     image: DecorationImage(
+                    //       image: AssetImage('asset/images/field3.jpg'),
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    // )
+                  ],
+                  options: CarouselOptions(
+                    height: 280.0,
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.9,
+                    aspectRatio: 16 / 9,
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enableInfiniteScroll: true,
+                    autoPlayAnimationDuration: Duration(milliseconds: 400),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    image: DecorationImage(
-                      image: AssetImage('asset/images/book.jpg'),
-                      fit: BoxFit.cover,
-                    ),
+                Center(
+                    child: Text(
+                  "\n\t\t\t อัตราค่าบริการ",
+                  style: MyConstant().h1Style(),
+                ),),
+                Center(
+                  child: Text(
+                    "\n\t\t\t ราคาสนามละ 800 บาท/ชั่วโมง",
+                    style: MyConstant().h2Style(),
                   ),
                 ),
-                // Container(
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(10.0),
-                //     image: DecorationImage(
-                //       image: AssetImage('asset/images/field3.jpg'),
-                //       fit: BoxFit.cover,
-                //     ),
-                //   ),
-                // )
               ],
-              options: CarouselOptions(
-                height: 280.0,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                viewportFraction: 0.9,
-                aspectRatio: 16 / 9,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: true,
-                autoPlayAnimationDuration: Duration(milliseconds: 400),
-              ),
-            ),Text("\n\t\t\t อัตราค่าบริการ \n \t\t\tราคาสนามละ 800 บาท/ชั่วโมง"),
-          ],
-        ),
-      )),
+            ),
+          )),
     );
   }
 }
