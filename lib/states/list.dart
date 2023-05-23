@@ -34,6 +34,7 @@ class _List_serviceState extends State<List_service> {
     String apiGetBook =
         '${MyConstant.domain}/goalinter_project/getidfrobook.php?isAdd=true&id=$id';
     await Dio().get(apiGetBook).then((value) {
+      print(value);
       if (value.toString() == 'null') {
         // nodata
         setState(() {
@@ -99,20 +100,9 @@ class _List_serviceState extends State<List_service> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  
                   ShowTitle(
-                    title: 'ID: ${books[index].id}',
-                    textStyle: MyConstant().h2Style(),
-                  ),
-                  ShowTitle(
-                    title: 'Firstname: ${books[index].firstname}',
-                    textStyle: MyConstant().h2Style(),
-                  ),
-                  ShowTitle(
-                    title: 'Lastname: ${books[index].lastname}',
-                    textStyle: MyConstant().h2Style(),
-                  ),
-                  ShowTitle(
-                    title: 'Date: ${books[index].date}',
+                    title: 'Date: ${books[index].datetime_start}',
                     textStyle: MyConstant().h2Style(),
                   ),
                   Row(
@@ -122,7 +112,7 @@ class _List_serviceState extends State<List_service> {
                             textStyle: MyConstant().h3Style(),
                           ),
                       ShowTitle(
-                            title: books[index].time,
+                            title: '${books[index].datetime_end}',
                             textStyle: MyConstant().h3Style(),
                       ),
                     ],

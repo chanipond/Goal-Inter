@@ -23,6 +23,7 @@ class _CreateAccountState extends State<CreateAccount> {
   TextEditingController telController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
+  TextEditingController conpwdController = TextEditingController();
 
   @override
   void initState() {
@@ -236,6 +237,63 @@ class _CreateAccountState extends State<CreateAccount> {
     );
   }
 
+  Row buildConfirmPassword(double size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 16),
+          width: size * 0.8,
+          child: TextFormField(
+            controller: conpwdController,
+            maxLength: 8,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter confirm password';
+              }
+              if ( pwdController.text != conpwdController.text) {
+                return 'Password not match';
+              } else {}
+            },
+            obscureText: true,
+            decoration: InputDecoration(
+              // suffixIcon: IconButton(
+              //   onPressed: () {
+              //     setState(() {
+              //       statusRedEye = !statusRedEye;
+              //     });
+              //   },
+              //   icon: statusRedEye
+              //       ? Icon(
+              //           Icons.remove_red_eye,
+              //           color: MyConstant.dark,
+              //         )
+              //       : Icon(
+              //           Icons.remove_red_eye_outlined,
+              //           color: MyConstant.dark,
+              //         ),
+              // ),
+              labelStyle: MyConstant().h3Style(),
+              labelText: 'Confirm Password',
+              prefixIcon: Icon(
+                Icons.vpn_key_outlined,
+                color: MyConstant.dark,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.dark),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: MyConstant.primary),
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Future<Null> register() async {
     String firstname = nameController.text;
     String lastname = lastController.text;
@@ -317,6 +375,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 buildTelNumber(size),
                 buildEmail(size),
                 buildPassword(size),
+                buildConfirmPassword(size),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

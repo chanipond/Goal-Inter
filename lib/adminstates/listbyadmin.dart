@@ -52,7 +52,7 @@ class _ListAdmin_serviceState extends State<ListAdmin_service> {
         // havedata
         for (var item in json.decode(value.data)) {
           PrefBooking model = PrefBooking.fromMap(item);
-          print('date = ${model.date}');
+          print('date = ${model.datetime_start}');
           
           setState(() {
             load = false;
@@ -120,7 +120,7 @@ class _ListAdmin_serviceState extends State<ListAdmin_service> {
                     textStyle: MyConstant().h2Style(),
                   ),
                   ShowTitle(
-                    title: 'Date: ${books[index].date}',
+                    title: 'Date: ${books[index].datetime_start}',
                     textStyle: MyConstant().h2Style(),
                   ),
                   Row(
@@ -130,7 +130,7 @@ class _ListAdmin_serviceState extends State<ListAdmin_service> {
                         textStyle: MyConstant().h3Style(),
                       ),
                     ShowTitle(
-                    title: books[index].time,
+                    title: '${books[index].datetime_end}',
                     textStyle: MyConstant().h3Style(),
                     ),
                     ],
@@ -160,7 +160,7 @@ class _ListAdmin_serviceState extends State<ListAdmin_service> {
           title: ListTile(
             // leading: Image.network(Url(booking.slip), fit: BoxFit.cover),
             title: ShowTitle(
-              title: 'Are you sure to delete ${booking.firstname} Date ${booking.date}?',
+              title: 'Are you sure to delete ${booking.firstname} Date ${booking.datetime_start}?',
               textStyle: MyConstant().h2Style(),
             ),
             // subtitle: ShowTitle(

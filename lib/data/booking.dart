@@ -7,20 +7,18 @@ class PrefBooking {
   final String id;
   final String firstname;
   final String lastname;
-  final String date;
-  final String time;
+  final String datetime_start;
+  final String datetime_end;
   final String typeField;
-  final String slip;
 
   PrefBooking({
     required this.id_booking,
     required this.id,
     required this.firstname,
     required this.lastname,
-    required this.date,
-    required this.time,
+    required this.datetime_start,
+    required this.datetime_end,
     required this.typeField, 
-    required this.slip,
 
   });
 
@@ -29,20 +27,18 @@ class PrefBooking {
     String? id,
     String? firstname,
     String? lastname,
-    String? date,
-    String? time,
+    String? datetime_start,
+    String? datetime_end,
     String? typeField,
-    String? slip,
   }) {
     return PrefBooking(
       id_booking: id_booking ?? this.id_booking,
       id: id ?? this.id,
       firstname: firstname ?? this.firstname,
       lastname: lastname ?? this.lastname,
-      date: date ?? this.date,
-      time: time ?? this.time,
+      datetime_start: datetime_start ?? this.datetime_start,
+      datetime_end: datetime_end ?? this.datetime_end,
       typeField: typeField ?? this.typeField,
-      slip: slip ?? this.slip,
     );
   }
 
@@ -52,10 +48,9 @@ class PrefBooking {
       'id': id,
       'firstname': firstname,
       'lastname': lastname,
-      'date': date,
-      'timeStart': time,
+      'datetime_start': datetime_start,
+      'datetime_end': datetime_end,
       'typeField': typeField,
-      'slip': slip,
     };
   }
 
@@ -65,15 +60,14 @@ class PrefBooking {
       id: map['id'],
       firstname: map['firstname'],
       lastname: map['lastname'],
-      date: map['date'],
-      time: map['time'],
+      datetime_start: map['datetime_start'],
+      datetime_end: map['datetime_end'],
       typeField: map['typeField'],
-      slip: map['slip'],
       // id_booking: json['id_booking'],
       // id: json['id'],
       // firstname: json['firstname'],
       // lastname: json['lastname'],
-      // date: json['date'],
+      // datetime_start: json['datetime_start'],
       // time: json['time'],
       // typeField: json['typeField'],
       // slip: json['slip'],
@@ -87,7 +81,7 @@ class PrefBooking {
 
   @override
   String toString() {
-    return 'PrefBooking(id_booking: $id_booking, id: $id, firstname: $firstname, lastname: $lastname, date: $date, time: $time, typeField: $typeField, slip: $slip)';
+    return 'PrefBooking(id_booking: $id_booking, id: $id, firstname: $firstname, lastname: $lastname, datetime_start: $datetime_start, datetime_end: $datetime_end, typeField: $typeField)';
   }
 
   @override
@@ -99,10 +93,9 @@ class PrefBooking {
         other.id == id &&
         other.firstname == firstname &&
         other.lastname == lastname &&
-        other.date == date &&
-        other.time == time &&
-        other.typeField == typeField &&
-        other.slip == slip;
+        other.datetime_start == datetime_start &&
+        other.datetime_end == datetime_end &&
+        other.typeField == typeField;
   }
 
   @override
@@ -112,9 +105,8 @@ class PrefBooking {
         id.hashCode ^
         firstname.hashCode ^
         lastname.hashCode ^
-        date.hashCode ^
-        time.hashCode ^
-        typeField.hashCode ^
-        slip.hashCode;
+        datetime_start.hashCode ^
+        datetime_end.hashCode ^
+        typeField.hashCode;
   }
 }

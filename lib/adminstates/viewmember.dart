@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, prefer_const_constructors, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 
@@ -45,7 +45,7 @@ class _Viewmember_serviceState extends State<Viewmember_service> {
         for (var item in json.decode(value.data)) {
           PrefProfile model = PrefProfile.fromMap(item);
           print('firstname = ${model.firstname}');
-          
+
           setState(() {
             load = false;
             havedata = true;
@@ -79,38 +79,44 @@ class _Viewmember_serviceState extends State<Viewmember_service> {
                     ],
                   ),
                 ),
-          
     );
-  }
-
-  String Url(String string) {
-    String result = string.substring(1, string.length - 1);
-    List<String> list = result.split(',');
-    String url = '${MyConstant.domain}/goalinter_project${list[0]}';
-    return url;
   }
 
   ListView buildListView(BoxConstraints constraints) {
     return ListView.builder(
+      padding: EdgeInsets.only(left: 20, right: 20, top: 10),
+      
       itemCount: profies.length,
       itemBuilder: (context, index) => Card(
         child: Row(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 20),
+              margin: EdgeInsets.only(top: 5),
               padding: EdgeInsets.all(10),
-              width: constraints.maxWidth * 0.5 - 4,
-              height: constraints.maxWidth * 0.5,
+              // width: constraints.maxWidth * 0.5 - 4,
+              // height: constraints.maxWidth * 0.3,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(right: 10),
+                    height: constraints.maxWidth * 0.18,
+                    child: Image.asset('asset/images/user.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ShowTitle(
-                    title: profies[index].firstname,
-                    textStyle: MyConstant().h2Style(),
-                  ),
-                  ShowTitle(
-                    title: profies[index].lastname,
+                    title: profies[index].firstname +
+                        ' ' +
+                        profies[index].lastname,
                     textStyle: MyConstant().h2Style(),
                   ),
                   ShowTitle(

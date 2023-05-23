@@ -7,7 +7,7 @@ class MyConstant {
   // Genernal
   static String appName = 'GoalInter';
     // cmd: ngrok http 80
-  static String domain = 'https://eecc-2001-fb1-3c-8739-5072-6e23-a491-cd79.ngrok-free.app';
+  static String domain = 'https://73b6-2403-6200-8967-dcc3-c982-d59-be54-ee70.ngrok-free.app';
 
   // Route
   static String routeAuthen = '/authen';

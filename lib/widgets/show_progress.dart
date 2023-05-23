@@ -15,7 +15,8 @@ class _ShowProgressState extends State<ShowProgress> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(
+      ),
     );
     
   }
