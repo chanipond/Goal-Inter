@@ -7,7 +7,7 @@ class MyConstant {
   // Genernal
   static String appName = 'GoalInter';
     // cmd: ngrok http 80
-  static String domain = 'https://73b6-2403-6200-8967-dcc3-c982-d59-be54-ee70.ngrok-free.app';
+  static String domain = 'https://6ffc-2403-6200-8967-dcc3-a918-62f9-165c-92d8.ngrok-free.app';
 
   // Route
   static String routeAuthen = '/authen';
@@ -59,6 +59,13 @@ class MyConstant {
         color: dark,
         fontWeight: FontWeight.normal,
       );
+
+    TextStyle h4Style() => TextStyle(
+        fontSize: 16,
+        color: Color.fromARGB(255, 7, 216, 14),
+        fontWeight: FontWeight.normal,
+      );
+
   TextStyle h3WhiteStyle() => TextStyle(
         fontSize: 16,
         color: Colors.white,

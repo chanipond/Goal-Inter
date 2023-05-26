@@ -58,7 +58,7 @@ class _Pay_serviceState extends State<Pay_service> {
     String id = preferences.getString('id')!;
     print('id = $id');
     String apiGetBooking =
-        '${MyConstant.domain}/goalinter_project/getidfrobook.php?isAdd=true&id=$id';
+        '${MyConstant.domain}/goalinter_project/getIdbook.php?isAdd=true&id=$id';
     
     await Dio().get(apiGetBooking).then((value) {
       print('value = $value');
@@ -80,6 +80,9 @@ class _Pay_serviceState extends State<Pay_service> {
           DateTime dateEnd = DateTime.parse(datetime_end);
 
           calTime = dateEnd.difference(dateStart).inHours;
+          if (calTime < 0) {
+            calTime = calTime * -1;
+          }
           print('calTime = $calTime');
     });
   }
@@ -274,6 +277,7 @@ class _Pay_serviceState extends State<Pay_service> {
   }
 
   Future uploadImage() async {
+    String price = (800*calTime).toString();
     if (imageField == null) {
       insertImageToMySQL();
     } else {
@@ -288,8 +292,15 @@ class _Pay_serviceState extends State<Pay_service> {
       await Dio().post(apiSaveImage, data: data).then((value) {
         slip = '/goalinter_project/slip/$nameImage';
         insertImageToMySQL(
-          id_booking: prefBooking!.id_booking,
+          id_booking: prefBooking?.id_booking,
+          id: prefBooking?.id,
+          firstname: prefBooking?.firstname,
+          lastname: prefBooking?.lastname,
+          typeField: prefBooking?.typeField,
+          datetime_start: prefBooking?.datetime_start,
+          datetime_end: prefBooking?.datetime_end,
           slip: slip,
+          price: price,
         );
       });
     }
@@ -297,17 +308,26 @@ class _Pay_serviceState extends State<Pay_service> {
 
   Future insertImageToMySQL({
     String? id_booking,
+    String? id,
+    String? firstname,
+    String? lastname,
+    String? typeField,
+    String? datetime_start,
+    String? datetime_end,
     String? slip,
+    String? price,
   }) async {
     print('slip => $slip');
     String apiInsertImage =
-        '${MyConstant.domain}/goalinter_project/insertSlipping.php?isAdd=true&id_booking=$id_booking&slip=$slip';
+        '${MyConstant.domain}/goalinter_project/insertSlipping.php?isAdd=true&id_booking=$id_booking&id=$id&firstname=$firstname&lastname=$lastname&typeField=$typeField&datetime_start=$datetime_start&datetime_end=$datetime_end&slip=$slip&price=$price&status=s';
     await Dio().get(apiInsertImage).then((value) {
       if (value.toString() == 'true') {
         print('success');
+        Navigator.pushNamedAndRemoveUntil(context, '/member_service', (route) => false);
       } else {
         MyConstant().normalDialog(context, 'Error', 'Please Try Again');
       }
+
     });
   }
 

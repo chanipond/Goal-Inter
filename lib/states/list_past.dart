@@ -1,28 +1,27 @@
+// ignore_for_file: camel_case_types
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:goalinter/data/booking.dart';
-import 'package:goalinter/data/slipping.dart';
+import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/widgets/show_progress.dart';
 import 'package:goalinter/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utillity/my_constant.dart';
-import '../widgets/show_image.dart';
-
-class List_service extends StatefulWidget {
-  const List_service({Key? key}) : super(key: key);
+class List_Past extends StatefulWidget {
+  const List_Past({Key? key}) : super(key: key);
 
   @override
-  State<List_service> createState() => _List_serviceState();
+  State<List_Past> createState() => _List_PastState();
 }
 
-class _List_serviceState extends State<List_service> {
+class _List_PastState extends State<List_Past> {
   bool load = true;
   bool? havedata;
   List<PrefBooking> books = [];
-  List<PrefSlip> slips = [];
 
   @override
   void initState() {
@@ -46,13 +45,13 @@ class _List_serviceState extends State<List_service> {
       } else {
         // havedata
         for (var item in json.decode(value.data)) {
-          PrefSlip model = PrefSlip.fromMap(item);
+          PrefBooking model = PrefBooking.fromMap(item);
           print('id = ${model.id}');
 
           setState(() {
             load = false;
             havedata = true;
-            slips.add(model);
+            books.add(model);
           });
         }
       }
@@ -61,7 +60,6 @@ class _List_serviceState extends State<List_service> {
 
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width;
     return load
         ? ShowProgress()
         : havedata!
@@ -79,20 +77,34 @@ class _List_serviceState extends State<List_service> {
               );
   }
 
-  String Url(String string) {
-    String result = string.substring(1, string.length - 1);
-    List<String> list = result.split(',');
-    String url = '${MyConstant.domain}/goalinter_project${list[0]}';
-    return url;
+  Future<Null> showAlertDiaLog(PrefBooking book) async {
+    showDialog(
+        context: context,
+        builder: (context) => SimpleDialog(
+              title: ListTile(
+                title: ShowTitle(
+                  title: book.datetime_start,
+                  textStyle: MyConstant().h2Style(),
+                ),
+                subtitle: ShowTitle(
+                  title: book.datetime_end,
+                  textStyle: MyConstant().h3Style(),
+                ),
+              ),
+              children: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context), child: Text('OK'))
+              ],
+            ));
   }
 
   ListView buildListView(BoxConstraints constraints) {
     return ListView.builder(
-      itemCount: slips.length,
+      itemCount: books.length,
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {
           print('you click index $index');
-          showAlertDiaLog(slips[index]);
+          showAlertDiaLog(books[index]);
         },
         child: Card(
           child: Row(
@@ -106,42 +118,26 @@ class _List_serviceState extends State<List_service> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ShowTitle(
+                    Row(
+                      children: [
+                        ShowTitle(
                           title: '⏲️ Time: ',
                           textStyle: MyConstant().h3Style(),
                         ),
-                    ShowTitle(
-                      title: (slips[index].datetime_start).toString(),
-                      textStyle: MyConstant().h2Style(),
-                    ),
-                    ShowTitle(
-                          title: ' to ',
+                        ShowTitle(
+                          title: 'Date: ${books[index].datetime_start}',
                           textStyle: MyConstant().h2Style(),
                         ),
                         ShowTitle(
-                          title: slips[index].datetime_end,
+                          title: ' - ',
                           textStyle: MyConstant().h2Style(),
                         ),
-                    // Row(
-                    //   children: [
-                    //     ShowTitle(
-                    //       title: '⏲️ Time: ',
-                    //       textStyle: MyConstant().h3Style(),
-                    //     ),
-                    //     ShowTitle(
-                    //       title: 'Date: ${slips[index].datetime_start}',
-                    //       textStyle: MyConstant().h2Style(),
-                    //     ),
-                    //     ShowTitle(
-                    //       title: ' - ',
-                    //       textStyle: MyConstant().h2Style(),
-                    //     ),
-                    //     ShowTitle(
-                    //       title: slips[index].datetime_end,
-                    //       textStyle: MyConstant().h3Style(),
-                    //     ),
-                    //   ],
-                    // ),
+                        ShowTitle(
+                          title: books[index].datetime_end,
+                          textStyle: MyConstant().h3Style(),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -149,22 +145,6 @@ class _List_serviceState extends State<List_service> {
           ),
         ),
       ),
-    );
-  }
-  
-  Future<Null> showAlertDiaLog(PrefSlip slip) async{
-    showDialog(
-      context: context,
-      builder: (context) => SimpleDialog(
-        title: ListTile(
-          leading: Image.network('${MyConstant.domain}${slip.slip}'),
-          title: ShowTitle(title: 'Price: ${slip.price} THB', textStyle: MyConstant().h2Style(),),
-          subtitle: ShowTitle(title: 'Success', textStyle: MyConstant().h4Style(),),
-        ),
-        children: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('OK'))
-        ],
-      )
     );
   }
 }

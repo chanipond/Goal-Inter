@@ -25,6 +25,9 @@ import 'package:goalinter/states/field_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:goalinter/states/book_service.dart';
 import 'package:goalinter/states/pay.dart';
+import 'package:goalinter/states/list_past.dart';
+
+import 'package:google_fonts/google_fonts.dart';
 
 final Map<String, WidgetBuilder> map = {
   '/authen':(BuildContext context) => Authen(),
@@ -48,6 +51,7 @@ final Map<String, WidgetBuilder> map = {
   '/adminpay':(BuildContext context) => Adminpay(),
   '/book_service':(BuildContext context) => Book_service(),
   '/pay':(BuildContext context) => Pay_service(),
+  '/list_past':(BuildContext context) => List_Past(),
 
 
   
@@ -86,6 +90,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: MyConstant.appName,
+      theme: ThemeData(fontFamily: GoogleFonts.kanit().fontFamily),
       routes: map,
       initialRoute: initlaRoute,
       debugShowCheckedModeBanner: false,
