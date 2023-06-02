@@ -85,99 +85,99 @@ class _Member_ServiceState extends State<Member_Service> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text(''),
-        backgroundColor: MyConstant.primary,
-      ),
-      drawer: Drawer(
-        child: LayoutBuilder(
-          builder: (context, constraint) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                child: IntrinsicHeight(
-                  child: Column(
-                    children: <Widget>[
-                      // DrawerHeader(
-                      //   decoration: BoxDecoration(
-                      //     color: MyConstant.primary,
-                      //   ),
-                      //   margin: EdgeInsets.all(0.0),
-                      //   child: Center(
-                      //     child: Text("Goal-Inter"),
-                      //   ),
+      // appBar: AppBar(
+      //   // title: Text(''),
+      //   backgroundColor: MyConstant.primary,
+      // ),
+      // drawer: Drawer(
+      //   child: LayoutBuilder(
+      //     builder: (context, constraint) {
+      //       return SingleChildScrollView(
+      //         child: ConstrainedBox(
+      //           constraints: BoxConstraints(minHeight: constraint.maxHeight),
+      //           child: IntrinsicHeight(
+      //             child: Column(
+      //               children: <Widget>[
+      //                 // DrawerHeader(
+      //                 //   decoration: BoxDecoration(
+      //                 //     color: MyConstant.primary,
+      //                 //   ),
+      //                 //   margin: EdgeInsets.all(0.0),
+      //                 //   child: Center(
+      //                 //     child: Text("Goal-Inter"),
+      //                 //   ),
 
-                      // ),
-                      UserAccountsDrawerHeader(
-                        decoration: BoxDecoration(
-                          color: MyConstant.primary,
-                        ),
-                        accountName: Text(profiles == null
-                            ? 'firstname'
-                            : profiles!.firstname),
-                        accountEmail: Text(profiles == null
-                            ? 'email'
-                            : profiles!.email),
-                      ),
-                      ListTile(
-                        title: Text("Information"),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      Info_service()));
-                        },
-                      ),
-                      ListTile(
-                        title: Text("Goal-Inter Football Field"),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      Field_service()));
-                        },
-                      ),
-                      ListTile(
-                        title: Text("Booking"),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      Book_service()));
-                        },
-                      ),
-                      Expanded(child: SizedBox()),
-                      Divider(
-                          height: 1.0, color: Color.fromARGB(255, 17, 17, 17)),
-                      ListTile(
-                        leading: Icon(Icons.exit_to_app),
-                        title: Text("Logout"),
-                        onTap: () async {
-                          SharedPreferences preferences =
-                              await SharedPreferences.getInstance();
-                          preferences.clear().then((value) =>
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Authen()),
-                                  (route) => false));
-                        },
-                      )
-                    ],
-                  ),
-                  // child: ShowSignOut(),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+      //                 // ),
+      //                 UserAccountsDrawerHeader(
+      //                   decoration: BoxDecoration(
+      //                     color: MyConstant.primary,
+      //                   ),
+      //                   accountName: Text(profiles == null
+      //                       ? 'firstname'
+      //                       : profiles!.firstname),
+      //                   accountEmail: Text(profiles == null
+      //                       ? 'email'
+      //                       : profiles!.email),
+      //                 ),
+      //                 ListTile(
+      //                   title: Text("Information"),
+      //                   onTap: () {
+      //                     Navigator.of(context).pop();
+      //                     Navigator.push(
+      //                         context,
+      //                         MaterialPageRoute(
+      //                             builder: (BuildContext context) =>
+      //                                 Info_service()));
+      //                   },
+      //                 ),
+      //                 ListTile(
+      //                   title: Text("Goal-Inter Football Field"),
+      //                   onTap: () {
+      //                     Navigator.of(context).pop();
+      //                     Navigator.push(
+      //                         context,
+      //                         MaterialPageRoute(
+      //                             builder: (BuildContext context) =>
+      //                                 Field_service()));
+      //                   },
+      //                 ),
+      //                 ListTile(
+      //                   title: Text("Booking"),
+      //                   onTap: () {
+      //                     Navigator.of(context).pop();
+      //                     Navigator.push(
+      //                         context,
+      //                         MaterialPageRoute(
+      //                             builder: (BuildContext context) =>
+      //                                 Book_service()));
+      //                   },
+      //                 ),
+      //                 Expanded(child: SizedBox()),
+      //                 Divider(
+      //                     height: 1.0, color: Color.fromARGB(255, 17, 17, 17)),
+      //                 ListTile(
+      //                   leading: Icon(Icons.exit_to_app),
+      //                   title: Text("Logout"),
+      //                   onTap: () async {
+      //                     SharedPreferences preferences =
+      //                         await SharedPreferences.getInstance();
+      //                     preferences.clear().then((value) =>
+      //                         Navigator.pushAndRemoveUntil(
+      //                             context,
+      //                             MaterialPageRoute(
+      //                                 builder: (context) => Authen()),
+      //                             (route) => false));
+      //                   },
+      //                 )
+      //               ],
+      //             ),
+      //             // child: ShowSignOut(),
+      //           ),
+      //         ),
+      //       );
+      //     },
+      //   ),
+      // ),
       body: Center(
         child: _widgetOptions.elementAt(currentIndex),
         // Text(
@@ -185,19 +185,19 @@ class _Member_ServiceState extends State<Member_Service> {
         //   style: MyConstant().h1Style(),
         // ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Book_service(),
-            ),
-          );
-        },
-        label: Text('Booking'),
-        icon: Icon(Icons.add_circle_outline),
-        backgroundColor: MyConstant.dark,
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => Book_service(),
+      //       ),
+      //     );
+      //   },
+      //   label: Text('Booking'),
+      //   icon: Icon(Icons.add_circle_outline),
+      //   backgroundColor: MyConstant.dark,
+      // ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: MyConstant.primary,
         selectedItemColor: MyConstant.dark,

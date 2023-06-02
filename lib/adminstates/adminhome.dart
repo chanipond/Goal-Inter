@@ -4,26 +4,25 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:goalinter/adminstates/admininfor_service.dart';
+import 'package:goalinter/adminstates/viewmember.dart';
 import 'package:goalinter/data/profile.dart';
 import 'package:goalinter/states/Field_service.dart';
 import 'package:goalinter/states/authen.dart';
 import 'package:goalinter/states/book_service.dart';
-import 'package:goalinter/states/booking_service.dart';
-import 'package:goalinter/states/infor_service.dart';
+import 'package:goalinter/utillity/my_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utillity/my_constant.dart';
-import '../widgets/show_image.dart';
-
-class Home_service extends StatefulWidget {
-  const Home_service({Key? key}) : super(key: key);
+class AdminHome extends StatefulWidget {
+  const AdminHome({Key? key}) : super(key: key);
 
   @override
-  State<Home_service> createState() => _Home_serviceState();
+  State<AdminHome> createState() => _AdminHomeState();
 }
 
-class _Home_serviceState extends State<Home_service> {
+class _AdminHomeState extends State<AdminHome> {
   PrefProfile? profiles;
 
   @override
@@ -98,28 +97,19 @@ class _Home_serviceState extends State<Home_service> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 10),
-              child: Image.asset('asset/images/open.jpg', fit: BoxFit.cover),
+              child: Image.asset('asset/images/open_admin.jpg', fit: BoxFit.cover),
             ),
                 
             Padding(
-              padding: const EdgeInsets.only(left: 35, right: 35),
+              padding: const EdgeInsets.only(left: 40, right: 40),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Info_service()));
+                          MaterialPageRoute(builder: (context) => AdminInfor_service()));
                     },
-                    child: Column(
-                      children: [
-                        Icon(Icons.newspaper_rounded, color: Color.fromARGB(255, 26, 26, 26), size: 50),
-                        Text(
-                          'Informations',
-                          style: TextStyle(color: Color.fromARGB(255, 26, 26, 26)),
-                        ),
-                      ],
-                    ),
                     style: ElevatedButton.styleFrom(
                         primary: Color.fromARGB(255, 201, 201, 201),
                         shape: RoundedRectangleBorder(
@@ -128,6 +118,15 @@ class _Home_serviceState extends State<Home_service> {
                         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                         textStyle:
                             TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    child: Column(
+                      children: [
+                        Icon(Icons.newspaper_rounded, color: Color.fromARGB(255, 26, 26, 26), size: 50),
+                        Text(
+                          'Information',
+                          style: TextStyle(color: Color.fromARGB(255, 26, 26, 26)),
+                        ),
+                      ],
                     ),
                   ),
                   ElevatedButton(
@@ -159,32 +158,63 @@ class _Home_serviceState extends State<Home_service> {
             ),
 
             Padding(
-              padding: const EdgeInsets.only(left: 0, right: 170, top: 20, bottom: 50),
-              child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Book_service()));
-                      },
-                      child: Column(
-                        children: [
-                          Icon(Icons.bookmark_add_rounded, color: Color.fromARGB(255, 26, 26, 26), size: 50),
-                          Text(
-                            'Booking',
-                            style: TextStyle(color: Color.fromARGB(255, 26, 26, 26)),
-                          ),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 235, 217, 128),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 45, vertical: 30),
-                          textStyle:
-                              TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                      ),
+              padding: const EdgeInsets.only(left: 42, right: 41, top: 20, bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Viewmember_service()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                        primary: Color.fromARGB(255, 252, 210, 94),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 41, vertical: 30),
+                        textStyle:
+                            TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                     ),
-            ),
+                    child: Column(
+                      children: [
+                        Icon(Icons.list_alt_rounded, color: Color.fromARGB(255, 26, 26, 26), size: 50),
+                        Text(
+                          'Member',
+                          style: TextStyle(color: Color.fromARGB(255, 26, 26, 26)),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Book_service()));
+                    },
+                    child: Column(
+                      children: [
+                        Icon(Icons.book_online_rounded, color: Color.fromARGB(255, 26, 26, 26), size: 50),
+                        Text(
+                          'Booking',
+                          style: TextStyle(color: Color.fromARGB(255, 26, 26, 26)),
+                        ),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        primary: Color.fromARGB(255, 244, 133, 133),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 45, vertical: 30),
+                        textStyle:
+                            TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  ],
+                ),
+              ),
+
+            
           ],
         ),
       ),

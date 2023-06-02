@@ -43,7 +43,7 @@ class _AddInforState extends State<AddInfor> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Add Information'),
-          backgroundColor: MyConstant.gray,
+          backgroundColor: MyConstant.primary,
         ),
         body: LayoutBuilder(
           builder: (context, constraints) => GestureDetector(

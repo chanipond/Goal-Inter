@@ -7,6 +7,7 @@ class PrefBooking {
   final String id;
   final String firstname;
   final String lastname;
+  final String date;
   final String datetime_start;
   final String datetime_end;
   final String typeField;
@@ -16,6 +17,7 @@ class PrefBooking {
     required this.id,
     required this.firstname,
     required this.lastname,
+    required this.date,
     required this.datetime_start,
     required this.datetime_end,
     required this.typeField, 
@@ -27,6 +29,7 @@ class PrefBooking {
     String? id,
     String? firstname,
     String? lastname,
+    String? date,
     String? datetime_start,
     String? datetime_end,
     String? typeField,
@@ -36,6 +39,7 @@ class PrefBooking {
       id: id ?? this.id,
       firstname: firstname ?? this.firstname,
       lastname: lastname ?? this.lastname,
+      date: date ?? this.date,
       datetime_start: datetime_start ?? this.datetime_start,
       datetime_end: datetime_end ?? this.datetime_end,
       typeField: typeField ?? this.typeField,
@@ -48,6 +52,7 @@ class PrefBooking {
       'id': id,
       'firstname': firstname,
       'lastname': lastname,
+      'date': date,
       'datetime_start': datetime_start,
       'datetime_end': datetime_end,
       'typeField': typeField,
@@ -60,6 +65,7 @@ class PrefBooking {
       id: map['id'],
       firstname: map['firstname'],
       lastname: map['lastname'],
+      date: map['date'],
       datetime_start: map['datetime_start'],
       datetime_end: map['datetime_end'],
       typeField: map['typeField'],
@@ -81,7 +87,7 @@ class PrefBooking {
 
   @override
   String toString() {
-    return 'PrefBooking(id_booking: $id_booking, id: $id, firstname: $firstname, lastname: $lastname, datetime_start: $datetime_start, datetime_end: $datetime_end, typeField: $typeField)';
+    return 'PrefBooking(id_booking: $id_booking, id: $id, firstname: $firstname, lastname: $lastname, date: $date, datetime_start: $datetime_start, datetime_end: $datetime_end, typeField: $typeField)';
   }
 
   @override
@@ -93,6 +99,7 @@ class PrefBooking {
         other.id == id &&
         other.firstname == firstname &&
         other.lastname == lastname &&
+        other.date == date &&
         other.datetime_start == datetime_start &&
         other.datetime_end == datetime_end &&
         other.typeField == typeField;
@@ -105,6 +112,7 @@ class PrefBooking {
         id.hashCode ^
         firstname.hashCode ^
         lastname.hashCode ^
+        date.hashCode ^
         datetime_start.hashCode ^
         datetime_end.hashCode ^
         typeField.hashCode;

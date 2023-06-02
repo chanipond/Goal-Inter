@@ -72,7 +72,7 @@ class _AdminInfor_serviceState extends State<AdminInfor_service> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Information'),
-        backgroundColor: MyConstant.gray,
+        backgroundColor: MyConstant.primary,
       ),
       body: load
           ? ShowProgress()

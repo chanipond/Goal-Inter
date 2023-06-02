@@ -7,7 +7,7 @@ class MyConstant {
   // Genernal
   static String appName = 'GoalInter';
     // cmd: ngrok http 80
-  static String domain = 'https://6ffc-2403-6200-8967-dcc3-a918-62f9-165c-92d8.ngrok-free.app';
+  static String domain = 'https://75c7-2403-6200-8967-dcc3-f089-1783-3c2d-9140.ngrok-free.app';
 
   // Route
   static String routeAuthen = '/authen';
@@ -31,7 +31,7 @@ class MyConstant {
   // Color
   static Color primary = Color(0xff73A9AD);
   static Color dark = Color(0xff2C3333);
-  static Color ligth = Color(0xff395B64);
+  static Color light = Color(0xff395B64);
   static Color button = Color(0xffFEF9A7);
   static Color white = Color.fromARGB(255, 255, 255, 255);
   static Color gray = Color.fromARGB(255, 212, 212, 212);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:goalinter/adminstates/addinfor.dart';
 import 'package:goalinter/adminstates/admin_service.dart';
 import 'package:goalinter/adminstates/adminbooking.dart';
+import 'package:goalinter/adminstates/adminhome.dart';
 import 'package:goalinter/adminstates/admininfor_service.dart';
 import 'package:goalinter/adminstates/adminpay.dart';
 import 'package:goalinter/adminstates/editinfor_service.dart';
@@ -52,6 +53,7 @@ final Map<String, WidgetBuilder> map = {
   '/book_service':(BuildContext context) => Book_service(),
   '/pay':(BuildContext context) => Pay_service(),
   '/list_past':(BuildContext context) => List_Past(),
+  '/adminhome':(BuildContext context) => AdminHome(),
 
 
   

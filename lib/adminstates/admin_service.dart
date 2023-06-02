@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:goalinter/adminstates/adminbooking.dart';
+import 'package:goalinter/adminstates/adminhome.dart';
 import 'package:goalinter/adminstates/admininfor_service.dart';
 import 'package:goalinter/adminstates/listbyadmin.dart';
 import 'package:goalinter/adminstates/viewmember.dart';
@@ -23,7 +24,7 @@ class Admin_Service extends StatefulWidget {
 class _Admin_ServiceState extends State<Admin_Service> {
   int currentIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
-    Home_service(),
+    AdminHome(),
     ListAdmin_service(),
     Contact_service(),
   ];
@@ -37,10 +38,10 @@ class _Admin_ServiceState extends State<Admin_Service> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: Text(''),
-        backgroundColor: MyConstant.gray,
-      ),
+      // appBar: AppBar(
+      //   // title: Text(''),
+      //   backgroundColor: MyConstant.gray,
+      // ),
       drawer: Drawer(
         child: LayoutBuilder(
           builder: (context, constraint) {
@@ -121,11 +122,11 @@ class _Admin_ServiceState extends State<Admin_Service> {
         child: _widgetOptions.elementAt(currentIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: MyConstant.gray,
-        selectedItemColor: MyConstant.white,
+        backgroundColor: MyConstant.primary,
+        selectedItemColor: MyConstant.dark,
         iconSize: 25,
         // selectedFontSize: 18,
-        unselectedItemColor: Color.fromARGB(255, 160, 160, 160),
+        unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
         // unselectedFontSize: 14,
         showUnselectedLabels: false,
         // currentIndex: currentIndex,

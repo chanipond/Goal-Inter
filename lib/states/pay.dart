@@ -13,7 +13,9 @@ import 'package:goalinter/utillity/my_constant.dart';
 import 'package:goalinter/utillity/sqlite_helper.dart';
 import 'package:goalinter/widgets/show_title.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mailer/mailer.dart';
 
 class Pay_service extends StatefulWidget {
   const Pay_service({Key? key}) : super(key: key);
@@ -80,6 +82,7 @@ class _Pay_serviceState extends State<Pay_service> {
           DateTime dateEnd = DateTime.parse(datetime_end);
 
           calTime = dateEnd.difference(dateStart).inHours;
+          calTime+=1;
           if (calTime < 0) {
             calTime = calTime * -1;
           }
@@ -105,7 +108,8 @@ class _Pay_serviceState extends State<Pay_service> {
             child: Column(
               children: [
                 Center(child: buildHead("List Detail")),
-                buildTitle("DateTime: " '${prefBooking?.datetime_start}'),
+                // buildTitle("Date: ${prefBooking!.date}"),
+                buildTitle("Time: " '${prefBooking?.datetime_start}'),
                 buildTitle("To " '${prefBooking?.datetime_end}'),
                 // buildTitle("Time: " '${prefBooking?.time!=null?(prefBooking?.time??'').substring(1, 8)+(prefBooking?.time??'').substring((prefBooking!.time.length) -7, (prefBooking!.time.length) -1):''}'),
                 buildTitle("Field: " '${prefBooking?.typeField}' "\n"),
@@ -296,6 +300,7 @@ class _Pay_serviceState extends State<Pay_service> {
           id: prefBooking?.id,
           firstname: prefBooking?.firstname,
           lastname: prefBooking?.lastname,
+          date: prefBooking?.date,
           typeField: prefBooking?.typeField,
           datetime_start: prefBooking?.datetime_start,
           datetime_end: prefBooking?.datetime_end,
@@ -311,6 +316,7 @@ class _Pay_serviceState extends State<Pay_service> {
     String? id,
     String? firstname,
     String? lastname,
+    String? date,
     String? typeField,
     String? datetime_start,
     String? datetime_end,
@@ -319,7 +325,7 @@ class _Pay_serviceState extends State<Pay_service> {
   }) async {
     print('slip => $slip');
     String apiInsertImage =
-        '${MyConstant.domain}/goalinter_project/insertSlipping.php?isAdd=true&id_booking=$id_booking&id=$id&firstname=$firstname&lastname=$lastname&typeField=$typeField&datetime_start=$datetime_start&datetime_end=$datetime_end&slip=$slip&price=$price&status=s';
+        '${MyConstant.domain}/goalinter_project/insertSlipping.php?isAdd=true&id_booking=$id_booking&id=$id&firstname=$firstname&lastname=$lastname&date=$date&typeField=$typeField&datetime_start=$datetime_start&datetime_end=$datetime_end&slip=$slip&price=$price&status=s';
     await Dio().get(apiInsertImage).then((value) {
       if (value.toString() == 'true') {
         print('success');
@@ -332,3 +338,5 @@ class _Pay_serviceState extends State<Pay_service> {
   }
 
 }
+
+

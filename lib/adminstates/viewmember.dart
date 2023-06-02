@@ -60,7 +60,7 @@ class _Viewmember_serviceState extends State<Viewmember_service> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyConstant.gray,
+        backgroundColor: MyConstant.primary,
         title: Text("Member"),
       ),
       body: load
