@@ -123,10 +123,10 @@ class _Admin_ServiceState extends State<Admin_Service> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: MyConstant.primary,
-        selectedItemColor: MyConstant.dark,
+        selectedItemColor: MyConstant.white,
         iconSize: 25,
         // selectedFontSize: 18,
-        unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
+        unselectedItemColor: MyConstant.dark,
         // unselectedFontSize: 14,
         showUnselectedLabels: false,
         // currentIndex: currentIndex,

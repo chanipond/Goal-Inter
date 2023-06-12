@@ -22,45 +22,87 @@ class Adminpay extends StatefulWidget {
 }
 
 class _AdminpayState extends State<Adminpay> {
-  final formKey = GlobalKey<FormState>();
+  File? imageField;
   String slip = '';
-  List<File> files = [];
-  File? file;
-  String? date = datetest;
-  String? time = timetest;
-  String? typeField = fieldtest;
-  PrefBooking? booking;
+  int calTime = 0;
+
+  PrefBooking? prefBooking;
 
   @override
   void initState() {
     super.initState();
+    findBooking();
+    print('calTime = $calTime');
   }
 
 
   
-  @override
+  Future<Null> findBooking() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    // String id_booking = preferences.getString('id_booking')!;
+    String id = preferences.getString('id')!;
+    print('id = $id');
+    String apiGetBooking =
+        '${MyConstant.domain}/goalinter_project/getIdbook.php?isAdd=true&id=$id';
+    
+    await Dio().get(apiGetBooking).then((value) {
+      print('value = $value');
+      for (var item in json.decode(value.data)) {
+        setState(() {
+          prefBooking = PrefBooking.fromMap(item);
+        });
+      }
+          print('id_booking = ${prefBooking!.id_booking}');
+          print('datetime_start = ${(DateTime.parse(prefBooking!.datetime_start)).toString()}');
+          print('datetime_end = ${(DateTime.parse(prefBooking!.datetime_end)).toString()}');
+          print('typeField = ${prefBooking!.typeField}');
+
+
+          String datetime_start = DateTime.parse(prefBooking!.datetime_start).toString();
+          String datetime_end = DateTime.parse(prefBooking!.datetime_end).toString();
+
+          DateTime dateStart = DateTime.parse(datetime_start);
+          DateTime dateEnd = DateTime.parse(datetime_end);
+
+          calTime = dateEnd.difference(dateStart).inHours;
+          calTime+=1;
+          if (calTime < 0) {
+            calTime = calTime * -1;
+          }
+          print('calTime = $calTime');
+    });
+  }
+
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar:
-          AppBar(backgroundColor: MyConstant.gray, title: Text("Booking")),
-      body: SafeArea(
+          AppBar(
+            backgroundColor: MyConstant.primary, 
+            title: Text("Payment"),
+            
+            ),
+      body: SingleChildScrollView(
           child: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         behavior: HitTestBehavior.opaque,
         child: Form(
-          key: formKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                buildTitle("Date: $date "),
-                buildTitle("Time: $time "),
-                buildTitle("Field: $typeField "),
-                buildTitle("Promtpay : 0870754451"),
-                buildTitle("Price : 800 Bath"),
-                buildTitle("Upload payment receipt"),
-                buildslip(size),
-                buildbook(size)
+                Center(child: buildHead("List Detail")),
+                // buildTitle("Date: ${prefBooking!.date}"),
+                buildTitle("Time: " '${prefBooking?.datetime_start}'),
+                buildTitle("To " '${prefBooking?.datetime_end}'),
+                // buildTitle("Time: " '${prefBooking?.time!=null?(prefBooking?.time??'').substring(1, 8)+(prefBooking?.time??'').substring((prefBooking!.time.length) -7, (prefBooking!.time.length) -1):''}'),
+                buildTitle("Field: " '${prefBooking?.typeField}' "\n"),
+                myDivider(),
+                Center(child: buildHead("Payment")),
+                buildImage(size),
+                buildTitle("Amount: ${800*calTime}"),
+                buildPickPic(size),
+                buildbtnpick(),
+                buildButton(),
               ],
             ),
           ),
@@ -69,51 +111,19 @@ class _AdminpayState extends State<Adminpay> {
     );
   }
 
-  Future<Null> chooseImage(ImageSource source) async {
-    try {
-      var object = await ImagePicker().pickImage(
-        source: source,
-        maxWidth: 800,
-        maxHeight: 800,
-      );
-
-      setState(() {
-        file = File(object!.path);
-      });
-    } catch (e) {}
-  }
-
-  Row buildslip(double size) {
-    return Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                      onPressed: () => chooseImage(ImageSource.camera),
-                      icon: Icon(
-                        Icons.add_a_photo_rounded,
-                        size: 30,
-                      )),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 16),
-                    width: size*0.5,
-                    child: file == null
-                        ? ShowImage(path: MyConstant.imagepay)
-                        : Image.file(file!),
-                  ),
-                  IconButton(
-                      onPressed: () => chooseImage(ImageSource.gallery),
-                      icon: Icon(
-                        Icons.add_photo_alternate_rounded,
-                        size: 30,
-                      )),
-                ],
-              );
+  Container buildHead(String title) {
+    return Container(
+      margin: EdgeInsets.only(top: 16, bottom: 16),
+      child: ShowTitle(
+        title: title,
+        textStyle: MyConstant().h1Style(),
+      ),
+    );
   }
 
   Container buildTitle(String title) {
     return Container(
-      margin: EdgeInsets.only(top: 16, bottom: 16),
+      margin: EdgeInsets.only(top: 10, bottom: 10),
       child: ShowTitle(
         title: title,
         textStyle: MyConstant().h2Style(),
@@ -121,99 +131,211 @@ class _AdminpayState extends State<Adminpay> {
     );
   }
 
-  Row buildbook(double size) {
+  Widget myDivider() => Divider(
+        color: Color.fromARGB(255, 147, 148, 147),
+        height: 1.0,
+      );
+
+  Row buildImage(double size) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 16),
-          width: size * 0.6,
-          child: ElevatedButton(
-            style: MyConstant().MyButtonStyle(),
-            onPressed: () {
-              if (formKey.currentState!.validate()) {
-                if (file == null) {
-                  print('non choose payment receipt');
-                  
-
-                  MyConstant().normalDialog(
-                      context, '❌❌❌', 'Please choose payment receip');
-                  processInsertMySQL();
-                } else {
-                  print('Process Insert to Database');
-                  uploadPicture();
-                  Navigator.pushReplacementNamed(context, '/admin_service');
-                }
-              }
-            },
-            
-            child: Text(
-              'Book',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+            margin: EdgeInsets.only(top: 16),
+            width: size * 0.4,
+            child: Image.network('https://promptpay.io/0922653849/${(800*calTime).toString()}', fit: BoxFit.cover),
+            // child: Image.asset(
+            //   'asset/images/qr.jpg', 
+            //   fit: BoxFit.cover
+              
+            // )
             ),
-          ),
-        ),
       ],
     );
   }
 
-  Future<Null> uploadPicture() async {
-    String apisaveSlip = '${MyConstant.domain}/goalinter_project/saveSlip.php';
-    int i = Random().nextInt(100000);
-    String nameFile = 'slip$i.jpg';
-    Map<String, dynamic> map = Map();
-    map['file'] = await MultipartFile.fromFile(file!.path,filename: nameFile);
-    FormData data = FormData.fromMap(map);
-    await Dio().post(apisaveSlip, data: data).then((value) {
-    print('value = $value');
-    slip = '/goalinter_project/slip/$nameFile';
-  });
+  Column buildPickPic(double size) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (imageField != null)
+          Container(
+            width: 250,
+            height: 300,
+            margin: EdgeInsets.only(top: 16),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              image: DecorationImage(image: FileImage(imageField!)),
+              border: Border.all(width: 2, color: Colors.grey),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          )
+        else
+          Container(
+              width: 250,
+              height: 300,
+              margin: EdgeInsets.only(top: 16),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border.all(width: 2, color: Colors.grey),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                'No Slip',
+                style: TextStyle(fontSize: 20),
+              )),
+      ],
+    );
+  }
 
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? id = preferences.getString('id');
-    String path =
-        '${MyConstant.domain}/goalinter_project/getidbookWhereid.php?isAdd=true&id=$id&status=w';
-    await Dio().get(path).then((value) async {
-      if (value.toString() == 'null') {
-        if (file == null) {
-          // No picture
-        } else {
-          // Have picture
-          String apisaveSlip = '${MyConstant.domain}/goalinter_project/saveSlip.php';
-          int i = Random().nextInt(100000);
-          String nameSlip = 'slip$i.jpg';
-          Map<String, dynamic> map = Map();
-          map['file'] =
-              await MultipartFile.fromFile(file!.path, filename: nameSlip);
-          FormData data = FormData.fromMap(map);
-          await Dio().post(apisaveSlip, data: data).then((value) {
-            slip = '/goalinter_project/slip/$nameSlip';
-            processInsertMySQL();
-          });
-        }
+  Row buildbtnpick() {
+    return Row(
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        Expanded(
+            child: ElevatedButton(
+                onPressed: () => chooseImage(source: ImageSource.camera),
+                child: Text(
+                  'Camera',
+                  style: TextStyle(fontSize: 16),
+                ))),
+        SizedBox(
+          width: 20,
+        ),
+        Expanded(
+            child: ElevatedButton(
+                onPressed: () => chooseImage(source: ImageSource.gallery),
+                child: Text(
+                  'Gallery',
+                  style: TextStyle(fontSize: 16),
+                ))),
+      ],
+    );
+  }
+
+  Container buildButton() {
+    return Container(
+      margin: EdgeInsets.only(top: 16, bottom: 16),
+      width: 250,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: MyConstant.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        onPressed: () {
+          if (imageField == null) {
+            MyConstant()
+                .normalDialog(context, 'ไม่มีใบเสร็จ', 'กรุณาเลือกภาพใบเสร็จ');
+          } else {
+            print("Confirm");
+            uploadImage();
+          }
+        },
+        child: Text('Confirm', style: TextStyle(fontSize: 16)),
+      ),
+    );
+  }
+
+  // void getImage({required ImageSource source}) async {
+  //   final file = await ImagePicker().pickImage(source: source);
+
+  //   if(file?.path != null){
+  //     setState(() {
+  //       imageField = File(file!.path);
+  //     });
+  //   }
+  // }
+
+  Future<Null> chooseImage({required ImageSource source}) async {
+    try {
+      var file = await ImagePicker().pickImage(
+        source: source,
+        maxWidth: 800,
+        maxHeight: 800,
+      );
+      setState(() {
+        imageField = File(file!.path);
+      });
+    } catch (e) {}
+  }
+
+  Future uploadImage() async {
+    String price = (800*calTime).toString();
+    if (imageField == null) {
+      insertImageToMySQL();
+    } else {
+      String apiSaveImage =
+          '${MyConstant.domain}/goalinter_project/saveSlip.php';
+      int i = Random().nextInt(10000);
+      String nameImage = 'slip$i.jpg';
+      Map<String, dynamic> map = Map();
+      map['file'] =
+          await MultipartFile.fromFile(imageField!.path, filename: nameImage);
+      FormData data = FormData.fromMap(map);
+      await Dio().post(apiSaveImage, data: data).then((value) {
+        slip = '/goalinter_project/slip/$nameImage';
+        insertImageToMySQL(
+          id_booking: prefBooking?.id_booking,
+          id: prefBooking?.id,
+          firstname: prefBooking?.firstname,
+          lastname: prefBooking?.lastname,
+          date: prefBooking?.date,
+          typeField: prefBooking?.typeField,
+          datetime_start: prefBooking?.datetime_start,
+          datetime_end: prefBooking?.datetime_end,
+          slip: slip,
+          price: price,
+        );
+        
+      });
+    }
+  }
+
+  Future insertImageToMySQL({
+    String? id_booking,
+    String? id,
+    String? firstname,
+    String? lastname,
+    String? date,
+    String? typeField,
+    String? datetime_start,
+    String? datetime_end,
+    String? slip,
+    String? price,
+  }) async {
+    print('slip => $slip');
+    String apiInsertImage =
+        '${MyConstant.domain}/goalinter_project/insertSlipping.php?isAdd=true&id_booking=$id_booking&id=$id&firstname=$firstname&lastname=$lastname&date=$date&typeField=$typeField&datetime_start=$datetime_start&datetime_end=$datetime_end&slip=$slip&price=$price&status=s';
+    await Dio().get(apiInsertImage).then((value) {
+      if (value.toString() == 'true') {
+        sendEmail(firstname, lastname, typeField, datetime_start, datetime_end, price);
+        print('success');
+        Navigator.pushNamedAndRemoveUntil(context, '/admin_service', (route) => false);
       } else {
-        print('false');
+        MyConstant().normalDialog(context, 'Error', 'Please Try Again');
       }
+
     });
   }
-  
-  Future<Null> processInsertMySQL() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-     String id_booking = preferences.getString('id_booking')!;
-     String slip = preferences.getString('slip')!;
-    //String id = preferences.getString('id')!;
-    print('Work processInsertMySQL');
-    String apiInsertUser =
-        '${MyConstant.domain}/goalinter_project/insertSlip.php?isAdd=true&id_booking=$id_booking&slip=$slip&status=cf';
-    await Dio().get(apiInsertUser).then((value) {
+
+  Future sendEmail(
+    String? firstname,
+    String? lastname,
+    String? typeField,
+    String? datetime_start,
+    String? datetime_end,
+    String? price,
+    ) async {
+    String apiSendEmail = '${MyConstant.domain}/goalinter_project/email.php?firstname=$firstname&lastname=$lastname&datetime_start=$datetime_start&datetime_end=$datetime_end&typeField=$typeField&price=$price';
+    await Dio().post(apiSendEmail).then((value) {
       if (value.toString() == 'true') {
-        Navigator.pop(context);
+        print('send email');
       } else {
-        MyConstant().normalDialog(context, '❌❌❌', 'Fail');
+        print('no send email');
       }
     });
   }

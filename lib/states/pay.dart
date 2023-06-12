@@ -107,18 +107,47 @@ class _Pay_serviceState extends State<Pay_service> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Center(child: buildHead("List Detail")),
+                Container(
+                  height: size * 0.58,
+                  margin: EdgeInsets.only(top: 20, bottom: 30, left: 10, right: 10),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF38B8C2),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                            buildHead("List Detail"),
+                            buildTitle("Date: " '${prefBooking?.date}'),
+                            buildTitle("Time: " '${prefBooking?.datetime_start.substring(11,16)} - ${prefBooking?.datetime_end.substring(11,16)}'),
+                            buildTitle("Field: " '${prefBooking?.typeField}'),    
+                        ],
+                      ),
+                      buildImage(size),
+                    ],
+                  ),
+                ),
                 // buildTitle("Date: ${prefBooking!.date}"),
-                buildTitle("Time: " '${prefBooking?.datetime_start}'),
-                buildTitle("To " '${prefBooking?.datetime_end}'),
+                // buildTitle("Time: " '${prefBooking?.datetime_start}'),
+                // buildTitle("To " '${prefBooking?.datetime_end}'),
                 // buildTitle("Time: " '${prefBooking?.time!=null?(prefBooking?.time??'').substring(1, 8)+(prefBooking?.time??'').substring((prefBooking!.time.length) -7, (prefBooking!.time.length) -1):''}'),
-                buildTitle("Field: " '${prefBooking?.typeField}' "\n"),
+                // buildTitle("Field: " '${prefBooking?.typeField}' "\n"),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    buildTitleBlack("Amount : "),
+                    buildTitle2("${800*calTime} THB"),
+                  ],
+                ),
                 myDivider(),
-                Center(child: buildHead("Payment")),
-                buildImage(size),
-                buildTitle("Amount: ${800*calTime}"),
+                // Center(child: buildHead("Payment")),
+                // buildImage(size),
+                
                 buildPickPic(size),
-                buildbtnpick(),
+                buildbtnpick(size),
                 buildButton(),
               ],
             ),
@@ -133,17 +162,36 @@ class _Pay_serviceState extends State<Pay_service> {
       margin: EdgeInsets.only(top: 16, bottom: 16),
       child: ShowTitle(
         title: title,
-        textStyle: MyConstant().h1Style(),
+        textStyle: MyConstant().h10Style(),
       ),
     );
   }
 
   Container buildTitle(String title) {
     return Container(
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 5, bottom: 5),
+      child: ShowTitle(
+        title: title,
+        textStyle: MyConstant().h2WhiteStyle(),
+      ),
+    );
+  }
+  Container buildTitleBlack(String title) {
+    return Container(
+      margin: EdgeInsets.only(top: 5, bottom: 5),
       child: ShowTitle(
         title: title,
         textStyle: MyConstant().h2Style(),
+      ),
+    );
+  }
+
+    Container buildTitle2(String title) {
+    return Container(
+      margin: EdgeInsets.only(top: 5, bottom: 5),
+      child: ShowTitle(
+        title: title,
+        textStyle: MyConstant().h5Style(),
       ),
     );
   }
@@ -205,29 +253,51 @@ class _Pay_serviceState extends State<Pay_service> {
     );
   }
 
-  Row buildbtnpick() {
+  Row buildbtnpick(double size) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(
-          height: 20,
+        Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: IconButton(
+            onPressed: () => chooseImage(source: ImageSource.camera),
+            icon: Icon(
+              Icons.add_a_photo,
+              size: 30,
+              color: MyConstant.dark,
+            ),
+          ),
         ),
-        Expanded(
-            child: ElevatedButton(
-                onPressed: () => chooseImage(source: ImageSource.camera),
-                child: Text(
-                  'Camera',
-                  style: TextStyle(fontSize: 16),
-                ))),
-        SizedBox(
-          width: 20,
+        Container(
+          width: size * 0.2,
+          
         ),
-        Expanded(
-            child: ElevatedButton(
-                onPressed: () => chooseImage(source: ImageSource.gallery),
-                child: Text(
-                  'Gallery',
-                  style: TextStyle(fontSize: 16),
-                ))),
+        IconButton(
+          onPressed: () => chooseImage(source: ImageSource.gallery),
+          icon: Icon(
+            Icons.add_photo_alternate,
+            size: 30,
+            color: MyConstant.dark,
+          ),
+        ),
+        // Expanded(
+        //     child: ElevatedButton(
+        //         onPressed: () => chooseImage(source: ImageSource.camera),
+        //         child: Text(
+        //           'Camera',
+        //           style: TextStyle(fontSize: 16),
+        //         ))),
+        // SizedBox(
+        //   width: 20,
+        // ),
+        // Expanded(
+        //     child: ElevatedButton(
+        //         onPressed: () => chooseImage(source: ImageSource.gallery),
+        //         child: Text(
+        //           'Gallery',
+        //           style: TextStyle(fontSize: 16),
+        //         ))),
       ],
     );
   }
@@ -307,6 +377,7 @@ class _Pay_serviceState extends State<Pay_service> {
           slip: slip,
           price: price,
         );
+        
       });
     }
   }
@@ -328,12 +399,31 @@ class _Pay_serviceState extends State<Pay_service> {
         '${MyConstant.domain}/goalinter_project/insertSlipping.php?isAdd=true&id_booking=$id_booking&id=$id&firstname=$firstname&lastname=$lastname&date=$date&typeField=$typeField&datetime_start=$datetime_start&datetime_end=$datetime_end&slip=$slip&price=$price&status=s';
     await Dio().get(apiInsertImage).then((value) {
       if (value.toString() == 'true') {
+        sendEmail(firstname, lastname, typeField, datetime_start, datetime_end, price);
         print('success');
         Navigator.pushNamedAndRemoveUntil(context, '/member_service', (route) => false);
       } else {
         MyConstant().normalDialog(context, 'Error', 'Please Try Again');
       }
 
+    });
+  }
+
+  Future sendEmail(
+    String? firstname,
+    String? lastname,
+    String? typeField,
+    String? datetime_start,
+    String? datetime_end,
+    String? price,
+    ) async {
+    String apiSendEmail = '${MyConstant.domain}/goalinter_project/email.php?firstname=$firstname&lastname=$lastname&datetime_start=$datetime_start&datetime_end=$datetime_end&typeField=$typeField&price=$price';
+    await Dio().post(apiSendEmail).then((value) {
+      if (value.toString() == 'true') {
+        print('send email');
+      } else {
+        print('no send email');
+      }
     });
   }
 

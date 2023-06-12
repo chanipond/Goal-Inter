@@ -6,8 +6,9 @@ import 'package:goalinter/widgets/show_image.dart';
 class MyConstant {
   // Genernal
   static String appName = 'GoalInter';
-    // cmd: ngrok http 80
-  static String domain = 'https://75c7-2403-6200-8967-dcc3-f089-1783-3c2d-9140.ngrok-free.app';
+  // open xampp
+  // cmd: ngrok http 80
+  static String domain = 'https://7f0d-2403-6200-8967-dcc3-7cfc-92d6-dc9e-12ca.ngrok-free.app';
 
   // Route
   static String routeAuthen = '/authen';
@@ -44,23 +45,31 @@ class MyConstant {
         fontWeight: FontWeight.bold,
       );
 
+  TextStyle h10Style() => TextStyle(
+        fontSize: 25,
+        color: white,
+        fontWeight: FontWeight.bold,
+      );
+
   TextStyle h2Style() => TextStyle(
         fontSize: 18,
         color: dark,
         fontWeight: FontWeight.w700,
       );
+      
   TextStyle h2WhiteStyle() => TextStyle(
         fontSize: 18,
         color: Colors.white,
         fontWeight: FontWeight.w700,
       );
+
   TextStyle h3Style() => TextStyle(
         fontSize: 16,
         color: dark,
         fontWeight: FontWeight.normal,
       );
 
-    TextStyle h4Style() => TextStyle(
+  TextStyle h4Style() => TextStyle(
         fontSize: 16,
         color: Color.fromARGB(255, 7, 216, 14),
         fontWeight: FontWeight.normal,
@@ -70,6 +79,12 @@ class MyConstant {
         fontSize: 16,
         color: Colors.white,
         fontWeight: FontWeight.normal,
+      );
+
+  TextStyle h5Style() => TextStyle(
+        fontSize: 30,
+        color: Color.fromARGB(255, 193, 122, 9),
+        fontWeight: FontWeight.bold,
       );
 
   ButtonStyle MyButtonStyle() => ElevatedButton.styleFrom(
@@ -91,12 +106,11 @@ class MyConstant {
     showDialog(
       context: context,
       builder: (context) => WillPopScope(
-        child: 
-          Center(
-            child: CircularProgressIndicator(
+        child: Center(
+          child: CircularProgressIndicator(
             color: Colors.white,
-            ),
           ),
+        ),
         onWillPop: () async {
           return false;
         },
@@ -128,8 +142,5 @@ class MyConstant {
         ],
       ),
     );
-      
   }
-
-
 }

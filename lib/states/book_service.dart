@@ -5,9 +5,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:goalinter/controller/checkbook.dart';
 import 'package:goalinter/data/book.dart';
-import 'package:goalinter/states/chaeckdate.dart';
 import 'package:goalinter/utillity/my_constant.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +18,8 @@ class Book_service extends StatefulWidget {
 }
 
 class _Book_serviceState extends State<Book_service> {
+  bool load = true;
+  bool? havedata;
   DateTime date = DateTime.now();
   TextEditingController dateController = TextEditingController();
   // final CheckbookController checkbook = Get.put(CheckbookController());
@@ -67,21 +67,36 @@ class _Book_serviceState extends State<Book_service> {
   List<bool> checkColor() {
     for (int i = 0; i < TimeCheckStart.length; i++) {
       for (int j = 0; j < isSelectTime.length; j++) {
-       (TimeCheckStart[i] == (time[j].substring(0,5)))?isSelectTime[j] = true:isSelectTime[j] != true;
-       (TimeCheckEnd[i] == (time[j].substring(8,13)))?isSelectTime[j] = true:isSelectTime[j] != true;
-       j>0&&j<6?isSelectTime[j+1]==true&&isSelectTime[j-1]==true?isSelectTime[j]=true:isSelectTime[j]!=true:null;
-       j>1&&j<5?isSelectTime[j+2]==true&&isSelectTime[j-2]==true?isSelectTime[j]=true:isSelectTime[j]!=true:null;
+        (TimeCheckStart[i] == (time[j].substring(0, 5)))
+            ? isSelectTime[j] = true
+            : isSelectTime[j] != true;
+        (TimeCheckEnd[i] == (time[j].substring(8, 13)))
+            ? isSelectTime[j] = true
+            : isSelectTime[j] != true;
+        j > 0 && j < 6
+            ? isSelectTime[j + 1] == true && isSelectTime[j - 1] == true
+              ? isSelectTime[j] = true
+              : isSelectTime[j] != true
+            : null;
+         j > 1 && j < 5
+            ? isSelectTime[j + 2] == true && isSelectTime[j - 2] == true
+              ? isSelectTime[j] = true
+              : isSelectTime[j] != true
+            :null;
+
       }
     }
     print("test time ${isSelectTime}");
     return isSelectTime;
   }
 
+
+
   @override
   void initState() {
     super.initState();
+    checkTime();
   }
-
 
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
@@ -102,27 +117,30 @@ class _Book_serviceState extends State<Book_service> {
                   width: size * 0.4,
                   child: InkWell(
                       onTap: () {
+                        isSelectTime = [false, false, false, false, false, false, false];
                         checkfield = true;
                         isSelected3 = true;
                         print('You Click Field3');
-
-                        value:
-                        'Field3';
+                        
+                        value: 'Field3';
                         setState(() {
                           isSelected1 = true;
                           isSelected2 = true;
                           isSelected3 = !isSelected3;
-                          checkColor();
+
+
                           if (isSelected3 == false) {
                             field = "3";
-                            
                           }
+                          
+                        checkTime();
+                        checkColor();
 
-                          checkTime();
-                          isSelectTime = [false, false, false, false, false, false, false];
+                          
                           
                         });
                       },
+                      
                       child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(40),
@@ -144,7 +162,10 @@ class _Book_serviceState extends State<Book_service> {
               Text("\nField 3\n\n"),
               Visibility(
                 visible: checkdate && checkfield,
-                child: Column(
+                child: Obx(() {
+                  // isSelectTime = [false, false, false, false, false, false, false];
+                  return DBTime.value!=null ? 
+                  Column(
                   children: [
                     Text("Choose a time\n"),
                     // Container(
@@ -157,7 +178,10 @@ class _Book_serviceState extends State<Book_service> {
                     buildbtntime(context),
                     buildbtnbook(size),
                   ],
-                ),
+                ): Container();
+                  
+                },)
+                
               ),
             ],
           ),
@@ -169,6 +193,7 @@ class _Book_serviceState extends State<Book_service> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Obx((){ return DBTime.value!=null ? 
         Container(
           width: size * 0.8,
           height: size * 1.0,
@@ -238,13 +263,12 @@ class _Book_serviceState extends State<Book_service> {
               );
             },
           ),
-         
-        ),
+        ): Container();})
+        
       ],
     );
   }
 
-  
   Row buildDate(double size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -295,6 +319,7 @@ class _Book_serviceState extends State<Book_service> {
                 width: size * 0.4,
                 child: InkWell(
                     onTap: () {
+                      isSelectTime = [false, false, false, false, false, false, false];
                       checkfield = true;
                       isSelected1 = true;
                       print('You Click Field1');
@@ -303,14 +328,15 @@ class _Book_serviceState extends State<Book_service> {
                         isSelected1 = !isSelected1;
                         isSelected2 = true;
                         isSelected3 = true;
-                        checkColor();
+                        
 
                         if (isSelected1 == false) {
                           field = "1";
                         }
 
                         checkTime();
-                        isSelectTime = [false, false, false, false, false, false, false];
+                        checkColor();
+                        
                       });
                     },
                     child: Container(
@@ -342,6 +368,7 @@ class _Book_serviceState extends State<Book_service> {
                 width: size * 0.4,
                 child: InkWell(
                     onTap: () {
+                      isSelectTime = [false, false, false, false, false, false, false];
                       checkfield = true;
                       isSelected2 = true;
                       print('You Click Field2');
@@ -350,14 +377,15 @@ class _Book_serviceState extends State<Book_service> {
                         isSelected1 = true;
                         isSelected2 = !isSelected2;
                         isSelected3 = true;
-                        checkColor();
+                        
 
                         if (isSelected2 == false) {
                           field = "2";
                         }
 
                         checkTime();
-                        isSelectTime = [false, false, false, false, false, false, false];
+                        checkColor();
+                        
                       });
                     },
                     child: Container(
@@ -399,8 +427,7 @@ class _Book_serviceState extends State<Book_service> {
                   context, 'Non Choose Date', 'Please Choose Date');
             } else {
               print('You Click Book');
-              print(
-                  'DateTime_Start = ${dateController.text + " " + timeSelect[0].split(' - ')[0]},DateTime_End = ${dateController.text + " " + timeSelect[(timeSelect.length) - 1].split(' - ')[1]}, Field = ${field}, ');
+              print('DateTime_Start = ${dateController.text + " " + timeSelect[0].split(' - ')[0]},DateTime_End = ${dateController.text + " " + timeSelect[(timeSelect.length) - 1].split(' - ')[1]}, Field = ${field}, ');
             }
 
             if (checkfield == true && checkdate == true) {
@@ -459,12 +486,8 @@ class _Book_serviceState extends State<Book_service> {
     // String datetime_start = "";
     // String datetime_end = "";
 
-    String datetimeStart =
-        (dateController.text + " " + timeSelect[0].split(' - ')[0]).toString();
-    String datetimeEnd = (dateController.text +
-            " " +
-            timeSelect[(timeSelect.length) - 1].split(' - ')[1])
-        .toString();
+    String datetimeStart = (dateController.text + " " + timeSelect[0].split(' - ')[0]).toString();
+    String datetimeEnd = (dateController.text + " " + timeSelect[(timeSelect.length) - 1].split(' - ')[1]).toString();
 
     // String datetime_start =(dateController.text + " " + timeSelect[0].split(' - ')[0]).toString();
     // // for (int i = 0; i < 6; i++) {
@@ -566,12 +589,22 @@ class _Book_serviceState extends State<Book_service> {
   Future<Null> checkTime() async {
     String typeField = field;
     String date = dateController.text;
+    setState(() {
+      load = false;
+      havedata = true;
+      TimeCheckStart = [];
+      TimeCheckEnd = [];
+      // TimeCheckStart.clear();
+      // TimeCheckEnd.clear();
+    });
+
     try {
       String apiCheckTime =
           '${MyConstant.domain}/goalinter_project/gettime.php?isAdd=true&date=$date&typeField=$typeField';
       await Dio().get(apiCheckTime).then((value) {
         var result = json.decode(value.data);
         print('result = $result');
+
         for (var map in result) {
           Book_Model model = Book_Model.fromJson(map);
           DBTime.value = model;
@@ -587,8 +620,14 @@ class _Book_serviceState extends State<Book_service> {
           print('Start = ${SubStart[1].substring(0, 5)}');
           print('End = ${SubEnd[1].substring(0, 5)}');
 
-          TimeCheckStart.add(SubStart[1].substring(0, 5));
-          TimeCheckEnd.add(SubEnd[1].substring(0, 5));
+          setState(() {
+            load = false;
+            havedata = true;
+            TimeCheckStart.add(SubStart[1].substring(0, 5));
+            TimeCheckEnd.add(SubEnd[1].substring(0, 5));
+            TimeCheckStart.sort();
+            TimeCheckEnd.sort();
+          });
         }
 
         print('TimeCheckStart = $TimeCheckStart');

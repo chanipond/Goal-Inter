@@ -9,7 +9,6 @@ import 'package:goalinter/data/profile.dart';
 import 'package:goalinter/states/Field_service.dart';
 import 'package:goalinter/states/Home.dart';
 import 'package:goalinter/states/authen.dart';
-import 'package:goalinter/states/booking_service.dart';
 import 'package:goalinter/states/contact.dart';
 import 'package:goalinter/states/infor_service.dart';
 import 'package:goalinter/states/list.dart';
@@ -200,10 +199,10 @@ class _Member_ServiceState extends State<Member_Service> {
       // ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: MyConstant.primary,
-        selectedItemColor: MyConstant.dark,
+        selectedItemColor: MyConstant.white,
         iconSize: 25,
         // selectedFontSize: 18,
-        unselectedItemColor: MyConstant.white,
+        unselectedItemColor: MyConstant.dark,
         // unselectedFontSize: 14,
         showUnselectedLabels: false,
         // currentIndex: currentIndex,

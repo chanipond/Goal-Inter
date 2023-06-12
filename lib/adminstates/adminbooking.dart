@@ -1,133 +1,275 @@
-// ignore_for_file: camel_case_types, prefer_const_constructors, unnecessary_new, sort_child_properties_last
+// ignore_for_file: camel_case_types, prefer_const_constructors, unnecessary_new, sort_child_properties_last, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-// import 'package:goalinter/data/booking.dart';
+import 'package:get/get.dart';
+import 'package:goalinter/data/book.dart';
 import 'package:goalinter/utillity/my_constant.dart';
-import 'package:goalinter/widgets/show_title.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-var datetest;
-var timetest;
-var fieldtest;
-
 class Booking_Admin extends StatefulWidget {
-  const Booking_Admin({Key? key, this.time}) : super(key: key);
-  final String? time;
+  const Booking_Admin({Key? key}) : super(key: key);
   @override
   State<Booking_Admin> createState() => _Booking_AdminState();
 }
 
 class _Booking_AdminState extends State<Booking_Admin> {
-  String? typeField;
-  String? valueTime;
-  List listItem = [
-    '17:00 - 18:00',
-    '18:00 - 19:00',
-    '19:00 - 20:00',
-    '20:00 - 21:00',
-    '21:00 - 22:00',
-    '22:00 - 23:00',
-    '23:00 - 24:00'
-  ];
-  
-
-  final formKey = GlobalKey<FormState>();
+  bool load = true;
+  bool? havedata;
+  DateTime date = DateTime.now();
   TextEditingController dateController = TextEditingController();
+  // final CheckbookController checkbook = Get.put(CheckbookController());
+  bool checkdate = false;
+  bool checkfield = false;
+  bool checktime = false;
+
+  bool isSelected1 = false;
+  bool isSelected2 = false;
+  bool isSelected3 = false;
+
+  String field = "Null";
+  List<String> timeSelect = [];
+
+  List<dynamic> myList = [];
+  List<String> dateOnly = [];
+
+  Color testColor = Color.fromARGB(255, 149, 242, 152);
+
+  List<String> time = [
+    '17:01 - 18:00',
+    '18:01 - 19:00',
+    '19:01 - 20:00',
+    '20:01 - 21:00',
+    '21:01 - 22:00',
+    '22:01 - 23:00',
+    '23:01 - 23:59',
+  ];
+
+  List<bool> isSelectTime = [false, false, false, false, false, false, false];
+
+  bool checkFunction(List arr) {
+    bool check = true;
+    for (int i = 0; i < isSelectTime.length - 1; i++) {
+      if (arr[i] != arr[i + 1] && check == true) {
+        check = false;
+      } else if (arr[i] != arr[i + 1] && check == false && arr[i + 1] == true) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  List<bool> checkColor() {
+    for (int i = 0; i < TimeCheckStart.length; i++) {
+      for (int j = 0; j < isSelectTime.length; j++) {
+        (TimeCheckStart[i] == (time[j].substring(0, 5)))
+            ? isSelectTime[j] = true
+            : isSelectTime[j] != true;
+        (TimeCheckEnd[i] == (time[j].substring(8, 13)))
+            ? isSelectTime[j] = true
+            : isSelectTime[j] != true;
+        j > 0 && j < 6
+            ? isSelectTime[j + 1] == true && isSelectTime[j - 1] == true
+                ? isSelectTime[j] = true
+                : isSelectTime[j] != true
+            : null;
+        j > 1 && j < 5
+            ? isSelectTime[j + 2] == true && isSelectTime[j - 2] == true
+                ? isSelectTime[j] = true
+                : isSelectTime[j] != true
+            : null;
+      }
+    }
+    print("test time ${isSelectTime}");
+    return isSelectTime;
+  }
 
   @override
+  void initState() {
+    super.initState();
+    checkTime();
+  }
+
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar:
-          AppBar(
-            // actions: [
-            //   CheckDate(),
-            // ],
-            backgroundColor: MyConstant.gray, 
-            title: Text("Booking"), 
-          ),
-      body: SafeArea(
-          child: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
-        behavior: HitTestBehavior.opaque,
-        child: Form(
-          key: formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                buildDate(size),
-                buildTitle("Please select time"),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Time:  '),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        padding: EdgeInsets.only(left: 16, right: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: DropdownButton(
-                          hint: Text('Time'),
-                          value: valueTime,
-                          onChanged: (newValue) {
-                            setState(() {
-                              valueTime = newValue as String?;
-                              timetest = valueTime;
-                            });
-                          },
-                          items: listItem.map((valueTime) {
-                            return DropdownMenuItem(
-                              child: Text(valueTime),
-                              value: valueTime,
-                            );
-                          }).toList(),
-                        ),
-                        
-                      ),
-                    ),
-                  ],
-                ),
-                buildTitle("Please select field"),
-                buildRadioField1(size),
-                buildRadioField2(size),
-                buildRadioField3(size),
-
-                buildbook(size),
-              ],
-            ),
-          ),
+        appBar: AppBar(
+          title: Text('Booking'),
+          backgroundColor: MyConstant.primary,
         ),
-      )),
-    );
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              buildDate(size),
+              Text("\n\nChoose a field\n"),
+              buildImage(size),
+              ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                child: Container(
+                  width: size * 0.4,
+                  child: InkWell(
+                      onTap: () {
+                        isSelectTime = [
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false,
+                          false
+                        ];
+                        checkfield = true;
+                        isSelected3 = true;
+                        print('You Click Field3');
+
+                        value:
+                        'Field3';
+                        setState(() {
+                          isSelected1 = true;
+                          isSelected2 = true;
+                          isSelected3 = !isSelected3;
+
+                          if (isSelected3 == false) {
+                            field = "3";
+                          }
+
+                          checkTime();
+                          checkColor();
+                        });
+                      },
+                      child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: ColorFiltered(
+                              colorFilter: isSelected3
+                                  ? ColorFilter.mode(
+                                      Color.fromARGB(255, 255, 255, 255),
+                                      BlendMode.saturation)
+                                  : ColorFilter.mode(
+                                      Color.fromARGB(0, 200, 18, 18),
+                                      BlendMode.color),
+                              child: Image.asset(
+                                'asset/images/field_book.jpg',
+                                fit: BoxFit.cover,
+                              )))),
+                ),
+              ),
+              Text("\nField 3\n\n"),
+              Visibility(
+                  visible: checkdate && checkfield,
+                  child: Obx(
+                    () {
+                      return DBTime.value != null
+                          ? Column(
+                              children: [
+                                Text("Choose a time\n"),
+                                // Container(
+                                //   // color: (index%2==0?Color(0xff73A9AD) : Color.fromARGB(255, 216, 99, 99)),
+                                //   color: timeSelect != null ? testColor : Colors.white,
+
+                                //   child: BuildToggle(context),
+                                // ),
+
+                                buildbtntime(context),
+                                buildbtnbook(size),
+                              ],
+                            )
+                          : Container();
+                    },
+                  )),
+            ],
+          ),
+        ));
   }
 
-  // IconButton CheckDate() {
-  //   return IconButton(
-  //     onPressed: () {
-  //           print('Check Date');
-  //           // Navigator.pushReplacementNamed(context, '/checkdate');
-  //           // uploadPictureAndInsertData();
-  //     },
-  //     icon: Icon(Icons.date_range_outlined),
-  //   );
-  // }
-
-  Container buildTitle(String title) {
-    return Container(
-      margin: EdgeInsets.only(top: 16),
-      child: ShowTitle(
-        title: title,
-        textStyle: MyConstant().h2Style(),
-      ),
+  Row buildbtntime(BuildContext context) {
+    double size = MediaQuery.of(context).size.width;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Obx(() {
+          return DBTime.value != null
+              ? Container(
+                  width: size * 0.8,
+                  height: size * 1.0,
+                  child: ListView.builder(
+                    itemCount: time.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (checkFunction(isSelectTime)) {
+                                setState(() {
+                                  isSelectTime[index] = !isSelectTime[index];
+                                  if (isSelectTime[index]) {
+                                    timeSelect.add(time[index]);
+                                    timeSelect.sort();
+                                  } else {
+                                    timeSelect.remove(time[index]);
+                                  }
+                                });
+                                print(timeSelect);
+                              } else {
+                                setState(() {
+                                  timeSelect = [];
+                                  MyConstant().normalDialog(
+                                      context,
+                                      'จองข้ามเวลาไม่ได้',
+                                      'กรุณาเลือกเวลาใหม่');
+                                  isSelectTime = [
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false,
+                                    false
+                                  ];
+                                });
+                              }
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(2),
+                            height: size * 0.13,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              // color: isSelectTime[index]
+                              //     ? Color.fromARGB(255, 112, 112, 112)
+                              //     : ((checkColor(TimeCheckStart, isSelectTime))
+                              //         ? Color.fromARGB(255, 216, 99, 99)
+                              //         : Color.fromARGB(255, 149, 242, 152)),
+                              color: (!checkColor()[index]
+                                  ? isSelectTime[index]
+                                      ? Color.fromARGB(255, 112, 112, 112)
+                                      : Color.fromARGB(255, 149, 242, 152)
+                                  : Color.fromARGB(255, 216, 99, 99)),
+                            ),
+                            child: Center(
+                              child: Text(
+                                time[index],
+                                style: TextStyle(
+                                  color: isSelectTime[index]
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : Container();
+        })
+      ],
     );
   }
 
@@ -140,11 +282,6 @@ class _Booking_AdminState extends State<Booking_Admin> {
           width: size * 0.8,
           child: TextField(
               controller: dateController,
-              // validator: (value) {
-              // if (value!.isEmpty) {
-              //   return 'Please enter date';
-              // } else {}
-              // },
               decoration: const InputDecoration(
                   icon: Icon(Icons.calendar_today), labelText: "Select Date"),
               readOnly: true,
@@ -153,14 +290,15 @@ class _Booking_AdminState extends State<Booking_Admin> {
                   context: context,
                   initialDate: DateTime.now(),
                   firstDate: DateTime.now(),
-                  lastDate: DateTime(2101),
+                  // และถึงวันสุดท้ายจะสัปดาห์นึง ที่สามารถจองได้
+                  lastDate: DateTime.now().add(const Duration(days: 6)),
                 );
                 if (pickedDate != null) {
                   String formattedDate =
-                      DateFormat("dd-MM-yyyy").format(pickedDate);
+                      DateFormat("yyyy-MM-dd").format(pickedDate);
                   setState(() {
+                    checkdate = true;
                     dateController.text = formattedDate.toString();
-                    datetest = dateController.text;
                   });
                 } else {
                   print("Not selected");
@@ -173,137 +311,186 @@ class _Booking_AdminState extends State<Booking_Admin> {
     );
   }
 
-  Row buildRadioField1(double size) {
+  Row buildImage(double size) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Container(
-          width: size * 0.8,
-          child: RadioListTile(
-            value: 'field1',
-            groupValue: typeField,
-            onChanged: (value) {
-              setState(() {
-                typeField = value as String?;
-                fieldtest = typeField;
-              });
-            },
-            title: ShowTitle(
-              title: 'Field 1',
-              textStyle: MyConstant().h3Style(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+        Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: Container(
+                width: size * 0.4,
+                child: InkWell(
+                    onTap: () {
+                      isSelectTime = [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                      ];
+                      checkfield = true;
+                      isSelected1 = true;
+                      print('You Click Field1');
 
-  Row buildRadioField2(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: size * 0.8,
-          child: RadioListTile(
-            value: 'field2',
-            groupValue: typeField,
-            onChanged: (value) {
-              setState(() {
-                typeField = value as String?;
-                fieldtest = typeField;
-              });
-            },
-            title: ShowTitle(
-              title: 'Field 2',
-              textStyle: MyConstant().h3Style(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+                      setState(() {
+                        isSelected1 = !isSelected1;
+                        isSelected2 = true;
+                        isSelected3 = true;
 
-  Row buildRadioField3(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: size * 0.8,
-          child: RadioListTile(
-            value: 'field3',
-            groupValue: typeField,
-            onChanged: (value) {
-              setState(() {
-                typeField = value as String?;
-                fieldtest = typeField;
-              });
-            },
-            title: ShowTitle(
-              title: 'Field 3',
-              textStyle: MyConstant().h3Style(),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+                        if (isSelected1 == false) {
+                          field = "1";
+                        }
 
-  Row buildbook(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 16),
-          width: size * 0.6,
-          child: ElevatedButton(
-            style: MyConstant().MyButtonStyle(),
-            onPressed: () {
-              valueTime = valueTime;
-              // valueChoose2 = valueChoose2;
-              dateController.text = dateController.text;
-              
-              if (formKey.currentState!.validate()) {
-
-                  
-                
-                if (typeField == null) {
-                  MyConstant().normalDialog(
-                      context, 'Non Choose Field', 'Please Choose Field');
-                } 
-                
-                if (valueTime == null) {
-                  MyConstant().normalDialog(context, 'Non Choose time',
-                      'Please Choose time');
-                }
-                
-                if(dateController.text.isEmpty){
-                  MyConstant().normalDialog(context, 'Non Choose Date', 
-                      'Please Choose Date');
-                }
-                // if( selectedItem.length != null) {
-                //   print('non choose time');
-                //   MyConstant().normalDialog(
-                //       context, 'Non Choose time', 'Please Choose time');
-                // }
-                else {
-                  print('Process Insert to Database');
-                  booking();
-                  
-                }
-              }
-            },
-            child: Text(
-              'Book',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+                        checkTime();
+                        checkColor();
+                      });
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: ColorFiltered(
+                            colorFilter: isSelected1
+                                ? ColorFilter.mode(
+                                    Color.fromARGB(255, 255, 255, 255),
+                                    BlendMode.saturation)
+                                : ColorFilter.mode(
+                                    Color.fromARGB(0, 200, 18, 18),
+                                    BlendMode.color),
+                            child: Image.asset(
+                              'asset/images/field_book.jpg',
+                              fit: BoxFit.cover,
+                            )))),
               ),
             ),
-          ),
+            Text("\nField 1\n"),
+          ],
+        ),
+        Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: Container(
+                width: size * 0.4,
+                child: InkWell(
+                    onTap: () {
+                      isSelectTime = [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                      ];
+                      checkfield = true;
+                      isSelected2 = true;
+                      print('You Click Field2');
+
+                      setState(() {
+                        isSelected1 = true;
+                        isSelected2 = !isSelected2;
+                        isSelected3 = true;
+
+                        if (isSelected2 == false) {
+                          field = "2";
+                        }
+
+                        checkTime();
+                        checkColor();
+                      });
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: ColorFiltered(
+                            colorFilter: isSelected2
+                                ? ColorFilter.mode(
+                                    Color.fromARGB(255, 255, 255, 255),
+                                    BlendMode.saturation)
+                                : ColorFilter.mode(
+                                    Color.fromARGB(0, 200, 18, 18),
+                                    BlendMode.color),
+                            child: Image.asset(
+                              'asset/images/field_book.jpg',
+                              fit: BoxFit.cover,
+                            )))),
+              ),
+            ),
+            Text("\nField 2\n"),
+          ],
         ),
       ],
     );
+  }
+
+  Row buildbtnbook(double size) {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+      Container(
+        margin: EdgeInsets.symmetric(vertical: 16),
+        width: size * 0.8,
+        child: ElevatedButton(
+          style: MyConstant().MyButtonStyle(),
+          onPressed: () {
+            dateController.text = dateController.text;
+            if (dateController.text.isEmpty) {
+              MyConstant().normalDialog(
+                  context, 'Non Choose Date', 'Please Choose Date');
+            } else {
+              print('You Click Book');
+              print(
+                  'DateTime_Start = ${dateController.text + " " + timeSelect[0].split(' - ')[0]},DateTime_End = ${dateController.text + " " + timeSelect[(timeSelect.length) - 1].split(' - ')[1]}, Field = ${field}, ');
+            }
+
+            if (checkfield == true && checkdate == true) {
+              print('You Click Book');
+              // Navigator.pushNamed(context, MyConstant.routePay);
+              booking();
+
+              // Color colorTime() {
+              //   if (myList != null) {
+              //     if (myList[0] == time[0]) {
+              //       testColor = Colors.red;
+              //     } else if (myList[1] == time[1]) {
+              //       testColor = Colors.red;
+              //     } else if (myList[2] == time[2]) {
+              //       testColor = Colors.red;
+              //     } else if (myList[3] == time[3]) {
+              //       testColor = Colors.red;
+              //     } else if (myList[4] == time[4]) {
+              //       testColor = Colors.red;
+              //     } else if (myList[5] == time[5]) {
+              //       testColor = Colors.red;
+              //     } else if (myList[6] == time[6]) {
+              //       testColor = Colors.red;
+              //     }
+              //     testColor = Color.fromARGB(255, 155, 155, 155);
+              //   } else {
+              //     testColor = Color.fromARGB(255, 155, 155, 155);
+              //   }
+              //   return testColor;
+              // }
+            } else {
+              MyConstant().normalDialog(
+                  context, 'Non Choose Field', 'Please Choose Field');
+            }
+          },
+          child: Text(
+            'Book',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    ]);
   }
 
   Future<Null> booking() async {
@@ -312,77 +499,64 @@ class _Booking_AdminState extends State<Booking_Admin> {
     String firstname = preferences.getString('firstname')!;
     String lastname = preferences.getString('lastname')!;
     String date = dateController.text;
-    String time = valueTime.toString();
-    // String timeEnd = valueChoose2.toString();
-    // String time = selectedItem.join(', ');
+    String typeField = field;
+    // String datetime_start = "";
+    // String datetime_end = "";
+
+    String datetimeStart =
+        (dateController.text + " " + timeSelect[0].split(' - ')[0]).toString();
+    String datetimeEnd = (dateController.text +
+            " " +
+            timeSelect[(timeSelect.length) - 1].split(' - ')[1])
+        .toString();
+
+    print('date = $date');
+
     print(
-        'id = $id, firstname = $firstname, lastname = $lastname, date = $date, time = $time, typeField = $typeField');
-    String path =
-        '${MyConstant.domain}/goalinter_project/getDatebyAdmin.php?isAdd=true&status=w';
-    await Dio().get(path).then((value) {
-      
-      if (value.toString() == 'null') {
-        print('Have field in my Database');
-        
-      } else {
+        'id = $id, firstname = $firstname, lastname = $lastname, datetime_start = $datetimeStart, datetime_end = $datetimeEnd, typeField = $typeField');
+
+    InsertbookToMySQL(
+      id: id,
+      firstname: firstname,
+      lastname: lastname,
+      date: date,
+      datetime_start: datetimeStart,
+      datetime_end: datetimeEnd,
+      typeField: typeField,
+    );
+  }
+
+  Future<Null> InsertbookToMySQL({
+    String? id,
+    String? firstname,
+    String? lastname,
+    String? typeField,
+    String? date,
+    String? datetime_start,
+    String? datetime_end,
+  }) async {
+    String apiinsertField =
+        '${MyConstant.domain}/goalinter_project/insertBooking.php?isAdd=true&id=$id&firstname=$firstname&lastname=$lastname&date=$date&datetime_start=$datetime_start&datetime_end=$datetime_end&typeField=$typeField&status=f';
+    await Dio().get(apiinsertField).then((value) {
+      if (value.toString() == 'true') {
+        Navigator.pushReplacementNamed(context, '/adminpay');
+      } else if (value.toString() == 'Time is overlap') {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("This field has been used"),
+              title: Text("เวลาที่เลือกซ้ำกับการจองอื่น"),
               actions: <Widget>[
                 TextButton(
                   child: Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    // Navigator.pushReplacementNamed(context, '/adminpay');
                   },
                 ),
               ],
             );
           },
         );
-      }
-      processInsertMySQL(
-        id: id,
-        firstname: firstname,
-        lastname: lastname,
-        date: date,
-        time: time,
-        // timeEnd: timeEnd,
-      );
-    });
-  }
-
-  Future<Null> processInsertMySQL(
-      {String? id,
-      String? firstname,
-      String? lastname,
-      String? date,
-      String? time,
-      // String? timeEnd,
-      }) async {
-    String apiinsertField =
-        '${MyConstant.domain}/goalinter_project/insertDate.php?isAdd=true&id=$id&firstname=$firstname&lastname=$lastname&date=$date&time=$time&typeField=$typeField&status=w';
-    await Dio().get(apiinsertField).then((value) {
-      if (value.toString() == 'true') {
-        // for( var time in listItem){
-        //         if(valueTime == time){
-        //           print('true');
-        //           print(valueTime);
-        //           print(listItem);
-        //           print(listItem.indexOf(time));
-        //           listItem.removeAt(listItem.indexOf(time));
-        //           print(listItem);
-              
-        //         }else{
-        //           print('false');
-        //           print(valueTime);
-        //           print(time);
-                  
-        //         }
-        //       }
-        Navigator.pushReplacementNamed(context, '/adminpay');
       } else {
         showDialog(
           context: context,
@@ -404,280 +578,65 @@ class _Booking_AdminState extends State<Booking_Admin> {
     });
   }
 
-// List<Widget> generateItem() {
-//     final result = <Widget>[];
-//     for (int i = 0; i < dataList.length; i++) {
-//       result.add(CheckboxListTile(
-//         value: dataList[i].selected,
-//         title: Text(dataList[i].time),
-//         onChanged: (v) {
-//           dataList[i].selected = v ?? false;
-//           dataList.refresh();
-//         },
+  var DBTime = Book_Model().obs;
+  List<String> SubStart = [];
+  List<String> SubEnd = [];
 
-//       ));
-//     }
+  List<String> TimeCheckStart = [];
+  List<String> TimeCheckEnd = [];
 
-//     return result;
-// }
+  Future<Null> checkTime() async {
+    String typeField = field;
+    String date = dateController.text;
+    setState(() {
+      load = false;
+      havedata = true;
+      TimeCheckStart = [];
+      TimeCheckEnd = [];
+      // TimeCheckStart.clear();
+      // TimeCheckEnd.clear();
+    });
 
+    try {
+      String apiCheckTime =
+          '${MyConstant.domain}/goalinter_project/gettime.php?isAdd=true&date=$date&typeField=$typeField';
+      await Dio().get(apiCheckTime).then((value) {
+        var result = json.decode(value.data);
+        print('result = $result');
+
+        for (var map in result) {
+          Book_Model model = Book_Model.fromJson(map);
+          DBTime.value = model;
+          print('TimeStart = ${DBTime.value.datetimeStart}');
+          print('TimeEnd = ${DBTime.value.datetimeEnd}');
+
+          SubStart = DBTime.value.datetimeStart!.split(' ');
+          SubEnd = DBTime.value.datetimeEnd!.split(' ');
+
+          print('SubStart = $SubStart');
+          print('SubEnd = $SubEnd');
+
+          print('Start = ${SubStart[1].substring(0, 5)}');
+          print('End = ${SubEnd[1].substring(0, 5)}');
+
+          setState(() {
+            load = false;
+            havedata = true;
+            TimeCheckStart.add(SubStart[1].substring(0, 5));
+            TimeCheckEnd.add(SubEnd[1].substring(0, 5));
+            TimeCheckStart.sort();
+            TimeCheckEnd.sort();
+          });
+        }
+
+        print('TimeCheckStart = $TimeCheckStart');
+        print('TimeCheckEnd = $TimeCheckEnd');
+
+        // print('TimeCheck = $TimeCheck');
+        // TimeCheck.remove(SubStart[1]);
+      });
+    } catch (e) {
+      print("error = $e");
+    }
+  }
 }
-
-
-
-// import 'package:dio/dio.dart';
-// import 'package:flutter/material.dart';
-// import 'package:goalinter/utillity/my_constant.dart';
-// import 'package:goalinter/widgets/show_image.dart';
-// import 'package:intl/intl.dart';
-
-// class  extends StatefulWidget {
-//   const Booking_Admin({Key? key}) : super(key: key);
-
-//   @override
-//   State<Booking_Admin> createState() => _Booking_AdminState();
-// }
-
-// class _Booking_AdminState extends State<Booking_Admin> {
-//   final formKey = GlobalKey<FormState>();
-//   List<String> chipList = ["Field 1", "Field 2", "Field 3"];
-//   TextEditingController dateController = TextEditingController();
-
-//   @override
-//   Widget build(BuildContext context) {
-//     double size = MediaQuery.of(context).size.width;
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: MyConstant.gray,
-//         title: Text("Booking")),
-//       body: SizedBox(
-//         width: 380,
-//         height: 400,
-//         child: Column(
-//           children: <Widget>[
-//             Padding(
-//               padding: EdgeInsets.all(8.0),
-//               child: Text(
-//                 'Select the field',
-//                 style: MyConstant().h2Style(),
-//               ),
-//             ),
-            
-//             Container(
-//               key: formKey,
-//                 child: Wrap(
-//               spacing: 8.0,
-//               runSpacing: 4.0,
-              
-//               children: <Widget>[
-//                 buildDate(size),
-//                 // buildImage(size),
-//                 choiceChipWidget(chipList),
-                
-//               ],
-//             )),
-//             Padding(
-//               padding: EdgeInsets.only(top: 32.0),
-//               child: Container(
-//                 child: ElevatedButton(
-//                   style: MyConstant().MyButtonStyle(),
-//                   onPressed: () {
-//                     if (formKey.currentState!.validate()) {
-//                             print('Process Insert to Database');
-//                             bookingdate();
-//                           }
-//                   },
-//                   child: Text(
-//                     'Book',
-//                     style: TextStyle(
-//                       fontSize: 16,
-//                       fontWeight: FontWeight.bold,
-//                       color: Colors.black,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       )
-//         );
-//   }
-
-//   Future<Null> bookingdate() async {
-//     String date = dateController.text;
-//     print(
-//         'date = $date');
-//     String path =
-//         '${MyConstant.domain}/goalinter_project/getDateWhereDate.php?isAdd=true&date=$date';
-//     await Dio().get(path).then((value) {
-//       print('value = $value');
-//       if (value.toString() == 'null') {
-//         print('Have date in my Database');
-//       } else {
-//         showDialog(
-//           context: context,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               title: Text("มีการจองแล้วจ้า"),
-//               actions: <Widget>[
-//                 TextButton(
-//                   child: Text("T-T"),
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                 ),
-//               ],
-//             );
-//           },
-//         );
-//       }
-//       processInsertMySQL(
-//         date : date,
-//       );
-//     });
-//   }
-
-//   Future<Null> processInsertMySQL(
-//       {String? id,
-//       String? date
-//       }) async {
-//     print('Success');
-//     String apiinsertDate =
-//         '${MyConstant.domain}/goalinter_project/insertDate.php?isAdd=true&id=$id&date=$date';
-//     await Dio().get(apiinsertDate).then((value) {
-//       if (value.toString() == 'true') {
-//         Navigator.pop(context);
-//       } else {
-//         showDialog(
-//           context: context,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               title: Text("จองไม่สำเร็จ"),
-//               actions: <Widget>[
-//                 TextButton(
-//                   child: Text("OK"),
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                 ),
-//               ],
-//             );
-//           },
-//         );
-//       }
-//     });
-//   }
-
-
-
-
-//   Row buildDate(double size) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//       Container(
-//           margin: EdgeInsets.only(top: 20),
-//           width: size * 0.8,
-//             child: TextFormField(
-//             controller : dateController,
-//             decoration: const InputDecoration(
-//               icon: Icon(Icons.calendar_today),
-//               labelText: "Select Date"
-//             ),
-//             readOnly: true,
-//             onTap: (() async{
-//               DateTime? pickedDate = await showDatePicker(context: context,
-//               initialDate: DateTime.now(),
-//               firstDate:DateTime.now(),
-//               lastDate: DateTime(2101), 
-              
-//               );
-//               if(pickedDate!=null)
-//               {
-//                 String formattedDate=DateFormat("dd-MM-yyyy").format(pickedDate);
-//                 setState(() 
-//                 {
-//                   dateController.text=formattedDate.toString();
-//                 }
-//                 );
-//               }
-//               else
-//               {
-//                  print("Not selected");
-//               }
-//               validator: (value) {
-//               if (value!.isEmpty) {
-//                 return 'Please enter date';
-//               } else {}
-//               };
-//             }),
-//           ),
-//           ),
-//       ],
-//     );
-//   }
-
-//     Row buildImage(double size) {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Container(
-//           margin: EdgeInsets.only(top: 30, bottom: 30),
-//           width: size * 0.8,
-//           child: ShowImage(
-//             path: MyConstant.imagebook,
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-
-
-// }
-
-// class choiceChipWidget extends StatefulWidget {
-//   final List<String> reportList;
-
-//   choiceChipWidget(this.reportList);
-
-//   @override
-//   _choiceChipWidgetState createState() => new _choiceChipWidgetState();
-// }
-
-// class _choiceChipWidgetState extends State<choiceChipWidget> {
-//   String selectedChoice = "";
-
-//   _buildChoiceList() {
-//     List<Widget> choices = [];
-//     widget.reportList.forEach((item) {
-//       choices.add(Container(
-//         padding: const EdgeInsets.all(2.0),
-//         child: ChoiceChip(
-//           label: Text(item),
-//           labelStyle: TextStyle(
-//               color: Colors.black, fontSize: 14.0, fontWeight: FontWeight.bold),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(30.0),
-//           ),
-//           backgroundColor: Color(0xffededed),
-//           selectedColor: Color.fromARGB(255, 251, 206, 72),
-//           selected: selectedChoice == item,
-//           onSelected: (selected) {
-//             setState(() {
-//               selectedChoice = item;
-//             });
-//           },
-//         ),
-//       ));
-//     });
-//     return choices;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Wrap(
-//       children: _buildChoiceList(),
-//     );
-//   }
-// }

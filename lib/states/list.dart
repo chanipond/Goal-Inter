@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, sort_child_properties_last
 
 import 'dart:convert';
 
@@ -29,7 +29,7 @@ class _List_serviceState extends State<List_service> {
   final controller = TextEditingController();
   final dateController = TextEditingController();
   bool checkdate = false;
-  
+
   @override
   void initState() {
     super.initState();
@@ -68,199 +68,175 @@ class _List_serviceState extends State<List_service> {
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
-    return load
-        ? const ShowProgress()
-        : havedata!
-            ? SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 80, bottom: 10),
-                      child: ShowTitle(
-                        title: 'List Service',
-                        textStyle: MyConstant().h1Style(),
+    return Container(
+      child: load
+          ? const ShowProgress()
+          : havedata!
+              ? SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 80),
+                        child: ShowTitle(
+                          title: 'List Service',
+                          textStyle: MyConstant().h1Style(),
+                        ),
                       ),
-                    ),
-                    buildDate(size),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 20, right: 20),
-                    //   child: Container(
-                    //     width: size * 0.9,
-                    //     child: TextFormField(
-                    //       controller: controller,
-                    //       decoration: InputDecoration(
-                    //         labelStyle: MyConstant().h3Style(),
-                    //         labelText: 'Search',
-                    //         prefixIcon: Icon(
-                    //           Icons.search,
-                    //           color: MyConstant.dark,
-                    //         ),
-                    //         enabledBorder: OutlineInputBorder(
-                    //           borderSide: BorderSide(
-                    //             color: MyConstant.dark,
-                    //           ),
-                    //         ),
-                    //         focusedBorder: OutlineInputBorder(
-                    //           borderSide: BorderSide(
-                    //             color: MyConstant.light,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    Container(
-                      width: size * 0.9,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ScrollPhysics(),
-                        itemCount: slips.length,
-                        itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
+                      Container(
+                        width: size * 0.9,
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const ScrollPhysics(),
+                          itemCount: slips.length,
+                          itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
                               print('you click index $index');
                               showAlertDiaLog(slips[index]);
                             },
-                          child: Card(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      ShowTitle(
-                                        title: 'วันที่จอง',
-                                        textStyle: MyConstant().h3Style(),
-                                      ),
-                                      ShowTitle(
-                                        title: slips[index].datetime_start,
-                                        textStyle: MyConstant().h3Style(),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      ShowTitle(
-                                        title: 'เวลาที่จอง',
-                                        textStyle: MyConstant().h3Style(),
-                                      ),
-                                      ShowTitle(
-                                        title: slips[index].datetime_end,
-                                        textStyle: MyConstant().h3Style(),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      ShowTitle(
-                                        title: 'ราคา',
-                                        textStyle: MyConstant().h3Style(),
-                                      ),
-                                      ShowTitle(
-                                        title: slips[index].price,
-                                        textStyle: MyConstant().h3Style(),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                            child: Card(
+                              color: (index % 2 == 0
+                                  ? Color.fromARGB(255, 196, 243, 247)
+                                  : Color.fromARGB(255, 207, 205, 205)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ShowTitle(
+                                          title: 'Date',
+                                          textStyle: MyConstant().h3Style(),
+                                        ),
+                                        ShowTitle(
+                                          title: slips[index].date,
+                                          textStyle: MyConstant().h3Style(),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ShowTitle(
+                                          title: 'Time',
+                                          textStyle: MyConstant().h3Style(),
+                                        ),
+                                        ShowTitle(
+                                          title: (slips[index].datetime_start).substring(11, 16) +" - " +(slips[index].datetime_end).substring(11, 16),
+                                          textStyle: MyConstant().h3Style(),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ShowTitle(
+                                          title: 'Field',
+                                          textStyle: MyConstant().h3Style(),
+                                        ),
+                                        ShowTitle(
+                                          title: slips[index].typeField,
+                                          textStyle: MyConstant().h3Style(),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ShowTitle(
+                          title: 'No Booking', textStyle: MyConstant().h1Style()),
+                    ],
+                  ),
                 ),
-              )
-            : Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ShowTitle(
-                        title: 'No Booking', textStyle: MyConstant().h1Style()),
-                  ],
-                ),
-              );
-  }
-
-  ListView buildListView(BoxConstraints constraints) {
-    double size = MediaQuery.of(context).size.height;
-    return ListView.builder(
-      itemCount: slips.length,
-      itemBuilder: (context, index) => GestureDetector(
-        onTap: () {
-          print('you click index $index');
-          showAlertDiaLog(slips[index]);
-        },
-        child: Card(
-          child: Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                padding: const EdgeInsets.all(10),
-                width: constraints.maxWidth * 0.5 + 20,
-                height: constraints.maxWidth * 0.5 - 20,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ShowTitle(
-                      title: '⏲️ Time: ',
-                      textStyle: MyConstant().h3Style(),
-                    ),
-                    ShowTitle(
-                      title: (slips[index].datetime_start).toString(),
-                      textStyle: MyConstant().h2Style(),
-                    ),
-                    ShowTitle(
-                      title: ' to ',
-                      textStyle: MyConstant().h2Style(),
-                    ),
-                    ShowTitle(
-                      title: slips[index].datetime_end,
-                      textStyle: MyConstant().h2Style(),
-                    ),
-                    // Row(
-                    //   children: [
-                    //     ShowTitle(
-                    //       title: '⏲️ Time: ',
-                    //       textStyle: MyConstant().h3Style(),
-                    //     ),
-                    //     ShowTitle(
-                    //       title: 'Date: ${slips[index].datetime_start}',
-                    //       textStyle: MyConstant().h2Style(),
-                    //     ),
-                    //     ShowTitle(
-                    //       title: ' - ',
-                    //       textStyle: MyConstant().h2Style(),
-                    //     ),
-                    //     ShowTitle(
-                    //       title: slips[index].datetime_end,
-                    //       textStyle: MyConstant().h3Style(),
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
+
+  // ListView buildListView(BoxConstraints constraints) {
+  //   double size = MediaQuery.of(context).size.height;
+  //   return ListView.builder(
+  //     itemCount: slips.length,
+  //     itemBuilder: (context, index) => GestureDetector(
+  //       onTap: () {
+  //         print('you click index $index');
+  //         showAlertDiaLog(slips[index]);
+  //       },
+  //       child: Card(
+  //         child: Row(
+  //           children: [
+  //             Container(
+  //               margin: const EdgeInsets.only(top: 20),
+  //               padding: const EdgeInsets.all(10),
+  //               width: constraints.maxWidth * 0.5 + 20,
+  //               height: constraints.maxWidth * 0.5 - 20,
+  //               child: Column(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   ShowTitle(
+  //                     title: '⏲️ Time: ',
+  //                     textStyle: MyConstant().h3Style(),
+  //                   ),
+  //                   ShowTitle(
+  //                     title: (slips[index].datetime_start).toString(),
+  //                     textStyle: MyConstant().h2Style(),
+  //                   ),
+  //                   ShowTitle(
+  //                     title: ' to ',
+  //                     textStyle: MyConstant().h2Style(),
+  //                   ),
+  //                   ShowTitle(
+  //                     title: slips[index].datetime_end,
+  //                     textStyle: MyConstant().h2Style(),
+  //                   ),
+  //                   // Row(
+  //                   //   children: [
+  //                   //     ShowTitle(
+  //                   //       title: '⏲️ Time: ',
+  //                   //       textStyle: MyConstant().h3Style(),
+  //                   //     ),
+  //                   //     ShowTitle(
+  //                   //       title: 'Date: ${slips[index].datetime_start}',
+  //                   //       textStyle: MyConstant().h2Style(),
+  //                   //     ),
+  //                   //     ShowTitle(
+  //                   //       title: ' - ',
+  //                   //       textStyle: MyConstant().h2Style(),
+  //                   //     ),
+  //                   //     ShowTitle(
+  //                   //       title: slips[index].datetime_end,
+  //                   //       textStyle: MyConstant().h3Style(),
+  //                   //     ),
+  //                   //   ],
+  //                   // ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<Null> showAlertDiaLog(PrefSlip slip) async {
     showDialog(
         context: context,
-        builder: (context) => SimpleDialog(
+        builder: (context) => AlertDialog(
               title: ListTile(
-                leading: Image.network('${MyConstant.domain}${slip.slip}'),
                 title: ShowTitle(
                   title: 'Price: ${slip.price} THB',
                   textStyle: MyConstant().h2Style(),
@@ -270,11 +246,20 @@ class _List_serviceState extends State<List_service> {
                   textStyle: MyConstant().h4Style(),
                 ),
               ),
-              children: [
+              content: Image.network('${MyConstant.domain}${slip.slip}',fit: BoxFit.cover),
+
+              actions: [
                 TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('OK'))
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('OK'),
+                ),
               ],
+
+              // children: [
+              //   TextButton(
+              //       onPressed: () => Navigator.pop(context),
+              //       child: const Text('OK'))
+              // ],
             ));
   }
 
@@ -294,9 +279,8 @@ class _List_serviceState extends State<List_service> {
                 DateTime? pickedDate = await showDatePicker(
                   context: context,
                   initialDate: DateTime.now(),
-                  firstDate: DateTime.now(),
-                  // และถึงวันสุดท้ายจะสัปดาห์นึง ที่สามารถจองได้
-                  lastDate: DateTime.now().add(const Duration(days: 6)),
+                  firstDate: DateTime(2010),
+                  lastDate: DateTime(2030),
                 );
                 if (pickedDate != null) {
                   String formattedDate =
@@ -304,10 +288,12 @@ class _List_serviceState extends State<List_service> {
                   setState(() {
                     checkdate = true;
                     dateController.text = formattedDate.toString();
+                    print(dateController.text);
                   });
                 } else {
                   print("Not selected");
-                  MyConstant().normalDialog(context, 'Non Choose Date', 'Please Choose Date');
+                  MyConstant().normalDialog(
+                      context, 'Non Choose Date', 'Please Choose Date');
                 }
               })),
         ),
