@@ -13,9 +13,9 @@ if (!$link) {
 
 	if (isset($_GET)) {
 	if ($_GET['isAdd'] == 'true') {
-		$id_booking = $_GET['id_booking'];		
+		$id_slip = $_GET['id_slip'];		
 									
-		$sql = "DELETE FROM book WHERE id_booking = '$id_booking'";
+		$sql = "DELETE FROM slipping WHERE id_slip = '$id_slip'";
 
 		$result = mysqli_query($link, $sql);
 
